@@ -1,6 +1,7 @@
 
 public class Command {
-	//HI SHRESTHA HERE
+	/*need to create logic class and change FileModifier.addEvent to 
+	logic.splitAddEvent etc....*/
 	
 	private static final String ADD_COMMAND = "add";
 	private static final String DISPLAY_COMMAND = "display";
@@ -9,6 +10,7 @@ public class Command {
 	private static final Object EDIT_COMMAND = "edit";
 
 	public Command() {
+		//create logic object here
 	}
 	
 	public static void processCommand(String command) {
