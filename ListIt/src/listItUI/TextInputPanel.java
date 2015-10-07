@@ -1,3 +1,5 @@
+package listItUI;
+
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -9,6 +11,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import listItLogic.CommandParser;
+
 public class TextInputPanel extends JPanel {
 	public TextInputPanel() {
 		Dimension size = getPreferredSize();
@@ -18,7 +22,7 @@ public class TextInputPanel extends JPanel {
 		setBorder(BorderFactory.createTitledBorder("Input"));
 		
 		JLabel inputLabel = new JLabel("Input Box :");
-		JTextField inputTextBox = new JTextField(28);
+		JTextField inputTextBox = new JTextField(35);
 		
 		
 		setLayout(new GridBagLayout());
@@ -45,7 +49,7 @@ public class TextInputPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String command = inputTextBox.getText();
-				Command.processCommand(command);
+				CommandParser.processCommand(command);
 				inputTextBox.setText("");
 			}
 		});

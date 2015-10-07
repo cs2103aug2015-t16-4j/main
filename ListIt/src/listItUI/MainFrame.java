@@ -1,12 +1,9 @@
+package listItUI;
+
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 public class MainFrame extends JFrame {
 	public MainFrame(String title) {

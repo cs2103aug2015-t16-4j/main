@@ -1,16 +1,19 @@
+package listItLogic;
 
-public class Command {
-	/*need to create logic class and change FileModifier.addEvent to 
-	logic.splitAddEvent etc....*/
-	
+import listItUI.TextInputPanel;
+import listItUI.TextScreenPenal;
+
+public class CommandParser {
+
 	private static final String ADD_COMMAND = "add";
-	private static final String DISPLAY_COMMAND = "display";
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String DELETE_COMMAND = "delete";
+	private static final String DISPLAY_COMMAND = "display";
 	private static final Object EDIT_COMMAND = "edit";
+	private static final String WITH_DEADLINE = "by";
+	
 
-	public Command() {
-		//create logic object here
+	public CommandParser() {
 	}
 	
 	public static void processCommand(String command) {
@@ -27,26 +30,39 @@ public class Command {
 		String commandType = command.substring(0, command.indexOf(" "));
 		
 		if(commandType.equals(ADD_COMMAND)) {
-			FileModifier.addEvent(command);
+			if(command.contains(WITH_DEADLINE)) {
+				AddLogic.addEventWithDeadline(command);
+			}
+			else {
+				AddLogic.addEventDefault(command);
+			}
 		}
 		
 		else if(commandType.equals(DELETE_COMMAND)) {
-			FileModifier.deleteEvent(command);
+			DeleteLogic.deleteEvent(command);
 		}
 		
 		else if(commandType.equals(EDIT_COMMAND)) {
-			FileModifier.editEvent(command);
+			EditLogic.editEvent(command);
+		}
+		
+		else {
+			TextScreenPenal.displayInvalidInput();
 		}
 	}
 	
 	public static void processCommandWithoutSpace(String command) {
 		
 		if(command.equals(DISPLAY_COMMAND)) {
-			FileModifier.displayEvent();
+			DisplayLogic.displayEvent();
 		}
 		
 		else if(command.equals(CLEAR_COMMAND)) {
-			FileModifier.clearFile();
+			DeleteLogic.clearFile();
+		}
+		
+		else {
+			TextScreenPenal.displayInvalidInput();
 		}
 	}
 }
