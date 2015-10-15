@@ -4,6 +4,7 @@ import java.io.File;
 
 import fileModifier.FileModifier;
 import listItUI.TextScreenPenal;
+import taskGenerator.Task;
 
 public class ExecuteCommand {
 	
@@ -15,13 +16,14 @@ public class ExecuteCommand {
 	private static final String WITH_DEADLINE = "by";
 	private static final String UNDO_COMMAND = "undo";
 	private static final String REDO_COMMAND = "redo";
+	private static final String SEARCH_COMMAND = "search";
 	
 	private static UndoAndRedoLogic undoRedo;
-	private static FileModifier file;
+	private static FileModifier modifier;
 	
 	public ExecuteCommand() {
 		UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
-		FileModifier file = FileModifier.getInstance();
+		FileModifier modifier = FileModifier.getInstance();
 	}
 	
 	public static void processCommandWithSpace(String command) {
@@ -44,6 +46,10 @@ public class ExecuteCommand {
 			EditLogic.editEvent(command);
 		}
 		
+		else if(commandType.equals(SEARCH_COMMAND)) {
+			String keyword = Task.toStringKeyword(command);
+			modifier.searchKeyword(keyword);
+		}
 		else {
 			TextScreenPenal.displayInvalidInput();
 		}
@@ -60,13 +66,13 @@ public class ExecuteCommand {
 		}
 		
 		else if(command.equals(UNDO_COMMAND)) {
-			File undoFile = file.getFile();
+			File undoFile = modifier.getFile();
 			undoRedo.storeUndoFile(undoFile);
-			file.setFile(undoRedo.getLastFile());
+			modifier.setfile(undoRedo.getLastFile());
 		}
 		
 		else if(command.equals(REDO_COMMAND)) {
-			file.setFile(undoRedo.getUndoFile());
+			modifier.setfile(undoRedo.getUndoFile());
 		}
 		else {
 			TextScreenPenal.displayInvalidInput();

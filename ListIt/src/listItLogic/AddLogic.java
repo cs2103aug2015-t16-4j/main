@@ -12,15 +12,15 @@ import taskGenerator.Task;
 public class AddLogic {
 	
 	private static UndoAndRedoLogic undoRedo;
-	private static FileModifier file;
+	private static FileModifier modifier;
 	
 	public AddLogic() {
 		UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
-		FileModifier file = FileModifier.getInstance();
+		FileModifier modifier = FileModifier.getInstance();
 	}
 
 	public static void addEventWithDeadline(String command) {
-		File currentFile = file.getFile();
+		File currentFile = modifier.getFile();
 		undoRedo.storeCurrentFile(currentFile);
 		String eventTitle = null;
 		boolean titleValid = false;
@@ -39,7 +39,7 @@ public class AddLogic {
 			
 				Task event = new Task(eventTitle, deadline);
 			
-				FileModifier fileInput = new FileModifier("test1.txt");
+				FileModifier fileInput = FileModifier.getInstance();
 			
 				fileInput.addToFile(event.toStringWithDeadline());
 			}
@@ -78,13 +78,13 @@ public class AddLogic {
 	}	
 
 	public static void addEventDefault(String command) {
-		File currentFile = file.getFile();
+		File currentFile = modifier.getFile();
 		undoRedo.storeCurrentFile(currentFile);
 		String eventTitle = command.substring(4);
 		
 		Task event = new Task(eventTitle);
 		
-		FileModifier fileInput = new FileModifier("test1.txt");
+		FileModifier fileInput = FileModifier.getInstance();
 		
 		fileInput.addToFile(event.toStringWithoutDate());
 	}

@@ -9,15 +9,15 @@ import listItUI.TextScreenPenal;
 public class EditLogic {
 	
 	private static UndoAndRedoLogic undoRedo;
-	private static FileModifier file;
+	private static FileModifier modifier;
 	
 	public EditLogic( ) {
 		UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
-		FileModifier file = FileModifier.getInstance();
+		FileModifier modifier = FileModifier.getInstance();
 	}
 
 	public static void editEvent(String command) {
-		File currentFile = file.getFile();
+		File currentFile = modifier.getFile();
 		undoRedo.storeCurrentFile(currentFile);
 		EditModifier editor = new EditModifier("test1.txt"); 
 		int lineToBeEdit = Integer.parseInt(command.substring(5, 6));

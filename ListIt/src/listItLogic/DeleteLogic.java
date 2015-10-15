@@ -7,27 +7,27 @@ import fileModifier.FileModifier;
 public class DeleteLogic {
 	
 	private static UndoAndRedoLogic undoRedo;
-	private static FileModifier file;
+	private static FileModifier modifier;
 	
 	public DeleteLogic() {
 		UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
-		FileModifier file = FileModifier.getInstance();
+		FileModifier modifier = FileModifier.getInstance();
 	}
 
 	public static void deleteEvent(String command) {
-		File currentFile = file.getFile();
+		File currentFile = modifier.getFile();
 		undoRedo.storeCurrentFile(currentFile);
 		int LineToBeDelete = Integer.parseInt(command.substring(7));
 		
-		FileModifier textFile = new FileModifier("test1.txt");
+		FileModifier textFile = FileModifier.getInstance();
 		
 		textFile.deleteLine(LineToBeDelete);
 	}
 
 	public static void clearFile() {
-		File currentFile = file.getFile();
+		File currentFile = modifier.getFile();
 		undoRedo.storeCurrentFile(currentFile);
-		FileModifier textFile = new FileModifier("test1.txt");
+		FileModifier textFile = FileModifier.getInstance();
 		
 		textFile.clearAll();
 		
