@@ -47,8 +47,9 @@ public class ExecuteCommand {
 		}
 		
 		else if(commandType.equals(SEARCH_COMMAND)) {
-			String keyword = Task.toStringKeyword(command);
-			modifier.searchKeyword(keyword);
+			//String keyword = Task.toStringKeyword(command);
+			//modifier.searchKeyword(keyword);
+			SearchLogic.searchKeyWord(command);
 		}
 		else {
 			TextScreenPenal.displayInvalidInput();
