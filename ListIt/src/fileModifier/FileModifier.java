@@ -1,20 +1,12 @@
 package fileModifier;
 
-import java.awt.Component;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
-import listItUI.TextScreenPenal;
 import taskGenerator.Task;
 
 public class FileModifier {
@@ -49,73 +41,11 @@ public class FileModifier {
 	}
 
 	public void deleteLine(int lineToBeDelete) {
-		File tempFile = new File("temp.txt");
-		File inputFile = new File(fileName);
-		Integer lineCount = 1;
-		String aLineOfContent;
-		
-		try {
-			BufferedReader textReader = new BufferedReader(new FileReader(inputFile));
-			BufferedWriter textWriter = new BufferedWriter(new FileWriter(tempFile, true));
-			
-			while((aLineOfContent = textReader.readLine()) != null) {
-				if(lineCount != lineToBeDelete) {
-					textWriter.write(aLineOfContent);
-					textWriter.newLine();
-				}
-				else {
-					if(aLineOfContent.contains("-D")) {
-						String title = aLineOfContent.substring(aLineOfContent.indexOf("-T") + 3, aLineOfContent.indexOf("-D") - 1);
-						String date = aLineOfContent.substring(aLineOfContent.indexOf("-D") + 3);
-						TextScreenPenal.deleteSucessful(title + " by " + date);
-					}
-					else {
-						String title = aLineOfContent.substring(aLineOfContent.indexOf("-T") + 3);
-						TextScreenPenal.deleteSucessful(title);
-					}
-				}
-				lineCount++;
-			}
-			
-			textReader.close();
-			textWriter.close();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		inputFile.delete();
-		tempFile.renameTo(inputFile);
 		
 	}
 
 	public void displayDefault() {
-		String content = null;
-		Integer lineCount = 1;
-		boolean isDisplayed = false;
-		
-		try {
-			BufferedReader textReader = new BufferedReader(new FileReader(fileName));
-			
-			while((content = textReader.readLine()) != null) {
-				
-				content = changeFormat(content);
-				
-				TextScreenPenal.display(content, lineCount);
-				lineCount++;
-				isDisplayed = true;	
-			}
-			
-			textReader.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		if(isDisplayed == false) {
-			TextScreenPenal.displayEmpty();
-		}
-		
+
 	}
 
 	private String changeFormat(String content) {
@@ -133,24 +63,18 @@ public class FileModifier {
 	}
 
 	public void clearAll() {
-		BufferedWriter textWriter;
-		try {
-			textWriter = new BufferedWriter(new FileWriter(fileName, false));
-			textWriter.write("");
-			textWriter.close();
-			TextScreenPenal.sucessfulClear();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 	}
-<<<<<<< HEAD
 
 	public File getFile() {
-		File textFile = new File(fileName);
-		return textFile;
-=======
+		return dataFile;
+	}
 	
-	public void searchKeyword(String keyword){
+	public void setfile(File file){
+		 dataFile = file;
+	}
+	
+	public void searchKeyword(String keyword) throws IOException, ClassNotFoundException{
 	ArrayList<Task> searchList = new ArrayList<Task>();
 	FileInputStream fis = new FileInputStream("test1.txt");
 	ObjectInputStream ois = new ObjectInputStream(fis);
@@ -160,10 +84,8 @@ public class FileModifier {
 			Task task = contents.get(i);
 			if(task.getTitle().contains(keyword)){
 				searchList.add(task);
-			}
-			
-		}
-		
->>>>>>> origin/master
+			}	
+		}	
+	ois.close(); 	
 	}
 }
