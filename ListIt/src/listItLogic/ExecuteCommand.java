@@ -1,5 +1,7 @@
 package listItLogic;
 
+import java.io.File;
+
 import fileModifier.FileModifier;
 import listItUI.TextScreenPenal;
 
@@ -58,7 +60,13 @@ public class ExecuteCommand {
 		}
 		
 		else if(command.equals(UNDO_COMMAND)) {
-			FileModifier.setFile(u)
+			File undoFile = file.getFile();
+			undoRedo.storeUndoFile(undoFile);
+			file.setFile(undoRedo.getLastFile());
+		}
+		
+		else if(command.equals(REDO_COMMAND)) {
+			file.setFile(undoRedo.getUndoFile());
 		}
 		else {
 			TextScreenPenal.displayInvalidInput();

@@ -26,15 +26,15 @@ public class UndoAndRedoLogic {
 		undo.push(previousFile);
 	}
 	
-	public File getCurrentFile() {
+	public File getLastFile() {
 		return undo.pop();
 	}
 	
-	public void storeUndoneFile(File undoneFile) {
+	public void storeUndoFile(File undoneFile) {
 		redo.push(undoneFile);
 	}
 	
-	public File getUndoneFile() {
+	public File getUndoFile() {
 		return redo.pop();
 	}
 }
