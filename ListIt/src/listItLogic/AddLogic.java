@@ -89,4 +89,13 @@ public class AddLogic {
 		fileInput.addToFile(event.toStringWithoutDate());
 	}
 	
+	//public static void addEventWithImportance (String command) {
+		//String eventTitle = ; 
+		//Task event = new Task(eventTitle);
+		
+	//	FileModifier fileInput = new FileModifier("test1.txt");
+		
+	//	fileInput.addToFile(event.toStringImportance);
+	//}
+	
 }

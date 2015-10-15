@@ -3,7 +3,32 @@ package taskGenerator;
 public class Task {
 	private String eventTitle;
 	private String deadline;
-
+	private int importance;
+	
+	public Task(String eventTitle, String deadline, int importance) {
+		this.eventTitle = eventTitle;
+		this.deadline = generateDate(deadline);
+		this.importance = importance;
+	}
+	
+	public Task(String eventTitle, int importance) {
+		this.eventTitle = eventTitle;
+		this.importance = importance;
+	}
+	
+	public Task(String title, String date, boolean correctDateFormat, int importance) {
+		if(correctDateFormat) {
+			this.eventTitle = title;
+			this.deadline = date;
+			this.importance = importance;
+		}
+		else {
+			this.eventTitle = title;
+			this.deadline = generateDate(date);
+			this.importance = importance;
+		}
+	}
+	
 	public Task(String eventTitle, String deadline) {
 		this.eventTitle = eventTitle;
 		this.deadline = generateDate(deadline);
@@ -81,6 +106,26 @@ public class Task {
 	
 	public String toStringWithoutDate() {
 		return "-T " + this.eventTitle;
+	}
+	
+	public String toStringImportanceWithoutDate() {
+		return "-T " + this.eventTitle + "-I" + this.importance;
+	}
+	
+	public String toStringImportanceWithDate() {
+		return "-T " + this.eventTitle + "-D" + this.deadline + "-I" + this.importance;
+	}
+	
+	public String getTitle() {
+		return eventTitle;
+	}
+	
+	public String getDate() {
+		return deadline;
+	}
+	
+	public int getImportance() {
+		return importance;
 	}
 
 }

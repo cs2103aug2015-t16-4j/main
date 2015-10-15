@@ -1,58 +1,51 @@
 package fileModifier;
 
+import java.awt.Component;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 import listItUI.TextScreenPenal;
+import taskGenerator.Task;
 
 public class FileModifier {
-	private String fileName;
+	private static FileModifier modifier;
+	private File dataFile;
 	
-	public FileModifier(String fileName) {
-		this.fileName = fileName;
-		File textFile = new File(fileName);
-		if(!textFile.exists()) {
-			try {
-				textFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+	private FileModifier() {
+		dataFile = new File("test1.txt");
+	}
+	
+	public static FileModifier getInstance() {
+		if(modifier == null) {
+			modifier = new FileModifier();
+		}
+		return modifier;
+	}
+	
+	public void saveFile(ArrayList<Task> dataStorage){
+		try{
+			FileOutputStream fos = new FileOutputStream("text1.txt");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(dataStorage);
+			oos.close();
+		} catch(Exception ex){
+			ex.printStackTrace(); 
 		}
 	}
 
-	public void addToFile(String content) {
-		BufferedWriter textWriter;
-		boolean isAdded = false;
-		try {
-			textWriter = new BufferedWriter(new FileWriter(fileName, true));
+	public void addToFile(Task newTask){
 		
-			textWriter.write(content);
-			textWriter.newLine();
-			
-			textWriter.close();
-			
-			isAdded = true;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		if(isAdded) {
-			if(content.contains("-D")) {
-				String title = content.substring(content.indexOf("-T") + 3, content.indexOf("-D") - 1);
-				String date = content.substring(content.indexOf("-D") + 2);
-				
-				TextScreenPenal.sucessfulAdd(title + " by " + date);
-			}
-			else {
-				String title = content.substring(content.indexOf("-T") + 3);
-				
-				TextScreenPenal.sucessfulAdd(title);
-			}
-		}
+	
 	}
 
 	public void deleteLine(int lineToBeDelete) {
@@ -150,9 +143,27 @@ public class FileModifier {
 			e.printStackTrace();
 		}
 	}
+<<<<<<< HEAD
 
 	public File getFile() {
 		File textFile = new File(fileName);
 		return textFile;
+=======
+	
+	public void searchKeyword(String keyword){
+	ArrayList<Task> searchList = new ArrayList<Task>();
+	FileInputStream fis = new FileInputStream("test1.txt");
+	ObjectInputStream ois = new ObjectInputStream(fis);
+	
+	ArrayList<Task> contents = (ArrayList<Task>) ois.readObject();
+		for ( int i =0;i<contents.size();i++ ){
+			Task task = contents.get(i);
+			if(task.getTitle().contains(keyword)){
+				searchList.add(task);
+			}
+			
+		}
+		
+>>>>>>> origin/master
 	}
 }
