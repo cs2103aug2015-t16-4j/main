@@ -150,4 +150,9 @@ public class FileModifier {
 			e.printStackTrace();
 		}
 	}
+
+	public File getFile() {
+		File textFile = new File(fileName);
+		return textFile;
+	}
 }

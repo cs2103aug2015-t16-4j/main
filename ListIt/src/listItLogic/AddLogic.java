@@ -1,5 +1,6 @@
 package listItLogic;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,8 +10,18 @@ import listItUI.TextScreenPenal;
 import taskGenerator.Task;
 
 public class AddLogic {
+	
+	private static UndoAndRedoLogic undoRedo;
+	private static FileModifier file;
+	
+	public AddLogic() {
+		UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
+		FileModifier file = FileModifier.getInstance();
+	}
 
 	public static void addEventWithDeadline(String command) {
+		File currentFile = file.getFile();
+		undoRedo.storeCurrentFile(currentFile);
 		String eventTitle = null;
 		boolean titleValid = false;
 		
@@ -67,6 +78,8 @@ public class AddLogic {
 	}	
 
 	public static void addEventDefault(String command) {
+		File currentFile = file.getFile();
+		undoRedo.storeCurrentFile(currentFile);
 		String eventTitle = command.substring(4);
 		
 		Task event = new Task(eventTitle);

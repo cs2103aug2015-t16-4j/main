@@ -1,11 +1,24 @@
 package listItLogic;
 
+import java.io.File;
+
 import fileModifier.EditModifier;
+import fileModifier.FileModifier;
 import listItUI.TextScreenPenal;
 
 public class EditLogic {
+	
+	private static UndoAndRedoLogic undoRedo;
+	private static FileModifier file;
+	
+	public EditLogic( ) {
+		UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
+		FileModifier file = FileModifier.getInstance();
+	}
 
 	public static void editEvent(String command) {
+		File currentFile = file.getFile();
+		undoRedo.storeCurrentFile(currentFile);
 		EditModifier editor = new EditModifier("test1.txt"); 
 		int lineToBeEdit = Integer.parseInt(command.substring(5, 6));
 		
