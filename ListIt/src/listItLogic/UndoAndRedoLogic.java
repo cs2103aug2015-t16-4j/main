@@ -37,4 +37,8 @@ public class UndoAndRedoLogic {
 	public File getUndoFile() {
 		return redo.pop();
 	}
+	
+	public boolean isEmpty() {
+		return undo.isEmpty();
+	}
 }

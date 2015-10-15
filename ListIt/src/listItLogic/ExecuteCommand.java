@@ -1,6 +1,7 @@
 package listItLogic;
 
 import java.io.File;
+import java.io.IOException;
 
 import fileModifier.FileModifier;
 import listItUI.TextScreenPenal;
@@ -56,13 +57,13 @@ public class ExecuteCommand {
 		}
 	}
 	
-	public static void processCommandWithoutSpace(String command) {
+	public static void processCommandWithoutSpace(String command) throws EmptyRedoMemoryException {
 		
 		if(command.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.displayEvent();
 		}
 		
-		else if(command.equals(CLEAR_COMMAND)) {
+		else if (command.equals(CLEAR_COMMAND)) {
 			DeleteLogic.clearFile();
 		}
 		
@@ -72,8 +73,13 @@ public class ExecuteCommand {
 			modifier.setfile(undoRedo.getLastFile());
 		}
 		
-		else if(command.equals(REDO_COMMAND)) {
-			modifier.setfile(undoRedo.getUndoFile());
+		else if (command.equals(REDO_COMMAND)) { //Shrestha Goswami :)
+			if (undoRedo.isEmpty()) {
+				throw new EmptyRedoMemoryException("unable to perform redo command without prior undo command!");
+			}
+			else {
+			    modifier.setfile(undoRedo.getUndoFile());
+			}
 		}
 		else {
 			TextScreenPenal.displayInvalidInput();
