@@ -74,7 +74,7 @@ public class FileModifier {
 		 dataFile = file;
 	}
 	
-	public void searchKeyword(String keyword) throws IOException, ClassNotFoundException{
+	public static void searchKeyword(String keyword) throws IOException, ClassNotFoundException{
 	ArrayList<Task> searchList = new ArrayList<Task>();
 	FileInputStream fis = new FileInputStream("test1.txt");
 	ObjectInputStream ois = new ObjectInputStream(fis);

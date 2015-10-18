@@ -27,7 +27,7 @@ public class ExecuteCommand {
 		FileModifier modifier = FileModifier.getInstance();
 	}
 	
-	public static void processCommandWithSpace(String command) {
+	public static void processCommandWithSpace(String command) throws ClassNotFoundException, IOException {
 		String commandType = command.substring(0, command.indexOf(" "));
 		
 		if(commandType.equals(ADD_COMMAND)) {
@@ -50,7 +50,8 @@ public class ExecuteCommand {
 		else if(commandType.equals(SEARCH_COMMAND)) {
 			//String keyword = Task.toStringKeyword(command);
 			//modifier.searchKeyword(keyword);
-			SearchLogic.searchKeyWord(command);
+			String keyword = SearchLogic.searchKeyWord(command);
+			FileModifier.searchKeyword(keyword);
 		}
 		else {
 			TextScreenPenal.displayInvalidInput();
