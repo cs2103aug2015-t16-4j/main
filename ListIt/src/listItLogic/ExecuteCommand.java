@@ -2,7 +2,7 @@ package listItLogic;
 
 import java.io.File;
 import fileModifier.FileModifier;
-import listItUI.FeedbackPane;
+import listItUI.FeedbackPanel;
 
 public class ExecuteCommand {
 	
@@ -51,11 +51,11 @@ public class ExecuteCommand {
 			FileModifier.searchKeyword(keyword);
 		}
 		else {
-			FeedbackPane.displayInvalidInput();
+			FeedbackPanel.displayInvalidInput();
 		}
 	}
 	
-	public static void processCommandWithoutSpace(String command) throws EmptyRedoMemoryException {
+	public static void processCommandWithoutSpace(String command) throws InvalidCommandException {
 		
 		if(command.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.displayEvent();
@@ -73,14 +73,17 @@ public class ExecuteCommand {
 		
 		else if (command.equals(REDO_COMMAND)) { //Shrestha Goswami :)
 			if (undoRedo.isRedoEmpty()) {
-				FeedbackPane.displayInvalidRedo();
+				throw  new InvalidCommandException("Redo cannot be instantiated with out a prior undo");
+				FeedbackPanel.displayInvalidRedo(); 
 			}
 			else {
-			    modifier.setfile(undoRedo.getFileFromRedo());
+				File redoFile = undoRedo.getFileFromRedo();
+			    modifier.setfile(redoFile);
+			    undoRedo.storeFileToUndo(redoFile);
 			}
 		}
 		else {
-			FeedbackPane.displayInvalidInput();
+			FeedbackPanel.displayInvalidInput();
 		}
 	}
 }
