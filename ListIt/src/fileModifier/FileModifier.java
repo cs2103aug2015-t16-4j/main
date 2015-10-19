@@ -17,7 +17,12 @@ public class FileModifier {
 	private File dataFile;
 
 	private FileModifier() {
-		dataFile = new File("test1.txt");
+		dataFile = new File("test1.ser");
+		try {
+			dataFile.createNewFile();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static FileModifier getInstance() {
@@ -29,7 +34,7 @@ public class FileModifier {
 
 	public void saveFile(ArrayList<Task> dataStorage){
 		try{
-			FileOutputStream fos = new FileOutputStream("test1.txt");
+			FileOutputStream fos = new FileOutputStream(dataFile, false);
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(dataStorage);
 			oos.close();
@@ -40,50 +45,52 @@ public class FileModifier {
 
 	public ArrayList<Task> getContentList() {
 		ArrayList<Task> list = new ArrayList<Task>();
+		
+		if(fileContainsData()) {
 
-		try{
-			FileInputStream fis = new FileInputStream("test1.txt");
-			ObjectInputStream ois = new ObjectInputStream(fis);
-			list = (ArrayList<Task>) ois.readObject();
-			ois.close();
-		} catch(Exception e) {
-			e.printStackTrace();
+			try{
+				FileInputStream fis = new FileInputStream(dataFile);
+				ObjectInputStream ois = new ObjectInputStream(fis);
+				list = (ArrayList<Task>) ois.readObject();
+				ois.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		else {
+			
+			try{
+				FileOutputStream fos = new FileOutputStream(dataFile, false);
+				ObjectOutputStream oos = new ObjectOutputStream(fos);
+				oos.writeObject(new ArrayList<Task>());
+				oos.close();
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
 
 		return list;
 	}
 
-	public void addToFile(Task newTask){
-		ArrayList<Task> list = new ArrayList<Task>();
-
+	private boolean fileContainsData() {
+		boolean isDataExist = false;
+		
 		try{
-			FileOutputStream fos = new FileOutputStream("test1.txt");
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			FileInputStream fis = new FileInputStream("test1.txt");
+			FileInputStream fis = new FileInputStream(dataFile);
 			ObjectInputStream ois = new ObjectInputStream(fis);
-
-			list = (ArrayList<Task>) ois.readObject();
-			list.add(newTask);
-		} 
-	}
-
-	public void deleteLine(int lineToDelete) throws IOException {
-		FileInputStream fis = new FileInputStream("text1.txt");
-		ObjectInputStream ois = new ObjectInputStream(fis);
-		ArrayList<Task> contents = new ArrayList<Task>();
-
-		contents = (ArrayList<Task>) ois.readObject();  
-		contents.remove(lineToDelete-1); 
-		// remove the old file if necessary 
-		saveFile(contents); 
+			ArrayList<Task> list = (ArrayList<Task>) ois.readObject();
+			ois.close();
+			isDataExist = true;
+		} catch(Exception e) {
+			isDataExist = false;
+		}
+		return isDataExist;
 	}
 
 	public void display(ArrayList<Task> list) {
 		OutputScreenPane.displayList(list);
-	}
-
-	public void clearAll() {
-
 	}
 
 	public File getFile() {
@@ -96,7 +103,7 @@ public class FileModifier {
 
 	public ArrayList<Task> searchKeyword(String keyword) throws IOException, ClassNotFoundException{
 		ArrayList<Task> searchList = new ArrayList<Task>();
-		FileInputStream fis = new FileInputStream("test1.txt");
+		FileInputStream fis = new FileInputStream(dataFile);
 		ObjectInputStream ois = new ObjectInputStream(fis);
 
 		ArrayList<Task> contents = (ArrayList<Task>) ois.readObject();
@@ -112,7 +119,7 @@ public class FileModifier {
 
 	public ArrayList<Task> searchByImportance(int searchKey ) throws IOException, ClassNotFoundException{
 		ArrayList<Task> searchList = new ArrayList<Task>();
-		FileInputStream fis = new FileInputStream("test1.txt");
+		FileInputStream fis = new FileInputStream(dataFile);
 		ObjectInputStream ois = new ObjectInputStream(fis);
 		ArrayList<Task> contents = (ArrayList<Task>) ois.readObject();
 
@@ -123,6 +130,6 @@ public class FileModifier {
 			}	
 		}
 		ois.close();
-		return searchList;  
-	}		
+		return searchList;
+	}
 }

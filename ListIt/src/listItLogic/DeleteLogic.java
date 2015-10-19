@@ -1,8 +1,10 @@
 package listItLogic;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import fileModifier.FileModifier;
+import taskGenerator.Task;
 
 public class DeleteLogic {
 	
@@ -17,20 +19,24 @@ public class DeleteLogic {
 	public static void deleteEvent(String command) {
 		File currentFile = modifier.getFile();
 		undoRedo.storeFileToUndo(currentFile);
-		int LineToBeDelete = Integer.parseInt(command.substring(7));
+		int taskIndexToBeDelete = Integer.parseInt(command.substring(7));
 		
-		FileModifier textFile = FileModifier.getInstance();
+		ArrayList<Task> taskList = modifier.getContentList();
 		
-		textFile.deleteLine(LineToBeDelete);
+		taskList.remove(taskIndexToBeDelete - 1);
+		
+		modifier.saveFile(taskList);
 	}
 
 	public static void clearFile() {
 		File currentFile = modifier.getFile();
 		undoRedo.storeFileToUndo(currentFile);
-		FileModifier textFile = FileModifier.getInstance();
 		
-		textFile.clearAll();
+		ArrayList<Task> taskList = modifier.getContentList();
 		
+		taskList.clear();
+		
+		modifier.saveFile(taskList);
 	}
 
 }

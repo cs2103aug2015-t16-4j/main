@@ -3,6 +3,7 @@ package listItLogic;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import fileModifier.FileModifier;
@@ -33,8 +34,11 @@ public class AddLogic {
 			if(checkValidDate(deadline)) {
 			
 				Task newTask = new Task(eventTitle, deadline);
+				
+				ArrayList<Task> taskList = modifier.getContentList();
+				taskList.add(newTask);
 			
-				modifier.addToFile(newTask);
+				modifier.saveFile(taskList);
 			}
 		}
 		else {
@@ -77,13 +81,12 @@ public class AddLogic {
 		
 		Task newTask = new Task(eventTitle);
 		
-		modifier.addToFile(newTask);
-	}
-	
-	public static void addEventWithTimeline(String command) {
-		File currentFile = modifier.getFile();
-		undoRedo.storeFileToUndo(currentFile);
-		String 
+		ArrayList<Task> taskList = modifier.getContentList();
+		taskList.add(newTask);
+		
+		modifier.saveFile(taskList);
+		
+		modifier.display(taskList);
 	}
 	
 	//public static void addEventWithImportance (String command) {

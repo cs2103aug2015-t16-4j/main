@@ -51,16 +51,21 @@ public class OutputScreenPane extends GridPane {
 	private static GridPane createTaskDetail(Task tempTask) {
 		GridPane taskDetail = new GridPane();
 		Text taskTitle = new Text(tempTask.getTitle());
-		Text taskDeadLine = new Text(tempTask.getDate());
 		Text taskImportance = new Text(getRankingText(tempTask.getImportance()));
 		
 		GridPane.setConstraints(taskTitle, 0, 0);
-		GridPane.setConstraints(taskDeadLine, 0, 2);
 		GridPane.setConstraints(taskImportance, 2, 0);
 		
-		taskDetail.getChildren().addAll(taskTitle, taskDeadLine, taskImportance);
+		if(tempTask.getDate() == null) {
+			taskDetail.getChildren().addAll(taskTitle, taskImportance);
+		}
+		else {
+			Text taskDeadLine = new Text(tempTask.getDate());
+			GridPane.setConstraints(taskDeadLine, 0, 2);
+			taskDetail.getChildren().addAll(taskTitle, taskDeadLine, taskImportance);
+		}
 		
-		return null;
+		return taskDetail;
 	}
 
 	private static String getRankingText(Integer importance) {

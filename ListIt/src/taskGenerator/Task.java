@@ -1,10 +1,11 @@
 package taskGenerator;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Task{
+public class Task implements Serializable{
 	private String eventTitle;
 	private Date deadline;
 	private Integer importance;
@@ -52,7 +53,12 @@ public class Task{
 	}
 	
 	public String getDate() {
-		return outputFormatter.format(deadline);
+		if(this.deadline != null) {
+			return outputFormatter.format(deadline);
+		}
+		else {
+			return null;
+		}
 	}
 	
 	public Integer getImportance() {
