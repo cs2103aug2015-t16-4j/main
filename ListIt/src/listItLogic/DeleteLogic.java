@@ -16,22 +16,14 @@ public class DeleteLogic {
 		undoRedo.storeFileToUndo(currentFile);
 		int taskIndexToBeDelete = Integer.parseInt(command.substring(7));
 		
-		ArrayList<Task> taskList = modifier.getContentList();
-		
-		taskList.remove(taskIndexToBeDelete - 1);
-		
-		modifier.saveFile(taskList);
+		modifier.removeTask(taskIndexToBeDelete - 1);	
 	}
 
 	public static void clearFile() {
 		File currentFile = modifier.getFile();
 		undoRedo.storeFileToUndo(currentFile);
 		
-		ArrayList<Task> taskList = modifier.getContentList();
-		
-		taskList.clear();
-		
-		modifier.saveFile(taskList);
+		modifier.clearAll();
 	}
 
 }

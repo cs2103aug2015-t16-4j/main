@@ -2,7 +2,6 @@ package fileModifier;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -46,8 +45,8 @@ public class FileModifier {
 	public ArrayList<Task> getContentList() {
 		ArrayList<Task> list = new ArrayList<Task>();
 		
+		//Retrieve the list if the list exist, if not, create a empty list then retrieve
 		if(fileContainsData()) {
-
 			try{
 				FileInputStream fis = new FileInputStream(dataFile);
 				ObjectInputStream ois = new ObjectInputStream(fis);
@@ -88,9 +87,35 @@ public class FileModifier {
 		}
 		return isDataExist;
 	}
-
-	public void display(ArrayList<Task> list) {
-		OutputScreenPane.displayList(list);
+	
+	public void addTask(Task newtask) {
+		ArrayList<Task> newList = modifier.getContentList();
+		
+		newList.add(newtask);
+		
+		modifier.saveFile(newList);
+		
+		OutputScreenPane.displayList(newList);
+	}
+	
+	public void removeTask(int index) {
+		ArrayList<Task> taskList = modifier.getContentList();
+		
+		taskList.remove(index);
+		
+		modifier.saveFile(taskList);
+		
+		OutputScreenPane.displayList(taskList);
+	}
+	
+	public void clearAll() {
+		ArrayList<Task> taskList = modifier.getContentList();
+		
+		taskList.clear();
+		
+		modifier.saveFile(taskList);
+		
+		OutputScreenPane.displayList(taskList);
 	}
 
 	public File getFile() {
@@ -101,35 +126,29 @@ public class FileModifier {
 		dataFile = file;
 	}
 
-	public ArrayList<Task> searchKeyword(String keyword) throws IOException, ClassNotFoundException{
+	public ArrayList<Task> searchKeyword(String keyword) {
+		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
-		FileInputStream fis = new FileInputStream(dataFile);
-		ObjectInputStream ois = new ObjectInputStream(fis);
-
-		ArrayList<Task> contents = (ArrayList<Task>) ois.readObject();
-		for ( int i =0;i<contents.size();i++ ){
-			Task task = contents.get(i);
+		
+		for ( int i =0;i<taskList.size();i++ ){
+			Task task = taskList.get(i);
 			if(task.getTitle().contains(keyword)){
 				searchList.add(task);
 			}	
-		}	
-		ois.close(); 	
+		}
 		return searchList; 
 	}
 
 	public ArrayList<Task> searchByImportance(int searchKey ) throws IOException, ClassNotFoundException{
+		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
-		FileInputStream fis = new FileInputStream(dataFile);
-		ObjectInputStream ois = new ObjectInputStream(fis);
-		ArrayList<Task> contents = (ArrayList<Task>) ois.readObject();
-
-		for ( int i =0;i<contents.size();i++ ){
-			Task task = contents.get(i);
+		
+		for ( int i =0;i<taskList.size();i++ ){
+			Task task = taskList.get(i);
 			if(task.getImportance()==searchKey){
 				searchList.add(task);
 			}	
 		}
-		ois.close();
 		return searchList;
 	}
 }

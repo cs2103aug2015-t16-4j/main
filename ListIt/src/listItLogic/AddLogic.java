@@ -35,10 +35,7 @@ public class AddLogic {
 			
 				Task newTask = new Task(eventTitle, deadline);
 				
-				ArrayList<Task> taskList = modifier.getContentList();
-				taskList.add(newTask);
-			
-				modifier.saveFile(taskList);
+				modifier.addTask(newTask);
 			}
 		}
 		else {
@@ -81,12 +78,7 @@ public class AddLogic {
 		
 		Task newTask = new Task(eventTitle);
 		
-		ArrayList<Task> taskList = modifier.getContentList();
-		taskList.add(newTask);
-		
-		modifier.saveFile(taskList);
-		
-		modifier.display(taskList);
+		modifier.addTask(newTask);
 	}
 	
 	//public static void addEventWithImportance (String command) {
