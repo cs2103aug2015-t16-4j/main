@@ -108,6 +108,10 @@ public class FileModifier {
 		OutputScreenPane.displayList(taskList);
 	}
 	
+	public void display(ArrayList<Task> taskList) {
+		OutputScreenPane.displayList(taskList);
+	}
+	
 	public void clearAll() {
 		ArrayList<Task> taskList = modifier.getContentList();
 		
