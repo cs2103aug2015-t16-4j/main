@@ -3,6 +3,7 @@ package listItLogic;
 import java.util.ArrayList;
 import fileModifier.FileModifier;
 import taskGenerator.Task;
+import java.util.Collections;
 
 public class DisplayLogic {
 	
@@ -23,19 +24,19 @@ public class DisplayLogic {
 	}
 	private static void displayByAlpha() {
 		list = modifier.getContentList();
-		//Comparator.sortByAlpha(list);
+		Collections.sort(list);
 		modifier.display(list);
 	}
 	
 	private static void displayByImportance() {
 		list = modifier.getContentList();
-		//Comparator.sortByImpt(list);
+		Collections.sort(list);
 		modifier.display(list);
 	}
 	
 	private static void defaultDisplay() {
 		list = modifier.getContentList();
-		//Comparator.sortDefault(list);
+		Collections.sort(list);
 		modifier.display(list);
 	}
 }

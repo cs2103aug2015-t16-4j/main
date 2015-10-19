@@ -5,13 +5,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Task implements Serializable{
+public class Task implements Serializable, Comparable<Task>{
+	public enum Field{
+		eventTitle, deadline, importance, inputFormatter, outputFormatter;
+	}
+	
+	private Field field;
 	private String eventTitle;
 	private Date deadline;
 	private Integer importance;
 	private SimpleDateFormat inputFormatter = new SimpleDateFormat("ddMMyyyy");
 	private SimpleDateFormat outputFormatter = new SimpleDateFormat("dd-MMMMM-yyyy");
-	
+
+	//CONSTRUCTORS	
 	public Task() {
 		this.eventTitle = null;
 		this.deadline = null;
@@ -48,11 +54,15 @@ public class Task implements Serializable{
 		this.importance = 3;
 	}
 	
+	public Task(Field field) {
+		this.field = field;
+	}
+	
 	public String getTitle() {
 		return eventTitle;
 	}
 	
-	public String getDate() {
+	public String getDeadline() {
 		if(this.deadline != null) {
 			return outputFormatter.format(deadline);
 		}
@@ -63,5 +73,29 @@ public class Task implements Serializable{
 	
 	public Integer getImportance() {
 		return importance;
+	}
+
+	
+	@Override
+	public int compareTo(Task task) {
+		int comparision = 0;
+		
+		switch(field){
+		
+		case eventTitle:
+			comparision = this.eventTitle.compareTo(task.getTitle());
+			return comparision;
+		
+		case deadline:
+			comparision = this.getDeadline().compareTo(task.getDeadline());
+			return comparision;
+		
+		case importance:
+			comparision = this.importance.compareTo(task.getImportance());
+			return importance;
+		}
+		
+		return importance;
+		
 	}
 }
