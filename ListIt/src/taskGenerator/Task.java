@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Task {
+public class Task{
 	private String eventTitle;
 	private Date deadline;
 	private Integer importance;
@@ -58,5 +58,4 @@ public class Task {
 	public Integer getImportance() {
 		return importance;
 	}
-	
 }

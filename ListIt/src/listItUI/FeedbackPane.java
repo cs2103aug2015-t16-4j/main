@@ -31,10 +31,18 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayInvalidInput() {
-		feedbackScreen.appendText("Invalid input\n");
+		feedbackScreen.appendText("Invalid input!\n");
 	}
 
 	public static void displayInvalidRedo() {
-		feedbackScreen.appendText("No action can be redo\n");
+		feedbackScreen.appendText("No action can be redo!\n");
+	}
+
+	public static void displayNoTitle() {
+		feedbackScreen.appendText("No event title found!\n");
+	}
+
+	public static void displayInvalidDate() {
+		feedbackScreen.appendText("Invalid date is inputed");
 	}
 }
