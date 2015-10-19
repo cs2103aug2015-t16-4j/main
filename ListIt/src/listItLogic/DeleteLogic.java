@@ -16,7 +16,7 @@ public class DeleteLogic {
 
 	public static void deleteEvent(String command) {
 		File currentFile = modifier.getFile();
-		undoRedo.storeCurrentFile(currentFile);
+		undoRedo.storeFileToUndo(currentFile);
 		int LineToBeDelete = Integer.parseInt(command.substring(7));
 		
 		FileModifier textFile = FileModifier.getInstance();
@@ -26,7 +26,7 @@ public class DeleteLogic {
 
 	public static void clearFile() {
 		File currentFile = modifier.getFile();
-		undoRedo.storeCurrentFile(currentFile);
+		undoRedo.storeFileToUndo(currentFile);
 		FileModifier textFile = FileModifier.getInstance();
 		
 		textFile.clearAll();

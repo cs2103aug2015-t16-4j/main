@@ -4,6 +4,7 @@ import java.io.File;
 
 import fileModifier.EditModifier;
 import fileModifier.FileModifier;
+import listItUI.FeedbackPane;
 import listItUI.TextScreenPenal;
 
 public class EditLogic {
@@ -18,7 +19,7 @@ public class EditLogic {
 
 	public static void editEvent(String command) {
 		File currentFile = modifier.getFile();
-		undoRedo.storeCurrentFile(currentFile);
+		undoRedo.storeFileToUndo(currentFile);
 		EditModifier editor = new EditModifier("test1.txt"); 
 		int lineToBeEdit = Integer.parseInt(command.substring(5, 6));
 		
@@ -27,11 +28,11 @@ public class EditLogic {
 			
 			if(AddLogic.checkValidDate(newDate)) {
 				editor.editDate(lineToBeEdit, newDate);
-				TextScreenPenal.displaySuccessfulEdit();
+				FeedbackPane.displaySuccessfulEdit();
 			}
 			
 			else {
-				TextScreenPenal.displayInvalidDate();
+				FeedbackPane.displayInvalidDate();
 			}
 		}
 		
@@ -39,7 +40,7 @@ public class EditLogic {
 			String newTitle = command.substring(command.indexOf("by title") + 9);
 			
 			editor.editTitle(lineToBeEdit, newTitle);
-			TextScreenPenal.displaySuccessfulEdit();
+			FeedbackPane.displaySuccessfulEdit();
 		}
 		
 		else if(command.contains("by all")) {
@@ -48,11 +49,11 @@ public class EditLogic {
 			
 			if(AddLogic.checkValidDate(newDate)) {
 				editor.editAll(lineToBeEdit, newTitle, newDate);
-				TextScreenPenal.displaySuccessfulEdit();
+				FeedbackPane.displaySuccessfulEdit();
 			}
 			
 			else {
-				TextScreenPenal.displayInvalidDate();
+				FeedbackPane.displayInvalidDate();
 			}
 		}
 	}
