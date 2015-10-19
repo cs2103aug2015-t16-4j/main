@@ -28,18 +28,18 @@ public class DisplayLogic {
 	private static void displayByDate() {
 		list = modifier.getContentList();
 		//Comparator.sortByDate(list);
-		OutputScreenPane.displayList(list);
+		modifier.display(list);
 	}
 	
 	private static void displayByImportance() {
 		list = modifier.getContentList();
 		//Comparator.sortByImpt(list);
-		OutputScreenPane.displayList(list);
+		modifier.display(list);
 	}
 	
 	private static void defaultDisplay() {
 		list = modifier.getContentList();
 		//Comparator.sortDefault(list);
-		OutputScreenPane.displayList(list);
+		modifier.display(list);
 	}
 }

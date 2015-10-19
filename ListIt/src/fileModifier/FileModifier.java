@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+
+import listItUI.OutputScreenPane;
 import taskGenerator.Task;
 
 public class FileModifier {
@@ -61,15 +63,15 @@ public class FileModifier {
 			
 			list = (ArrayList<Task>) ois.readObject();
 			list.add(newTask);
-		}
+		} 
 	}
 
 	public void deleteLine(int lineToBeDelete) {
 		
 	}
 
-	public void displayDefault() {
-
+	public void display(ArrayList<Task> list) {
+		OutputScreenPane.displayList(list);
 	}
 
 	public void clearAll() {
