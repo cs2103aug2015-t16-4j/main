@@ -56,8 +56,8 @@ public class ExecuteCommand {
 	
 	public static void processCommandWithoutSpace(String command) throws InvalidCommandException {
 		
-		if(command.equals(DISPLAY_COMMAND)) {
-			DisplayLogic.displayEvent();
+		if(command.contains(DISPLAY_COMMAND)) {
+			DisplayLogic.determineDisplayMode(command);
 		}
 		
 		else if (command.equals(CLEAR_COMMAND)) {
