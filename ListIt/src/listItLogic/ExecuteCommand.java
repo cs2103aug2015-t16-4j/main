@@ -24,7 +24,7 @@ public class ExecuteCommand {
 		FileModifier modifier = FileModifier.getInstance();
 	}
 	
-	public static void processCommandWithSpace(String command) throws ClassNotFoundException, IOException {
+	public static void processCommandWithSpace(String command) throws ClassNotFoundException {
 		String commandType = command.substring(0, command.indexOf(" "));
 		
 		if(commandType.equals(ADD_COMMAND)) {

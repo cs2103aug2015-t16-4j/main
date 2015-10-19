@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fileModifier.FileModifier;
-import listItUI.TextScreenPenal;
+import listItUI.TextScreenPanel;
 import taskGenerator.Task;
 
 public class AddLogic {
@@ -21,7 +21,7 @@ public class AddLogic {
 
 	public static void addEventWithDeadline(String command) {
 		File currentFile = modifier.getFile();
-		undoRedo.storeCurrentFile(currentFile);
+		undoRedo.storeFileToUndo(currentFile);
 		String eventTitle = null;
 		boolean titleValid = false;
 		
@@ -29,7 +29,7 @@ public class AddLogic {
 			eventTitle = command.substring(4, command.lastIndexOf("by")-1);
 			titleValid = true;
 		} catch (StringIndexOutOfBoundsException e) {
-			TextScreenPenal.displayNoTitle();
+			TextScreenPanel.displayNoTitle();
 		}
 		
 		if(titleValid) {
@@ -45,7 +45,7 @@ public class AddLogic {
 			}
 		}
 		else {
-			TextScreenPenal.displayInvalidDate();
+			TextScreenPanel.displayInvalidDate();
 		}
 	}
 
@@ -79,7 +79,7 @@ public class AddLogic {
 
 	public static void addEventDefault(String command) {
 		File currentFile = modifier.getFile();
-		undoRedo.storeCurrentFile(currentFile);
+		undoRedo.storeFileToUndo(currentFile);
 		String eventTitle = command.substring(4);
 		
 		Task event = new Task(eventTitle);
