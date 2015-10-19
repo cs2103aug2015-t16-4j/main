@@ -8,13 +8,8 @@ import taskGenerator.Task;
 
 public class DeleteLogic {
 	
-	private static UndoAndRedoLogic undoRedo;
-	private static FileModifier modifier;
-	
-	public DeleteLogic() {
-		UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
-		FileModifier modifier = FileModifier.getInstance();
-	}
+	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
+	private static FileModifier modifier = FileModifier.getInstance();
 
 	public static void deleteEvent(String command) {
 		File currentFile = modifier.getFile();
