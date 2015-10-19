@@ -2,13 +2,18 @@ package listItLogic;
 
 
 import java.io.File;
+import java.util.ArrayList;
 
 import fileModifier.FileModifier;
+import listItUI.OutputScreenPane;
+import taskGenerator.Task;
 
 public class DisplayLogic {
 	
 	private static final String DISPLAY_DATE = "display date";
 	private static final String DISPLAY_IMPT = "display impt";
+	private static ArrayList<Task> list = new ArrayList<Task>();
+	static FileModifier modifier = FileModifier.getInstance();
 	
 	
 	public static void determineDisplayMode(String command) {
@@ -21,15 +26,20 @@ public class DisplayLogic {
 		}
 	}
 	private static void displayByDate() {
-		FileModifier modifier = FileModifier.getInstance();
-		File file = modifier.getFile();
+		list = modifier.getContentList();
+		//Comparator.sortByDate(list);
+		OutputScreenPane.displayList(list);
 	}
 	
 	private static void displayByImportance() {
-		
+		list = modifier.getContentList();
+		//Comparator.sortByImpt(list);
+		OutputScreenPane.displayList(list);
 	}
 	
 	private static void defaultDisplay() {
-		
+		list = modifier.getContentList();
+		//Comparator.sortDefault(list);
+		OutputScreenPane.displayList(list);
 	}
 }
