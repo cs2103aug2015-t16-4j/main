@@ -1,11 +1,7 @@
 package listItLogic;
 
-
-import java.io.File;
 import java.util.ArrayList;
-
 import fileModifier.FileModifier;
-import listItUI.OutputScreenPane;
 import taskGenerator.Task;
 
 public class DisplayLogic {
