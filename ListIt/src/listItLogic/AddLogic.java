@@ -80,6 +80,12 @@ public class AddLogic {
 		modifier.addToFile(newTask);
 	}
 	
+	public static void addEventWithTimeline(String command) {
+		File currentFile = modifier.getFile();
+		undoRedo.storeFileToUndo(currentFile);
+		String 
+	}
+	
 	//public static void addEventWithImportance (String command) {
 		//String eventTitle = ; 
 		//Task event = new Task(eventTitle);

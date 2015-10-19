@@ -26,18 +26,42 @@ public class FileModifier {
 	
 	public void saveFile(ArrayList<Task> dataStorage){
 		try{
-			FileOutputStream fos = new FileOutputStream("text1.txt");
+			FileOutputStream fos = new FileOutputStream("test1.txt");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(dataStorage);
 			oos.close();
-		} catch(Exception ex){
-			ex.printStackTrace(); 
+		} catch(Exception e){
+			e.printStackTrace(); 
 		}
+	}
+	
+	public ArrayList<Task> getContentList() {
+		ArrayList<Task> list = new ArrayList<Task>();
+		
+		try{
+			FileInputStream fis = new FileInputStream("test1.txt");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			list = (ArrayList<Task>) ois.readObject();
+			ois.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return list;
 	}
 
 	public void addToFile(Task newTask){
+		ArrayList<Task> list = new ArrayList<Task>();
 		
-	
+		try{
+			FileOutputStream fos = new FileOutputStream("test1.txt");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			FileInputStream fis = new FileInputStream("test1.txt");
+			ObjectInputStream ois = new ObjectInputStream(fis);
+			
+			list = (ArrayList<Task>) ois.readObject();
+			list.add(newTask);
+		}
 	}
 
 	public void deleteLine(int lineToBeDelete) {
@@ -46,20 +70,6 @@ public class FileModifier {
 
 	public void displayDefault() {
 
-	}
-
-	private String changeFormat(String content) {
-		if(content.contains("-D")) {
-			String title = content.substring(content.indexOf("-T") + 3, content.indexOf("-D") - 1);
-			String date = content.substring(content.indexOf("-D") + 2);
-			
-			return title + " by " + date;
-		}
-		else {
-			String title = content.substring(content.indexOf("-T") + 3);
-			
-			return title;
-		}
 	}
 
 	public void clearAll() {
