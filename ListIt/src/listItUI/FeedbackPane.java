@@ -9,8 +9,8 @@ import javafx.scene.text.Text;
 
 public class FeedbackPane extends GridPane{
 	
-	TextArea feedbackScreen;
-	Text label;
+	private static TextArea feedbackScreen;
+	private Text label;
 	
 	public FeedbackPane() {
 		setPadding(new Insets(10, 10, 10, 10));
@@ -28,5 +28,13 @@ public class FeedbackPane extends GridPane{
 		
 		getChildren().add(label);
 		getChildren().add(feedbackScreen);
+	}
+
+	public static void displayInvalidInput() {
+		feedbackScreen.appendText("Invalid input\n");
+	}
+
+	public static void displayInvalidRedo() {
+		feedbackScreen.appendText("No action can be redo\n");
 	}
 }

@@ -1,11 +1,8 @@
 package listItLogic;
 
 import java.io.File;
-import java.io.IOException;
-
 import fileModifier.FileModifier;
-import listItUI.TextScreenPenal;
-import taskGenerator.Task;
+import listItUI.FeedbackPane;
 
 public class ExecuteCommand {
 	
@@ -53,7 +50,7 @@ public class ExecuteCommand {
 			SearchLogic.searchKeyWord(command);
 		}
 		else {
-			TextScreenPenal.displayInvalidInput();
+			FeedbackPane.displayInvalidInput();
 		}
 	}
 	
@@ -68,21 +65,21 @@ public class ExecuteCommand {
 		}
 		
 		else if(command.equals(UNDO_COMMAND)) {
-			File undoFile = modifier.getFile();
-			undoRedo.storeUndoFile(undoFile);
-			modifier.setfile(undoRedo.getLastFile());
+			File currentFile = modifier.getFile();
+			undoRedo.storeFileToRedo(currentFile);
+			modifier.setfile(undoRedo.getFileFromUndo());
 		}
 		
 		else if (command.equals(REDO_COMMAND)) { //Shrestha Goswami :)
-			if (undoRedo.isEmpty()) {
-				throw new EmptyRedoMemoryException("unable to perform redo command without prior undo command!");
+			if (undoRedo.isRedoEmpty()) {
+				FeedbackPane.displayInvalidRedo();
 			}
 			else {
-			    modifier.setfile(undoRedo.getUndoFile());
+			    modifier.setfile(undoRedo.getFileFromRedo());
 			}
 		}
 		else {
-			TextScreenPenal.displayInvalidInput();
+			FeedbackPane.displayInvalidInput();
 		}
 	}
 }

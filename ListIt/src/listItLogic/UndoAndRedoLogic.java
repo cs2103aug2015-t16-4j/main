@@ -22,23 +22,27 @@ public class UndoAndRedoLogic {
 		return storage;
 	}
 	
-	public void storeCurrentFile(File previousFile) {
+	public void storeFileToUndo(File previousFile) {
 		undo.push(previousFile);
 	}
 	
-	public File getLastFile() {
+	public File getFileFromUndo() {
 		return undo.pop();
 	}
 	
-	public void storeUndoFile(File undoneFile) {
+	public void storeFileToRedo(File undoneFile) {
 		redo.push(undoneFile);
 	}
 	
-	public File getUndoFile() {
+	public File getFileFromRedo() {
 		return redo.pop();
 	}
 	
-	public boolean isEmpty() {
+	public boolean isUndoEmpty() {
 		return undo.isEmpty();
+	}
+	
+	public boolean isRedoEmpty() {
+		return redo.isEmpty();
 	}
 }
