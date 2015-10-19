@@ -3,7 +3,13 @@ package taskGenerator;
 public class Task {
 	private String eventTitle;
 	private String deadline;
-	private int importance;
+	private Integer importance;
+	
+	public Task() {
+		this.eventTitle = null;
+		this.deadline = null;
+		this.importance = null;
+	}
 	
 	public Task(String eventTitle, String deadline, int importance) {
 		this.eventTitle = eventTitle;
@@ -124,7 +130,7 @@ public class Task {
 		return deadline;
 	}
 	
-	public int getImportance() {
+	public Integer getImportance() {
 		return importance;
 	}
 	
