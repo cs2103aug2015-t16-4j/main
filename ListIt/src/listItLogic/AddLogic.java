@@ -82,14 +82,18 @@ public class AddLogic {
 	}
 	
 	public static void addEventWithImportance (String command) {
-		File currentFile = modifier.getFile();
-		undoRedo.storeFileToUndo(currentFile);
-		String eventTitle = command.substring(4, command.indexOf("by")-1);
-		String deadline = command.substring(command.lastIndexOf("by") + 1, command.indexOf("rank") - 1);
-		int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 1));
-		Task newTask = new Task(eventTitle, deadline, rank);
+		if (command.contains("from")) {
+			addEventWithTimeline(command);
+		} else {
+		    File currentFile = modifier.getFile();
+		    undoRedo.storeFileToUndo(currentFile);
+		    String eventTitle = command.substring(4, command.indexOf("by")-1);
+		    String deadline = command.substring(command.lastIndexOf("by") + 1, command.indexOf("rank") - 1);
+		    int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 1));
+		    Task newTask = new Task(eventTitle, deadline, rank);
 		
 		modifier.addTask(newTask);
+		}
 	}
 	
 	public static void addEventWithTimeline(String command) {
@@ -102,9 +106,11 @@ public class AddLogic {
 		    String end = command.substring(command.lastIndexOf("to") + 1, command.indexOf("rank") - 1);
 		    int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 1));
 		    Task newTask = new Task(eventTitle, deadline, start, end, rank);
+		    modifier.addTask(newTask);
 		} else {
 			String end = command.substring(command.lastIndexOf("to") + 1);
 			Task newTask = new Task(eventTitle, deadline, start, end);
+			modifier.addTask(newTask);
 		}
 	}
 	
