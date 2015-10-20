@@ -175,4 +175,58 @@ public class FileModifier {
 		}
 		return searchList;
 	}
+	
+	public static void editDate(int lineToBeEdit, String newDate) {
+		ArrayList<Task> taskList = modifier.getContentList();
+		
+		Task task = taskList.get(lineToBeEdit);
+		
+		task.setDate(newDate);
+		
+		taskList.set(lineToBeEdit, task);
+		modifier.saveFile(taskList);
+		
+		OutputScreenPane.displayList(taskList);
+	}
+	
+	public static void editTitle(int lineToBeEdit, String newTitle) {
+		ArrayList<Task> taskList = modifier.getContentList();
+		
+		Task task = taskList.get(lineToBeEdit);
+		
+		task.setEventTitle(newTitle);
+		
+		taskList.set(lineToBeEdit, task);
+		modifier.saveFile(taskList);
+		
+		OutputScreenPane.displayList(taskList);
+	}
+	
+	public static void editImportance(int lineToBeEdit, String newImportance) {
+		ArrayList<Task> taskList = modifier.getContentList();
+		
+		Task task = taskList.get(lineToBeEdit);
+		
+		task.setImportance(Integer.parseInt(newImportance));
+		
+		taskList.set(lineToBeEdit, task);
+		modifier.saveFile(taskList);
+		
+		OutputScreenPane.displayList(taskList);
+	}
+	
+	public static void editAll(int lineToBeEdit, String newTitle, String newDate, String newImportance) {
+		ArrayList<Task> taskList = modifier.getContentList();
+		
+		Task task = taskList.get(lineToBeEdit);
+		
+		task.setDate(newDate);
+		task.setEventTitle(newTitle);
+		task.setImportance(Integer.parseInt(newImportance));
+		
+		taskList.set(lineToBeEdit, task);
+		modifier.saveFile(taskList);
+		
+		OutputScreenPane.displayList(taskList);
+	}
 }

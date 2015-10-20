@@ -7,12 +7,12 @@ import java.util.Date;
 
 public class Task implements Serializable, Comparable<Task>{
 	public enum Field{
-		eventTitle, deadline, importance, inputFormatter, outputFormatter;
+		EVENTTITLE, DATE, IMPORTANCE;
 	}
 	
 	private Field field;
 	private String eventTitle;
-	private Date deadline;
+	private Date date;
 	private String start;
 	private String end;
 	private Integer importance;
@@ -22,16 +22,16 @@ public class Task implements Serializable, Comparable<Task>{
 	//CONSTRUCTORS	
 	public Task() {
 		this.eventTitle = null;
-		this.deadline = null;
+		this.date = null;
 		this.importance = null;
 		this.start = null;
 		this.end = null;
 	}
 	
-	public Task(String eventTitle, String deadline, int importance) {
+	public Task(String eventTitle, String date, int importance) {
 		this.eventTitle = eventTitle;
 		try {
-			this.deadline = inputFormatter.parse(deadline);
+			this.date = inputFormatter.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -43,10 +43,10 @@ public class Task implements Serializable, Comparable<Task>{
 		this.importance = importance;
 	}
 	
-	public Task(String eventTitle, String deadline, String start, String end, int importance) {
+	public Task(String eventTitle, String date, String start, String end, int importance) {
 		this.eventTitle = eventTitle;
 		try {
-			this.deadline = inputFormatter.parse(deadline);
+			this.date = inputFormatter.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -55,9 +55,9 @@ public class Task implements Serializable, Comparable<Task>{
 		this.importance = importance;	
 	}
 	
-	public Task(String eventTitle, String deadline, String start, String end) {
+	public Task(String eventTitle, String date, String start, String end) {
 		try {
-			this.deadline = inputFormatter.parse(deadline);
+			this.date = inputFormatter.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -66,10 +66,10 @@ public class Task implements Serializable, Comparable<Task>{
 		this.end = end;
 	}
 	
-	public Task(String eventTitle, String deadline) {
+	public Task(String eventTitle, String date) {
 		this.eventTitle = eventTitle;
 		try {
-			this.deadline = inputFormatter.parse(deadline);
+			this.date = inputFormatter.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -85,13 +85,15 @@ public class Task implements Serializable, Comparable<Task>{
 		this.field = field;
 	}
 	
+	
+	//GETTERS
 	public String getTitle() {
 		return eventTitle;
 	}
 	
-	public String getDeadline() {
-		if(this.deadline != null) {
-			return outputFormatter.format(deadline);
+	public String getDate() {
+		if(this.date != null) {
+			return outputFormatter.format(date);
 		}
 		else {
 			return null;
@@ -102,22 +104,38 @@ public class Task implements Serializable, Comparable<Task>{
 		return importance;
 	}
 
+	public String getEventTitle() {
+		return eventTitle;
+	}
 	
+	//SETTERS
+	public void setEventTitle(String eventTitle) {
+		this.eventTitle = eventTitle;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public void setImportance(Integer importance) {
+		this.importance = importance;
+	}
+
 	@Override
 	public int compareTo(Task task) {
 		int comparision = 0;
 		
 		switch(field){
 		
-		case eventTitle:
+		case EVENTTITLE:
 			comparision = this.eventTitle.compareTo(task.getTitle());
 			return comparision;
 		
-		case deadline:
-			comparision = this.getDeadline().compareTo(task.getDeadline());
+		case DATE:
+			comparision =  this.getDate().compareTo(task.getDate());
 			return comparision;
 		
-		case importance:
+		case IMPORTANCE:
 			comparision = this.importance.compareTo(task.getImportance());
 			return importance;
 		}
