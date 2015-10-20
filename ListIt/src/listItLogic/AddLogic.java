@@ -87,9 +87,9 @@ public class AddLogic {
 		} else {
 		    File currentFile = modifier.getFile();
 		    undoRedo.storeFileToUndo(currentFile);
-		    String eventTitle = command.substring(4, command.indexOf("by")-1);
-		    String deadline = command.substring(command.lastIndexOf("by") + 1, command.indexOf("rank") - 1);
-		    int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 1));
+		    String eventTitle = command.substring(4, command.lastIndexOf("by")-2);
+		    String deadline = command.substring(command.lastIndexOf("by") + 3, command.lastIndexOf("rank") - 2);
+		    int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 5));
 		    Task newTask = new Task(eventTitle, deadline, rank);
 		
 		modifier.addTask(newTask);
@@ -99,16 +99,16 @@ public class AddLogic {
 	public static void addEventWithTimeline(String command) {
 		File currentFile = modifier.getFile();
 		undoRedo.storeFileToUndo(currentFile);
-		String eventTitle = command.substring(4, command.indexOf("by")- 1);
-		String deadline = command.substring(command.lastIndexOf("by") + 1, command.indexOf("from") - 1);
-		String start = command.substring(command.lastIndexOf("from") + 1, command.indexOf("to") -1);
+		String eventTitle = command.substring(4, command.lastIndexOf("by") - 2);
+		String deadline = command.substring(command.lastIndexOf("by") + 3, command.lastIndexOf("from") - 2);
+		String start = command.substring(command.lastIndexOf("from") + 5, command.lastIndexOf("to") - 2);
 		if (command.contains("rank")) {
-		    String end = command.substring(command.lastIndexOf("to") + 1, command.indexOf("rank") - 1);
-		    int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 1));
+		    String end = command.substring(command.lastIndexOf("to") + 3, command.lastIndexOf("rank") - 2);
+		    int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 5));
 		    Task newTask = new Task(eventTitle, deadline, start, end, rank);
 		    modifier.addTask(newTask);
 		} else {
-			String end = command.substring(command.lastIndexOf("to") + 1);
+			String end = command.substring(command.lastIndexOf("to") + 2);
 			Task newTask = new Task(eventTitle, deadline, start, end);
 			modifier.addTask(newTask);
 		}
