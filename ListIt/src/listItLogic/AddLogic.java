@@ -85,14 +85,20 @@ public class AddLogic {
 		if (command.contains("from")) {
 			addEventWithTimeline(command);
 		} else {
-		    File currentFile = modifier.getFile();
-		    undoRedo.storeFileToUndo(currentFile);
-		    String eventTitle = command.substring(4, command.lastIndexOf("by")-2);
-		    String deadline = command.substring(command.lastIndexOf("by") + 3, command.lastIndexOf("rank") - 2);
-		    int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 5));
-		    Task newTask = new Task(eventTitle, deadline, rank);
-		
-		modifier.addTask(newTask);
+			File currentFile = modifier.getFile();
+	        undoRedo.storeFileToUndo(currentFile);
+			if (command.contains("by")) {
+		        String eventTitle = command.substring(4, command.lastIndexOf("by")-2);
+		        String deadline = command.substring(command.lastIndexOf("by") + 3, command.lastIndexOf("rank") - 2);
+		        int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 5));
+		        Task newTask = new Task(eventTitle, deadline, rank);
+		        modifier.addTask(newTask);
+			} else {
+				String eventTitle = command.substring(4, command.lastIndexOf("by")-2);
+				int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 5));
+				Task newTask = new Task(eventTitle, rank);
+				modifier.addTask(newTask);
+			}
 		}
 	}
 	
