@@ -14,6 +14,7 @@ import taskGenerator.Task;
 public class FileModifier {
 	private static FileModifier modifier;
 	private File dataFile;
+	private File storeDataFile; 
 
 	private FileModifier() {
 		dataFile = new File("test1.ser");
@@ -129,6 +130,12 @@ public class FileModifier {
 	public void setfile(File file){
 		dataFile = file;
 	}
+	
+	public void createTempFile() throws IOException{
+		
+		File temp = File.createTempFile("tempfile", ".tmp");
+		   
+	}
 
 	public ArrayList<Task> searchKeyword(String keyword) {
 		ArrayList<Task> taskList = modifier.getContentList();
@@ -150,6 +157,19 @@ public class FileModifier {
 		for ( int i =0;i<taskList.size();i++ ){
 			Task task = taskList.get(i);
 			if(task.getImportance()==searchKey){
+				searchList.add(task);
+			}	
+		}
+		return searchList;
+	}
+	
+	public ArrayList<Task> searchByDate(String date){
+		ArrayList<Task> taskList = modifier.getContentList();
+		ArrayList<Task> searchList = new ArrayList<Task>();
+		
+		for ( int i =0;i<taskList.size();i++ ){
+			Task task = taskList.get(i);
+			if(task.getDate().contains(date)){
 				searchList.add(task);
 			}	
 		}
