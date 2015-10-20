@@ -13,7 +13,8 @@ public class ExecuteCommand {
 	private static final Object EDIT_COMMAND = "edit";
 	private static final String WITH_DEADLINE = "by";
 	private static final String WITH_IMPT = "rank";
-	private static final String WITH_TIMELINE = "from";
+	private static final String WITH_TIMELINE_CONDITION1 = "from";
+	private static final String WITH_TIMELINE_CONDITION2 = "to";
 	private static final String UNDO_COMMAND = "undo";
 	private static final String REDO_COMMAND = "redo";
 	private static final String SEARCH_COMMAND = "search";
@@ -30,7 +31,7 @@ public class ExecuteCommand {
 		String commandType = command.substring(0, command.indexOf(" "));
 		
 		if(commandType.equals(ADD_COMMAND)) {
-			if(command.contains(WITH_TIMELINE)) {
+			if(command.contains(WITH_TIMELINE_CONDITION1) && command.contains(WITH_TIMELINE_CONDITION2) && command.contains(WITH_DEADLINE)) {
 				AddLogic.addEventWithTimeline(command);
 			} else if (command.contains(WITH_IMPT)) {
 				AddLogic.addEventWithImportance(command);
