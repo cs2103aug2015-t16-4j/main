@@ -34,7 +34,7 @@ public class DisplayLogic {
 		modifier.display(list);
 	}
 	
-	private static void defaultDisplay() {
+	public static void defaultDisplay() {
 		list = modifier.getContentList();
 		Collections.sort(list);
 		modifier.display(list);

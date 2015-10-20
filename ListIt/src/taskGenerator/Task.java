@@ -13,6 +13,8 @@ public class Task implements Serializable, Comparable<Task>{
 	private Field field;
 	private String eventTitle;
 	private Date deadline;
+	private String start;
+	private String end;
 	private Integer importance;
 	private SimpleDateFormat inputFormatter = new SimpleDateFormat("ddMMyyyy");
 	private SimpleDateFormat outputFormatter = new SimpleDateFormat("dd-MMMMM-yyyy");
@@ -22,6 +24,8 @@ public class Task implements Serializable, Comparable<Task>{
 		this.eventTitle = null;
 		this.deadline = null;
 		this.importance = null;
+		this.start = null;
+		this.end = null;
 	}
 	
 	public Task(String eventTitle, String deadline, int importance) {
@@ -37,6 +41,29 @@ public class Task implements Serializable, Comparable<Task>{
 	public Task(String eventTitle, int importance) {
 		this.eventTitle = eventTitle;
 		this.importance = importance;
+	}
+	
+	public Task(String eventTitle, String deadline, String start, String end, int importance) {
+		this.eventTitle = eventTitle;
+		try {
+			this.deadline = inputFormatter.parse(deadline);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.start = start;
+		this.end = end;
+		this.importance = importance;	
+	}
+	
+	public Task(String eventTitle, String deadline, String start, String end) {
+		try {
+			this.deadline = inputFormatter.parse(deadline);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.eventTitle = eventTitle;
+		this.start = start;
+		this.end = end;
 	}
 	
 	public Task(String eventTitle, String deadline) {
