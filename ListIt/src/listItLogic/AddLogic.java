@@ -81,13 +81,16 @@ public class AddLogic {
 		modifier.addTask(newTask);
 	}
 	
-	//public static void addEventWithImportance (String command) {
-		//String eventTitle = ; 
-		//Task event = new Task(eventTitle);
+	public static void addEventWithImportance (String command) {
+		File currentFile = modifier.getFile();
+		undoRedo.storeFileToUndo(currentFile);
+		String eventTitle = command.substring(4, command.indexOf("rank")-1);
+		int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 1));
+		Task newTask = new Task(eventTitle, rank);
 		
-	//	FileModifier fileInput = new FileModifier("test1.txt");
-		
-	//	fileInput.addToFile(event.toStringImportance);
-	//}
+		modifier.addTask(newTask);
+	}
+	
+
 	
 }

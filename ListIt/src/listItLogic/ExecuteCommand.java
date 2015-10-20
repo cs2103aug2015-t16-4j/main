@@ -12,6 +12,7 @@ public class ExecuteCommand {
 	private static final String DISPLAY_COMMAND = "display";
 	private static final Object EDIT_COMMAND = "edit";
 	private static final String WITH_DEADLINE = "by";
+	private static final String WITH_IMPT = "rank";
 	private static final String UNDO_COMMAND = "undo";
 	private static final String REDO_COMMAND = "redo";
 	private static final String SEARCH_COMMAND = "search";
@@ -30,6 +31,8 @@ public class ExecuteCommand {
 		if(commandType.equals(ADD_COMMAND)) {
 			if(command.contains(WITH_DEADLINE)) {
 				AddLogic.addEventWithDeadline(command);
+			} else if (command.contains(WITH_IMPT)) {
+				AddLogic.addEventWithImportance(command);
 			}
 			else {
 				AddLogic.addEventDefault(command);
@@ -48,6 +51,8 @@ public class ExecuteCommand {
 			//String keyword = Task.toStringKeyword(command);
 			//modifier.searchKeyword(keyword);
 			SearchLogic.searchKeyWord(command);
+		} else if (commandType.equals(DISPLAY_COMMAND)) {
+			DisplayLogic.determineDisplayMode(command);
 		}
 		else {
 			FeedbackPane.displayInvalidInput();
@@ -57,7 +62,7 @@ public class ExecuteCommand {
 	public static void processCommandWithoutSpace(String command) throws InvalidCommandException {
 		
 		if(command.contains(DISPLAY_COMMAND)) {
-			DisplayLogic.determineDisplayMode(command);
+			DisplayLogic.defaultDisplay();
 		}
 		
 		else if (command.equals(CLEAR_COMMAND)) {
