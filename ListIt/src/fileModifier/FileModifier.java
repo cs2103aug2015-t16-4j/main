@@ -108,7 +108,12 @@ public class FileModifier {
 		
 		modifier.saveFile(taskList);
 		
-		OutputScreenPane.displayList(taskList);
+		if(taskList.isEmpty()) {
+			OutputScreenPane.displayEmpty();
+		}
+		else {
+			OutputScreenPane.displayList(taskList);
+		}
 	}
 	
 	public void display(ArrayList<Task> taskList) {
@@ -122,7 +127,7 @@ public class FileModifier {
 		
 		modifier.saveFile(taskList);
 		
-		OutputScreenPane.displayList(taskList);
+		OutputScreenPane.displayEmpty();
 	}
 
 	public void setfile(File file){

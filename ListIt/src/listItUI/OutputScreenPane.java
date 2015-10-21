@@ -35,14 +35,19 @@ public class OutputScreenPane extends GridPane {
 	
 	public static void displayList(ArrayList<Task> list) {
 		Task tempTask = new Task();
-		String currentHeader = list.get(0).getDate();
-		Text headerText = new Text(currentHeader);
 		boolean isFloatingState = false;
-		
-		headerText.setFont(Font.font("Georgia", 20));
+		String currentHeader = null;
+		Text headerText = null;
 		
 		taskList.getChildren().clear();
-		taskList.getChildren().add(headerText);
+		
+		if(list.get(0).getDate() != null) {
+			currentHeader = list.get(0).getDate();
+			headerText = new Text(currentHeader);
+
+			headerText.setFont(Font.font("Georgia", 20));
+			taskList.getChildren().add(headerText);
+		}
 		
 		for(int i = 0; i<list.size(); i++) {
 			tempTask = list.get(i);
@@ -64,10 +69,10 @@ public class OutputScreenPane extends GridPane {
 			GridPane taskDetail = new GridPane();
 			
 			if(isFloatingState) {
-				taskDetail = createTaskDetail(tempTask);
+				taskDetail = createFloatingTaskDetail(tempTask);
 			}
 			else {
-				taskDetail = createFloatingTaskDetail(tempTask);
+				taskDetail = createTaskDetail(tempTask);
 			}
 			taskList.getChildren().add(taskDetail);
 		}
@@ -83,7 +88,7 @@ public class OutputScreenPane extends GridPane {
 		
 		taskDetail.getChildren().addAll(eventTitle, rank);
 
-		return null;
+		return taskDetail;
 	}
 
 	private static GridPane createTaskDetail(Task tempTask) {
@@ -125,8 +130,13 @@ public class OutputScreenPane extends GridPane {
 		
 		return rankDetail;
 	}
-	
-	
-	
-	
+
+	public static void displayEmpty() {
+		Text emptyMessage;
+		
+		emptyMessage = new Text("No content to display");
+		
+		taskList.getChildren().clear();
+		taskList.getChildren().add(emptyMessage);
+	}	
 }
