@@ -139,6 +139,22 @@ public class Task implements Serializable, Comparable<Task> {
 	public void setImportance(Integer importance) {
 		this.importance = importance;
 	}
+	
+	public void setStart(String start) {
+		try {
+			this.start = timeInputFormatter.parse(start);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void setEnd(String end) {
+		try {
+			this.end = timeInputFormatter.parse(end);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public int compareTo(Task task) {
