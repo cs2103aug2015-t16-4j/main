@@ -15,7 +15,7 @@ public class AddLogic {
 	private static FileModifier modifier = FileModifier.getInstance();
 
 	public static void addEventWithDeadline(String command) {
-		File currentFile = modifier.getFile();
+		File currentFile = modifier.createTempFile();
 		undoRedo.storeFileToUndo(currentFile);
 		String eventTitle = null;
 
@@ -56,7 +56,7 @@ public class AddLogic {
 	}
 
 	public static void addEventDefault(String command) {
-		File currentFile = modifier.getFile();
+		File currentFile = modifier.createTempFile();
 		undoRedo.storeFileToUndo(currentFile);
 		String eventTitle = command.substring(4);
 
@@ -66,7 +66,7 @@ public class AddLogic {
 	}
 
 	public static void addEventWithImportance(String command) {
-		File currentFile = modifier.getFile();
+		File currentFile = modifier.createTempFile();
 		undoRedo.storeFileToUndo(currentFile);
 		String eventTitle = new String();
 		if (command.contains("by")) {
@@ -106,7 +106,7 @@ public class AddLogic {
 	}
 
 	public static void addEventWithTimeline(String command) {
-		File currentFile = modifier.getFile();
+		File currentFile = modifier.createTempFile();
 		undoRedo.storeFileToUndo(currentFile);
 		String eventTitle = new String();
 		String deadline = new String();

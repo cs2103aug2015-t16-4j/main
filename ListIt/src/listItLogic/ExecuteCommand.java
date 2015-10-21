@@ -73,15 +73,23 @@ public class ExecuteCommand {
 		}
 		
 		else if(command.equals(UNDO_COMMAND)) {
-			File currentFile = modifier.getFile();
-			undoRedo.storeFileToRedo(currentFile);
-			modifier.setfile(undoRedo.getFileFromUndo());
+			File currentFile = null;
+			
+			if(undoRedo.isRedoEmpty()) {
+				currentFile = modifier.createTempFile();
+				undoRedo.storeFileToRedo(currentFile);
+				modifier.setfile(undoRedo.getFileFromUndo());
+			}
+			else {
+				currentFile = modifier.getfile();
+				undoRedo.storeFileToRedo(currentFile);
+				modifier.setfile(undoRedo.getFileFromRedo());
+			}
 		}
 		
 		else if (command.equals(REDO_COMMAND)) { //Shrestha Goswami :)
 			if (undoRedo.isRedoEmpty()) {
 				FeedbackPane.displayInvalidRedo();
-				throw new InvalidCommandException("cannot instantiate redo without a prior undo");
 			}
 			else {
 			    modifier.setfile(undoRedo.getFileFromRedo());

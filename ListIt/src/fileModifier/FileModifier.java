@@ -16,10 +16,10 @@ public class FileModifier {
 	private static FileModifier modifier;
 	private static Integer tempFileIndex = 1;
 	private File dataFile;
-	private File storeDataFile; 
+	private String fileName = "test1.ser"; 
 
 	private FileModifier() {
-		dataFile = new File("test1.ser");
+		dataFile = new File(fileName);
 		try {
 			dataFile.createNewFile();
 		} catch (IOException e) {
@@ -129,6 +129,10 @@ public class FileModifier {
 		dataFile = file;
 	}
 	
+	public File getfile() {
+		return dataFile;
+	}
+	
 	public File createTempFile() {
 		File temp = null;
 		
@@ -192,7 +196,7 @@ public class FileModifier {
 		return searchList;
 	}
 	
-	public static void editDate(int lineToBeEdit, String newDate) {
+	public void editDate(int lineToBeEdit, String newDate) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		
 		Task task = taskList.get(lineToBeEdit);
@@ -205,7 +209,7 @@ public class FileModifier {
 		OutputScreenPane.displayList(taskList);
 	}
 	
-	public static void editTitle(int lineToBeEdit, String newTitle) {
+	public void editTitle(int lineToBeEdit, String newTitle) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		
 		Task task = taskList.get(lineToBeEdit);
@@ -230,17 +234,14 @@ public class FileModifier {
 		
 		OutputScreenPane.displayList(taskList);
 	}
-	
-	public static void editAll(int lineToBeEdit, String newTitle, String newDate, String newImportance) {
+
+	public void editTime(int indexToBeEdit, String newStartTime, String newEndTime) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		
-		Task task = taskList.get(lineToBeEdit);
+		Task task = taskList.get(indexToBeEdit);
 		
-		task.setDate(newDate);
-		task.setEventTitle(newTitle);
-		task.setImportance(Integer.parseInt(newImportance));
-		
-		taskList.set(lineToBeEdit, task);
+		task.setStart(newStartTime);
+		task.setEnd(newEndTime);
 		modifier.saveFile(taskList);
 		
 		OutputScreenPane.displayList(taskList);
