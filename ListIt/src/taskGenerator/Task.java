@@ -5,12 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Task implements Serializable, Comparable<Task> {
-	public enum Field {
-		EVENTTITLE, DATE, IMPORTANCE;
-	}
+public class Task implements Serializable {
 
-	private Field field;
 	private String eventTitle;
 	private Date date;
 	private Date start;
@@ -81,10 +77,6 @@ public class Task implements Serializable, Comparable<Task> {
 	public Task(String eventTitle) {
 		this.eventTitle = eventTitle;
 		this.importance = 3;
-	}
-
-	public Task(Field field) {
-		this.field = field;
 	}
 
 	// GETTERS
@@ -158,28 +150,5 @@ public class Task implements Serializable, Comparable<Task> {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-	}
-
-	@Override
-	public int compareTo(Task task) {
-		int comparision = 0;
-
-		switch (field) {
-
-		case EVENTTITLE:
-			comparision = this.eventTitle.compareTo(task.getTitle());
-			return comparision;
-
-		case DATE:
-			comparision = this.getDate().compareTo(task.getDate());
-			return comparision;
-
-		case IMPORTANCE:
-			comparision = this.importance.compareTo(task.getImportance());
-			return importance;
-		}
-
-		return importance;
-
 	}
 }

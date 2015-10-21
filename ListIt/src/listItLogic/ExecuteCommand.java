@@ -54,7 +54,8 @@ public class ExecuteCommand {
 			//String keyword = Task.toStringKeyword(command);
 			//modifier.searchKeyword(keyword);
 			SearchLogic.searchKeyWord(command);
-		} else if (commandType.equals(DISPLAY_COMMAND)) {
+		} 
+		else if (commandType.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.determineDisplayMode(command);
 		}
 		else {
