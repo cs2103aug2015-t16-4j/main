@@ -82,11 +82,13 @@ public class OutputScreenPane extends GridPane {
 		GridPane taskDetail = new GridPane();
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
 		Text rank = new Text(getRankingText(tempTask.getImportance()));
+		Text emptyLine = new Text("");
 		
 		setConstraints(eventTitle, 0, 0);
 		setConstraints(rank, 0, 1);
+		setConstraints(emptyLine, 0, 2);
 		
-		taskDetail.getChildren().addAll(eventTitle, rank);
+		taskDetail.getChildren().addAll(eventTitle, rank, emptyLine);
 
 		return taskDetail;
 	}
@@ -94,6 +96,7 @@ public class OutputScreenPane extends GridPane {
 	private static GridPane createTaskDetail(Task tempTask) {
 		GridPane taskDetail = new GridPane();
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text emptyLine = new Text("");
 		Text timeLine;
 		Text rank;
 		
@@ -109,6 +112,7 @@ public class OutputScreenPane extends GridPane {
 		setConstraints(eventTitle, 0, 0);
 		setConstraints(timeLine, 0, 1);
 		setConstraints(rank, 0, 2);
+		setConstraints(emptyLine, 0, 3);
 		
 		taskDetail.getChildren().addAll(eventTitle, timeLine, rank);
 		
