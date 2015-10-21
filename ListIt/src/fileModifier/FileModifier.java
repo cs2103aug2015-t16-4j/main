@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import listItUI.OutputScreenPane;
@@ -13,6 +14,7 @@ import taskGenerator.Task;
 
 public class FileModifier {
 	private static FileModifier modifier;
+	private static Integer tempFileIndex = 1;
 	private File dataFile;
 	private File storeDataFile; 
 
@@ -123,18 +125,32 @@ public class FileModifier {
 		OutputScreenPane.displayList(taskList);
 	}
 
-	public File getFile() {
-		return dataFile;
-	}
-
 	public void setfile(File file){
 		dataFile = file;
 	}
 	
-	public void createTempFile() throws IOException{
+	public File createTempFile() {
+		File temp = null;
 		
-		File temp = File.createTempFile("tempfile", ".tmp");
-		   
+		try {
+			temp = File.createTempFile("tempfile" + tempFileIndex, ".ser");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<Task> content = getContentList();
+		try {
+			FileOutputStream fos = new FileOutputStream(dataFile, false);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			
+			oos.writeObject(content);
+			
+			oos.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		return temp;
 	}
 
 	public ArrayList<Task> searchKeyword(String keyword) {

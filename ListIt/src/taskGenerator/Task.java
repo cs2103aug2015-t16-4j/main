@@ -132,8 +132,12 @@ public class Task implements Serializable, Comparable<Task> {
 		this.eventTitle = eventTitle;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(String date) {
+		try {
+			this.date = dateInputFormatter.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setImportance(Integer importance) {
