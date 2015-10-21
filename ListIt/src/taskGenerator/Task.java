@@ -92,6 +92,10 @@ public class Task implements Serializable {
 			return null;
 		}
 	}
+	
+	public Date getDateInDate() {
+		return date;
+	}
 
 	public String getStartTime() {
 		if(this.start != null) {
