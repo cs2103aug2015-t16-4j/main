@@ -71,12 +71,14 @@ public class ExecuteCommand {
 		}
 
 		else if (commandType.equals(SEARCH_COMMAND)) {
-			if (command.contains("by word")) {
 				SearchLogic.searchKeyWord(command);
-			}
-		} else if (commandType.equals(DISPLAY_COMMAND)) {
+		}
+		
+		else if (commandType.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.determineDisplayMode(command);
-		} else {
+		}
+		
+		else {
 			FeedbackPane.displayInvalidInput();
 		}
 	}
