@@ -9,9 +9,11 @@ import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 import listItUI.OutputScreenPane;
 import taskGenerator.Task;
+import taskGenerator.TaskComparatorDefault;
 
 public class FileModifier {
 	private static FileModifier modifier;
@@ -98,6 +100,8 @@ public class FileModifier {
 		newList.add(newtask);
 		
 		modifier.saveFile(newList);
+		
+		Collections.sort(newList, new TaskComparatorDefault());
 		
 		OutputScreenPane.displayList(newList);
 	}

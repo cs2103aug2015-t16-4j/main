@@ -71,13 +71,13 @@ public class ExecuteCommand {
 		}
 
 		else if (commandType.equals(SEARCH_COMMAND)) {
-				SearchLogic.searchKeyWord(command);
+			SearchLogic.searchKeyWord(command);
 		}
-		
+
 		else if (commandType.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.determineDisplayMode(command);
 		}
-		
+
 		else {
 			FeedbackPane.displayInvalidInput();
 		}
@@ -103,8 +103,7 @@ public class ExecuteCommand {
 		else if (command.equals(UNDO_COMMAND)) {
 			if (undoRedo.isUndoEmpty()) {
 				FeedbackPane.displayInvalidUndo();
-			} 
-			else {
+			} else {
 				ArrayList<Task> previousTaskList = new ArrayList<Task>();
 				previousTaskList = undoRedo.getListFromUndo();
 				undoRedo.storeListToRedo(modifier.getContentList());
@@ -116,16 +115,14 @@ public class ExecuteCommand {
 		else if (command.equals(REDO_COMMAND)) { // Shrestha Goswami :)
 			if (undoRedo.isRedoEmpty()) {
 				FeedbackPane.displayInvalidRedo();
-			} 
-			else {
+			} else {
 				ArrayList<Task> lastTaskList = new ArrayList<Task>();
 				lastTaskList = undoRedo.getListFromRedo();
 				undoRedo.storeListToUndo(modifier.getContentList());
 				modifier.saveFile(lastTaskList);
 			}
 			modifier.display();
-		} 
-		else {
+		} else {
 			FeedbackPane.displayInvalidInput();
 		}
 	}

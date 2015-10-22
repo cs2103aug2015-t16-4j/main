@@ -28,8 +28,7 @@ public class AddLogic {
 			Task newTask = new Task(eventTitle, deadline);
 
 			modifier.addTask(newTask);
-		} 
-		else {
+		} else {
 			addEventDefault(command);
 			return;
 		}
@@ -88,8 +87,7 @@ public class AddLogic {
 				addEventWithDeadline(command);
 				return;
 			}
-		} 
-		else {
+		} else {
 			try {
 				eventTitle = command.substring(4, command.lastIndexOf("rank") - 1);
 				int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 5));
@@ -130,14 +128,12 @@ public class AddLogic {
 					modifier.addTask(newTask);
 				}
 
-			} 
-			else {
+			} else {
 				String end = command.substring(command.lastIndexOf("to") + 3);
 				Task newTask = new Task(eventTitle, deadline, start, end);
 				modifier.addTask(newTask);
 			}
-		} 
-		else {
+		} else {
 			addEventWithImportance(command);
 			return;
 		}
