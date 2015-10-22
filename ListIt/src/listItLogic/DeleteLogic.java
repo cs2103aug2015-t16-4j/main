@@ -8,21 +8,15 @@ import taskGenerator.Task;
 
 public class DeleteLogic {
 	
-	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	private static FileModifier modifier = FileModifier.getInstance();
 
 	public static void deleteEvent(String command) {
-		File currentFile = modifier.createTempFile();
-		undoRedo.storeFileToUndo(currentFile);
 		int taskIndexToBeDelete = Integer.parseInt(command.substring(7));
 		
 		modifier.removeTask(taskIndexToBeDelete - 1);	
 	}
 
 	public static void clearFile() {
-		File currentFile = modifier.createTempFile();
-		undoRedo.storeFileToUndo(currentFile);
-		
 		modifier.clearAll();
 	}
 

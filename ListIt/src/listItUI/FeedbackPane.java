@@ -43,6 +43,11 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayInvalidDate() {
-		feedbackScreen.appendText("Invalid date is inputed");
+		feedbackScreen.appendText("Invalid date is inputed\n");
+	}
+
+	public static void displayInvalidUndo() {
+		feedbackScreen.appendText("No action can be undo!\n");
+		
 	}
 }

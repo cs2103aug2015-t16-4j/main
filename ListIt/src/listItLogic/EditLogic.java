@@ -1,23 +1,17 @@
 package listItLogic;
 
-import java.io.File;
-
 import fileModifier.FileModifier;
 import listItUI.FeedbackPane;
 
 public class EditLogic {
 	
-	private static UndoAndRedoLogic undoRedo;
 	private static FileModifier modifier;
 	
 	public EditLogic( ) {
-		UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 		FileModifier modifier = FileModifier.getInstance();
 	}
 
 	public static void editEvent(String command) {
-		File currentFile = modifier.createTempFile();
-		undoRedo.storeFileToUndo(currentFile);
 		int IndexToBeEdit = Integer.parseInt(command.substring(5, 6));
 		
 		if(command.contains("by date")) {
