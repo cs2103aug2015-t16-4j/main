@@ -114,7 +114,7 @@ public class OutputScreenPane extends GridPane {
 		setConstraints(rank, 0, 2);
 		setConstraints(emptyLine, 0, 3);
 		
-		taskDetail.getChildren().addAll(eventTitle, timeLine, rank);
+		taskDetail.getChildren().addAll(eventTitle, timeLine, rank, emptyLine);
 		
 		return taskDetail;
 	}
@@ -142,5 +142,72 @@ public class OutputScreenPane extends GridPane {
 		
 		taskList.getChildren().clear();
 		taskList.getChildren().add(emptyMessage);
-	}	
+	}
+
+	public static void displayListAlpha(ArrayList<Task> list) {
+		Task tempTask = new Task();
+		GridPane taskDetail;
+		String currentHeader = list.get(0).getTitle().substring(0, 1);
+		Text headerText = new Text(currentHeader);
+		
+		taskList.getChildren().clear();
+		
+		headerText.setFont(Font.font("Georgia", 20));
+		
+		taskList.getChildren().add(headerText);
+		
+		for(int i = 0; i<list.size(); i++) {
+			tempTask = list.get(i);
+			if(list.get(i).getTitle().substring(0, 1).equals(currentHeader) == false) {
+				currentHeader = tempTask.getTitle().substring(0, 1);
+				headerText = new Text(currentHeader);
+				
+				headerText.setFont(Font.font("Georgia", 20));
+				
+				taskList.getChildren().add(headerText);
+			}
+			
+			if(tempTask.getDate() == null) {
+				taskDetail = createFloatingTaskDetail(tempTask);
+			}
+
+			else {
+				taskDetail = createTaskDetail(tempTask);
+				}
+			taskList.getChildren().add(taskDetail);
+		}
+	}
+
+	public static void displayListImpt(ArrayList<Task> list) {
+		Task tempTask = new Task();
+		GridPane taskDetail;
+		String currentHeader = getRankingText(list.get(0).getImportance());
+		Text headerText = new Text(currentHeader);
+		
+		headerText.setFont(Font.font("Georgia", 20));
+		
+		taskList.getChildren().clear();
+		
+		taskList.getChildren().add(headerText);
+		
+		for(int i = 0; i<list.size(); i++) {
+			tempTask = list.get(i);
+			if(getRankingText(tempTask.getImportance()).equals(currentHeader) == false) {
+				currentHeader = getRankingText(tempTask.getImportance());
+				headerText = new Text(currentHeader);
+				
+				headerText.setFont(Font.font("Georgia", 20));
+				taskList.getChildren().add(headerText);
+			}
+			
+			if(tempTask.getDate() == null) {
+				taskDetail = createFloatingTaskDetail(tempTask);
+			}
+
+			else {
+				taskDetail = createTaskDetail(tempTask);
+				}
+			taskList.getChildren().add(taskDetail);
+		}
+	}
 }

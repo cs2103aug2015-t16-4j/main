@@ -51,9 +51,9 @@ public class ExecuteCommand {
 		}
 		
 		else if(commandType.equals(SEARCH_COMMAND)) {
-			//String keyword = Task.toStringKeyword(command);
-			//modifier.searchKeyword(keyword);
-			SearchLogic.searchKeyWord(command);
+			if(command.contains("by word")) {
+				SearchLogic.searchKeyWord(command);
+			}
 		} 
 		else if (commandType.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.determineDisplayMode(command);

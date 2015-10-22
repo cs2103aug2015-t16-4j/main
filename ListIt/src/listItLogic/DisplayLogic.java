@@ -3,7 +3,9 @@ package listItLogic;
 import java.util.ArrayList;
 import fileModifier.FileModifier;
 import taskGenerator.Task;
+import taskGenerator.TaskComparatorAlpha;
 import taskGenerator.TaskComparatorDefault;
+import taskGenerator.TaskComparatorImpt;
 
 import java.util.Collections;
 
@@ -26,19 +28,34 @@ public class DisplayLogic {
 	}
 	private static void displayByAlpha() {
 		list = modifier.getContentList();
-		Collections.sort(list, new TaskComparatorDefault());
-		modifier.display(list);
+		if(list.isEmpty() == false) {
+			Collections.sort(list, new TaskComparatorAlpha());
+			modifier.displayAlpha(list);
+		}
+		else {
+			modifier.displayEmpty();
+		}
 	}
 	
 	private static void displayByImportance() {
 		list = modifier.getContentList();
-		Collections.sort(list, new TaskComparatorDefault());
-		modifier.display(list);
+		if(list.isEmpty() == false) {
+			Collections.sort(list, new TaskComparatorImpt());
+			modifier.displayImpt(list);
+		}
+		else {
+			modifier.displayEmpty();
+		}
 	}
 	
 	public static void defaultDisplay() {
 		list = modifier.getContentList();
-		Collections.sort(list, new TaskComparatorDefault());
-		modifier.display(list);
+		if(list.isEmpty() == false) {
+			Collections.sort(list, new TaskComparatorDefault());
+			modifier.display(list);
+		}
+		else {
+			modifier.displayEmpty();
+		}
 	}
 }
