@@ -1,18 +1,20 @@
 package listItLogic;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.Stack;
+
+import taskGenerator.Task;
 
 public class UndoAndRedoLogic {
 	
 	private static UndoAndRedoLogic storage;
-	private Stack<File> undo;
-	private Stack<File> redo;
+	private Stack<ArrayList<Task>> undo;
+	private Stack<ArrayList<Task>> redo;
 	
 	
 	private UndoAndRedoLogic() {
-		undo = new Stack<File>();
-		redo = new Stack<File>();
+		undo = new Stack<ArrayList<Task>>();
+		redo = new Stack<ArrayList<Task>>();
 	}
 	
 	public static UndoAndRedoLogic getInstance() {
@@ -22,19 +24,19 @@ public class UndoAndRedoLogic {
 		return storage;
 	}
 	
-	public void storeFileToUndo(File previousFile) {
-		undo.push(previousFile);
+	public void storeListToUndo(ArrayList<Task> list) {
+		undo.push(list);
 	}
 	
-	public File getFileFromUndo() {
+	public ArrayList<Task> getListFromUndo() {
 		return undo.pop();
 	}
 	
-	public void storeFileToRedo(File undoneFile) {
-		redo.push(undoneFile);
+	public void storeListToRedo(ArrayList<Task> list) {
+		redo.push(list);
 	}
 	
-	public File getFileFromRedo() {
+	public ArrayList<Task> getListFromRedo() {
 		return redo.pop();
 	}
 	
@@ -44,5 +46,9 @@ public class UndoAndRedoLogic {
 	
 	public boolean isRedoEmpty() {
 		return redo.isEmpty();
+	}
+
+	public void clearRedo() {
+		redo.clear();
 	}
 }

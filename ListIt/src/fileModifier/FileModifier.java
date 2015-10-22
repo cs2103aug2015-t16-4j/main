@@ -117,6 +117,10 @@ public class FileModifier {
 		}
 	}
 	
+	public void display() {
+		OutputScreenPane.displayList(getContentList());
+	}
+	
 	public void display(ArrayList<Task> taskList) {
 		OutputScreenPane.displayList(taskList);
 	}
@@ -143,39 +147,7 @@ public class FileModifier {
 		OutputScreenPane.displayEmpty();
 	}
 
-	public void setfile(File file){
-		dataFile = file;
-	}
-	
-	public File getfile() {
-		return dataFile;
-	}
-	
-	public File createTempFile() {
-		File temp = null;
-		
-		try {
-			temp = File.createTempFile("tempfile" + tempFileIndex, ".ser");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		ArrayList<Task> content = getContentList();
-		try {
-			FileOutputStream fos = new FileOutputStream(dataFile, false);
-			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			
-			oos.writeObject(content);
-			
-			oos.close();
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-
-		return temp;
-	}
-
-	public ArrayList<Task> searchByTitle(String keyword) {
+	public ArrayList<Task> searchKeyword(String keyword) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
 		

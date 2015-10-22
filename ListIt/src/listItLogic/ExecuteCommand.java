@@ -1,8 +1,11 @@
 package listItLogic;
 
 import java.io.File;
+import java.util.ArrayList;
+
 import fileModifier.FileModifier;
 import listItUI.FeedbackPane;
+import taskGenerator.Task;
 
 public class ExecuteCommand {
 	
@@ -19,8 +22,8 @@ public class ExecuteCommand {
 	private static final String REDO_COMMAND = "redo";
 	private static final String SEARCH_COMMAND = "search";
 	
-	private static UndoAndRedoLogic undoRedo;
-	private static FileModifier modifier;
+	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
+	private static FileModifier modifier = FileModifier.getInstance();
 	
 	public ExecuteCommand() {
 		UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
@@ -31,6 +34,13 @@ public class ExecuteCommand {
 		String commandType = command.substring(0, command.indexOf(" "));
 		
 		if(commandType.equals(ADD_COMMAND)) {
+			if(undoRedo.isRedoEmpty() == false) {
+				undoRedo.clearRedo();
+			}
+			ArrayList<Task> taskList = new ArrayList<Task>();
+			taskList = modifier.getContentList();
+			undoRedo.storeListToUndo(taskList);
+			
 			if(command.contains(WITH_TIMELINE_CONDITION1) && command.contains(WITH_TIMELINE_CONDITION2) && command.contains(WITH_DEADLINE)) {
 				AddLogic.addEventWithTimeline(command);
 			} else if (command.contains(WITH_IMPT)) {
@@ -43,10 +53,24 @@ public class ExecuteCommand {
 		}
 		
 		else if(commandType.equals(DELETE_COMMAND)) {
+			if(undoRedo.isRedoEmpty() == false) {
+				undoRedo.clearRedo();
+			}
+			ArrayList<Task> taskList = new ArrayList<Task>();
+			taskList = modifier.getContentList();
+			undoRedo.storeListToUndo(taskList);
+			
 			DeleteLogic.deleteEvent(command);
 		}
 		
 		else if(commandType.equals(EDIT_COMMAND)) {
+			if(undoRedo.isRedoEmpty() == false) {
+				undoRedo.clearRedo();
+			}
+			ArrayList<Task> taskList = new ArrayList<Task>();
+			taskList = modifier.getContentList();
+			undoRedo.storeListToUndo(taskList);
+			
 			EditLogic.editEvent(command);
 		}
 		
@@ -70,22 +94,34 @@ public class ExecuteCommand {
 		}
 		
 		else if (command.equals(CLEAR_COMMAND)) {
+			if(undoRedo.isRedoEmpty() == false) {
+				undoRedo.clearRedo();
+			}
+			ArrayList<Task> taskList = new ArrayList<Task>();
+			taskList = modifier.getContentList();
+			undoRedo.storeListToUndo(taskList);
+			
 			DeleteLogic.clearFile();
 		}
 		
 		else if(command.equals(UNDO_COMMAND)) {
-			File currentFile = null;
+			if (undoRedo.isUndoEmpty()) {
+				FeedbackPane.displayInvalidUndo();
+			}
 			
-			if(undoRedo.isRedoEmpty()) {
-				currentFile = modifier.createTempFile();
-				undoRedo.storeFileToRedo(currentFile);
-				modifier.setfile(undoRedo.getFileFromUndo());
+			else if(undoRedo.isRedoEmpty()) {
+				ArrayList<Task> taskList = new ArrayList<Task>();
+				taskList = modifier.getContentList();
+				undoRedo.storeListToUndo(taskList);
+				modifier.saveFile(taskList);
 			}
 			else {
-				currentFile = modifier.getfile();
-				undoRedo.storeFileToRedo(currentFile);
-				modifier.setfile(undoRedo.getFileFromRedo());
+				ArrayList<Task> taskList = new ArrayList<Task>();
+				taskList = undoRedo.getListFromUndo();
+				undoRedo.storeListToRedo(taskList);
+				modifier.saveFile(taskList);
 			}
+			modifier.display();
 		}
 		
 		else if (command.equals(REDO_COMMAND)) { //Shrestha Goswami :)
@@ -93,8 +129,12 @@ public class ExecuteCommand {
 				FeedbackPane.displayInvalidRedo();
 			}
 			else {
-			    modifier.setfile(undoRedo.getFileFromRedo());
+				ArrayList<Task> taskList = new ArrayList<Task>();
+				taskList = modifier.getContentList();
+				undoRedo.storeListToUndo(taskList);
+				modifier.saveFile(taskList);
 			}
+			modifier.display();
 		}
 		else {
 			FeedbackPane.displayInvalidInput();
