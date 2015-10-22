@@ -1,6 +1,7 @@
 package listItLogic;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,7 +12,7 @@ import taskGenerator.TaskComparatorDefault;
 
 public class SearchLogic {
 	
-	public static void searchKeyWord(String command) {
+	public static void searchKeyWord(String command) throws ClassNotFoundException, IOException {
 		FileModifier modifier = FileModifier.getInstance();
 		ArrayList<Task> taskList = new ArrayList<Task>();
 		
