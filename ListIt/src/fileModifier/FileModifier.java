@@ -160,7 +160,7 @@ public class FileModifier {
 		return searchList; 
 	}
 
-	public ArrayList<Task> searchByImportance(int searchKey ) throws IOException, ClassNotFoundException{
+	public ArrayList<Task> searchByImportance(int searchKey ) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
 		

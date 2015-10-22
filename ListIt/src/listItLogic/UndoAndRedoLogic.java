@@ -8,8 +8,8 @@ import taskGenerator.Task;
 public class UndoAndRedoLogic {
 	
 	private static UndoAndRedoLogic storage;
-	private Stack<ArrayList<Task>> undo;
-	private Stack<ArrayList<Task>> redo;
+	private static Stack<ArrayList<Task>> undo;
+	private static Stack<ArrayList<Task>> redo;
 	
 	
 	private UndoAndRedoLogic() {
