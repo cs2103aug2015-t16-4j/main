@@ -125,14 +125,14 @@ public class AddLogic {
 					Task newTask = new Task(eventTitle, deadline, start, end, rank);
 					modifier.addTask(newTask);
 				} catch (Exception e) {
-					String end = command.substring(command.lastIndexOf("to") + 1);
+					String end = command.substring(command.lastIndexOf("to") + 3);
 					Task newTask = new Task(eventTitle, deadline, start, end);
 					modifier.addTask(newTask);
 				}
 
 			} 
 			else {
-				String end = command.substring(command.lastIndexOf("to") + 1);
+				String end = command.substring(command.lastIndexOf("to") + 3);
 				Task newTask = new Task(eventTitle, deadline, start, end);
 				modifier.addTask(newTask);
 			}

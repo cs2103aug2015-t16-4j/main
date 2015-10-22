@@ -57,6 +57,7 @@ public class Task implements Serializable {
 
 	public Task(String eventTitle, String date, String start, String end) {
 		this.eventTitle = eventTitle;
+		this.importance = 3;
 		try {
 			this.date = dateInputFormatter.parse(date);
 			this.start = timeInputFormatter.parse(start);
@@ -68,6 +69,7 @@ public class Task implements Serializable {
 
 	public Task(String eventTitle, String date) {
 		this.eventTitle = eventTitle;
+		this.importance = 3;
 		try {
 			this.date = dateInputFormatter.parse(date);
 		} catch (ParseException e) {
