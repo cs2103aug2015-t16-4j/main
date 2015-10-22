@@ -5,6 +5,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javafx.scene.Node;
+
 public class Task implements Serializable {
 
 	private String eventTitle;
@@ -91,6 +93,10 @@ public class Task implements Serializable {
 		else {
 			return null;
 		}
+	}
+	
+	public String getDateInputForm() {
+		return dateInputFormatter.format(date);
 	}
 	
 	public Date getDateInDate() {
