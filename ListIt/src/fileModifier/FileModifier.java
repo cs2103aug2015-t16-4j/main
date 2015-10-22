@@ -175,7 +175,7 @@ public class FileModifier {
 		return temp;
 	}
 
-	public ArrayList<Task> searchKeyword(String keyword) {
+	public ArrayList<Task> searchByTitle(String keyword) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
 		
