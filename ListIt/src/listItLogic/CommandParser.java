@@ -7,7 +7,7 @@ public class CommandParser {
 		
 	}
 	
-	public static void processCommand(String command) throws InvalidCommandException {
+	public static void processCommand(String command) {
 		if(command.contains(" ")) {
 			ExecuteCommand.processCommandWithSpace(command);
 		}

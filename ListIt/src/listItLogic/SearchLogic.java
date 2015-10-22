@@ -25,7 +25,7 @@ public class SearchLogic {
 			int imptLevel = Integer.parseInt(keyword);
 			taskList = modifier.searchByImportance(imptLevel);
 		} else {
-			taskList = modifier.searchByTitle(keyword);
+			taskList = modifier.searchKeyword(keyword);
 		}
 		
 		Collections.sort(taskList, new TaskComparatorDefault());
