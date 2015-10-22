@@ -54,7 +54,8 @@ public class ExecuteCommand {
 			//String keyword = Task.toStringKeyword(command);
 			//modifier.searchKeyword(keyword);
 			SearchLogic.searchKeyWord(command);
-		} else if (commandType.equals(DISPLAY_COMMAND)) {
+		} 
+		else if (commandType.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.determineDisplayMode(command);
 		}
 		else {
@@ -73,15 +74,23 @@ public class ExecuteCommand {
 		}
 		
 		else if(command.equals(UNDO_COMMAND)) {
-			File currentFile = modifier.getFile();
-			undoRedo.storeFileToRedo(currentFile);
-			modifier.setfile(undoRedo.getFileFromUndo());
+			File currentFile = null;
+			
+			if(undoRedo.isRedoEmpty()) {
+				currentFile = modifier.createTempFile();
+				undoRedo.storeFileToRedo(currentFile);
+				modifier.setfile(undoRedo.getFileFromUndo());
+			}
+			else {
+				currentFile = modifier.getfile();
+				undoRedo.storeFileToRedo(currentFile);
+				modifier.setfile(undoRedo.getFileFromRedo());
+			}
 		}
 		
 		else if (command.equals(REDO_COMMAND)) { //Shrestha Goswami :)
 			if (undoRedo.isRedoEmpty()) {
 				FeedbackPane.displayInvalidRedo();
-				throw new InvalidCommandException("cannot instantiate redo without a prior undo");
 			}
 			else {
 			    modifier.setfile(undoRedo.getFileFromRedo());

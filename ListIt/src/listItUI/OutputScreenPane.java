@@ -35,35 +35,86 @@ public class OutputScreenPane extends GridPane {
 	
 	public static void displayList(ArrayList<Task> list) {
 		Task tempTask = new Task();
+		boolean isFloatingState = false;
+		String currentHeader = null;
+		Text headerText = null;
 		
 		taskList.getChildren().clear();
 		
+		if(list.get(0).getDate() != null) {
+			currentHeader = list.get(0).getDate();
+			headerText = new Text(currentHeader);
+
+			headerText.setFont(Font.font("Georgia", 20));
+			taskList.getChildren().add(headerText);
+		}
+		
 		for(int i = 0; i<list.size(); i++) {
 			tempTask = list.get(i);
+			if(tempTask.getDate() != null && isFloatingState == false) {
+				if(!tempTask.getDate().equals(currentHeader)) {
+					currentHeader = tempTask.getDate();
+					headerText = new Text(currentHeader);
+					headerText.setFont(Font.font("Georgia", 20));
+					taskList.getChildren().add(headerText);
+				}
+			}
+			else if(tempTask.getDate() == null && isFloatingState == false){
+				headerText = new Text("Floating");
+				headerText.setFont(Font.font("Georgia", 20));
+				taskList.getChildren().add(headerText);
+				isFloatingState = true;
+			}
 			
 			GridPane taskDetail = new GridPane();
-			taskDetail = createTaskDetail(tempTask);
 			
+			if(isFloatingState) {
+				taskDetail = createFloatingTaskDetail(tempTask);
+			}
+			else {
+				taskDetail = createTaskDetail(tempTask);
+			}
 			taskList.getChildren().add(taskDetail);
 		}
 	}
 
+	private static GridPane createFloatingTaskDetail(Task tempTask) {
+		GridPane taskDetail = new GridPane();
+		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text rank = new Text(getRankingText(tempTask.getImportance()));
+		Text emptyLine = new Text("");
+		
+		setConstraints(eventTitle, 0, 0);
+		setConstraints(rank, 0, 1);
+		setConstraints(emptyLine, 0, 2);
+		
+		taskDetail.getChildren().addAll(eventTitle, rank, emptyLine);
+
+		return taskDetail;
+	}
+
 	private static GridPane createTaskDetail(Task tempTask) {
 		GridPane taskDetail = new GridPane();
-		Text taskTitle = new Text(tempTask.getTitle());
-		Text taskImportance = new Text(getRankingText(tempTask.getImportance()));
+		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text emptyLine = new Text("");
+		Text timeLine;
+		Text rank;
 		
-		GridPane.setConstraints(taskTitle, 0, 0);
-		GridPane.setConstraints(taskImportance, 2, 0);
-		
-		if(tempTask.getDate() == null) {
-			taskDetail.getChildren().addAll(taskTitle, taskImportance);
+		if(tempTask.getStartTime() != null) {
+			timeLine = new Text("Time: " + tempTask.getStartTime() + " to " + tempTask.getEndTime());
 		}
 		else {
-			Text taskDeadLine = new Text(tempTask.getDate());
-			GridPane.setConstraints(taskDeadLine, 0, 2);
-			taskDetail.getChildren().addAll(taskTitle, taskDeadLine, taskImportance);
+			timeLine = new Text("Time: -NA");
 		}
+		
+		rank = new Text(getRankingText(tempTask.getImportance()));
+		
+		setConstraints(eventTitle, 0, 0);
+		setConstraints(timeLine, 0, 1);
+		setConstraints(rank, 0, 2);
+		setConstraints(emptyLine, 0, 3);
+		
+		taskDetail.getChildren().addAll(eventTitle, timeLine, rank);
 		
 		return taskDetail;
 	}
@@ -83,8 +134,13 @@ public class OutputScreenPane extends GridPane {
 		
 		return rankDetail;
 	}
-	
-	
-	
-	
+
+	public static void displayEmpty() {
+		Text emptyMessage;
+		
+		emptyMessage = new Text("No content to display");
+		
+		taskList.getChildren().clear();
+		taskList.getChildren().add(emptyMessage);
+	}	
 }

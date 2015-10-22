@@ -5,21 +5,19 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Task implements Serializable, Comparable<Task>{
-	public enum Field{
-		EVENTTITLE, DATE, IMPORTANCE;
-	}
-	
-	private Field field;
+public class Task implements Serializable {
+
 	private String eventTitle;
 	private Date date;
-	private String start;
-	private String end;
+	private Date start;
+	private Date end;
 	private Integer importance;
-	private SimpleDateFormat inputFormatter = new SimpleDateFormat("ddMMyyyy");
-	private SimpleDateFormat outputFormatter = new SimpleDateFormat("dd-MMMMM-yyyy");
+	private SimpleDateFormat dateInputFormatter = new SimpleDateFormat("ddMMyyyy");
+	private SimpleDateFormat dateOutputFormatter = new SimpleDateFormat("dd-MMMMM-yyyy");
+	private SimpleDateFormat timeInputFormatter = new SimpleDateFormat("HHmm");
+	private SimpleDateFormat timeOutputFormatter = new SimpleDateFormat("HH:mm");
 
-	//CONSTRUCTORS	
+	// CONSTRUCTORS
 	public Task() {
 		this.eventTitle = null;
 		this.date = null;
@@ -27,49 +25,49 @@ public class Task implements Serializable, Comparable<Task>{
 		this.start = null;
 		this.end = null;
 	}
-	
+
 	public Task(String eventTitle, String date, int importance) {
 		this.eventTitle = eventTitle;
 		try {
-			this.date = inputFormatter.parse(date);
+			this.date = dateInputFormatter.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		this.importance = importance;
 	}
-	
+
 	public Task(String eventTitle, int importance) {
 		this.eventTitle = eventTitle;
 		this.importance = importance;
 	}
-	
+
 	public Task(String eventTitle, String date, String start, String end, int importance) {
 		this.eventTitle = eventTitle;
 		try {
-			this.date = inputFormatter.parse(date);
-		} catch (ParseException e) {
+			this.date = dateInputFormatter.parse(date);
+			this.start = timeInputFormatter.parse(start);
+			this.end = timeInputFormatter.parse(end);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.start = start;
-		this.end = end;
-		this.importance = importance;	
+		this.importance = importance;
 	}
-	
+
 	public Task(String eventTitle, String date, String start, String end) {
+		this.eventTitle = eventTitle;
 		try {
-			this.date = inputFormatter.parse(date);
-		} catch (ParseException e) {
+			this.date = dateInputFormatter.parse(date);
+			this.start = timeInputFormatter.parse(start);
+			this.end = timeInputFormatter.parse(end);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		this.eventTitle = eventTitle;
-		this.start = start;
-		this.end = end;
 	}
-	
+
 	public Task(String eventTitle, String date) {
 		this.eventTitle = eventTitle;
 		try {
-			this.date = inputFormatter.parse(date);
+			this.date = dateInputFormatter.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -80,26 +78,43 @@ public class Task implements Serializable, Comparable<Task>{
 		this.eventTitle = eventTitle;
 		this.importance = 3;
 	}
-	
-	public Task(Field field) {
-		this.field = field;
-	}
-	
-	
-	//GETTERS
+
+	// GETTERS
 	public String getTitle() {
 		return eventTitle;
 	}
-	
+
 	public String getDate() {
-		if(this.date != null) {
-			return outputFormatter.format(date);
+		if (this.date != null) {
+			return dateOutputFormatter.format(date);
+		} 
+		else {
+			return null;
+		}
+	}
+	
+	public Date getDateInDate() {
+		return date;
+	}
+
+	public String getStartTime() {
+		if(this.start != null) {
+			return timeOutputFormatter.format(start);
 		}
 		else {
 			return null;
 		}
 	}
 	
+	public String getEndTime() {
+		if(this.end != null) {
+			return timeOutputFormatter.format(end);
+		}
+		else {
+			return null;
+		}
+	}
+
 	public Integer getImportance() {
 		return importance;
 	}
@@ -107,40 +122,37 @@ public class Task implements Serializable, Comparable<Task>{
 	public String getEventTitle() {
 		return eventTitle;
 	}
-	
-	//SETTERS
+
+	// SETTERS
 	public void setEventTitle(String eventTitle) {
 		this.eventTitle = eventTitle;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(String date) {
+		try {
+			this.date = dateInputFormatter.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void setImportance(Integer importance) {
 		this.importance = importance;
 	}
-
-	@Override
-	public int compareTo(Task task) {
-		int comparision = 0;
-		
-		switch(field){
-		
-		case EVENTTITLE:
-			comparision = this.eventTitle.compareTo(task.getTitle());
-			return comparision;
-		
-		case DATE:
-			comparision =  this.getDate().compareTo(task.getDate());
-			return comparision;
-		
-		case IMPORTANCE:
-			comparision = this.importance.compareTo(task.getImportance());
-			return importance;
+	
+	public void setStart(String start) {
+		try {
+			this.start = timeInputFormatter.parse(start);
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-		
-		return importance;
-		
+	}
+	
+	public void setEnd(String end) {
+		try {
+			this.end = timeInputFormatter.parse(end);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 }

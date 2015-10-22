@@ -12,7 +12,7 @@ public class DeleteLogic {
 	private static FileModifier modifier = FileModifier.getInstance();
 
 	public static void deleteEvent(String command) {
-		File currentFile = modifier.getFile();
+		File currentFile = modifier.createTempFile();
 		undoRedo.storeFileToUndo(currentFile);
 		int taskIndexToBeDelete = Integer.parseInt(command.substring(7));
 		
@@ -20,7 +20,7 @@ public class DeleteLogic {
 	}
 
 	public static void clearFile() {
-		File currentFile = modifier.getFile();
+		File currentFile = modifier.createTempFile();
 		undoRedo.storeFileToUndo(currentFile);
 		
 		modifier.clearAll();

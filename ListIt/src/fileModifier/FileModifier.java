@@ -6,18 +6,21 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import listItUI.OutputScreenPane;
 import taskGenerator.Task;
 
 public class FileModifier {
 	private static FileModifier modifier;
+	private static Integer tempFileIndex = 1;
 	private File dataFile;
-	private File storeDataFile; 
+	private String fileName = "test1.ser"; 
 
 	private FileModifier() {
-		dataFile = new File("test1.ser");
+		dataFile = new File(fileName);
 		try {
 			dataFile.createNewFile();
 		} catch (IOException e) {
@@ -106,7 +109,12 @@ public class FileModifier {
 		
 		modifier.saveFile(taskList);
 		
-		OutputScreenPane.displayList(taskList);
+		if(taskList.isEmpty()) {
+			OutputScreenPane.displayEmpty();
+		}
+		else {
+			OutputScreenPane.displayList(taskList);
+		}
 	}
 	
 	public void display(ArrayList<Task> taskList) {
@@ -120,21 +128,39 @@ public class FileModifier {
 		
 		modifier.saveFile(taskList);
 		
-		OutputScreenPane.displayList(taskList);
-	}
-
-	public File getFile() {
-		return dataFile;
+		OutputScreenPane.displayEmpty();
 	}
 
 	public void setfile(File file){
 		dataFile = file;
 	}
 	
-	public void createTempFile() throws IOException{
+	public File getfile() {
+		return dataFile;
+	}
+	
+	public File createTempFile() {
+		File temp = null;
 		
-		File temp = File.createTempFile("tempfile", ".tmp");
-		   
+		try {
+			temp = File.createTempFile("tempfile" + tempFileIndex, ".ser");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<Task> content = getContentList();
+		try {
+			FileOutputStream fos = new FileOutputStream(dataFile, false);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			
+			oos.writeObject(content);
+			
+			oos.close();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+
+		return temp;
 	}
 
 	public ArrayList<Task> searchKeyword(String keyword) {
@@ -176,7 +202,7 @@ public class FileModifier {
 		return searchList;
 	}
 	
-	public static void editDate(int lineToBeEdit, String newDate) {
+	public void editDate(int lineToBeEdit, String newDate) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		
 		Task task = taskList.get(lineToBeEdit);
@@ -189,7 +215,7 @@ public class FileModifier {
 		OutputScreenPane.displayList(taskList);
 	}
 	
-	public static void editTitle(int lineToBeEdit, String newTitle) {
+	public void editTitle(int lineToBeEdit, String newTitle) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		
 		Task task = taskList.get(lineToBeEdit);
@@ -214,17 +240,14 @@ public class FileModifier {
 		
 		OutputScreenPane.displayList(taskList);
 	}
-	
-	public static void editAll(int lineToBeEdit, String newTitle, String newDate, String newImportance) {
+
+	public void editTime(int indexToBeEdit, String newStartTime, String newEndTime) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		
-		Task task = taskList.get(lineToBeEdit);
+		Task task = taskList.get(indexToBeEdit);
 		
-		task.setDate(newDate);
-		task.setEventTitle(newTitle);
-		task.setImportance(Integer.parseInt(newImportance));
-		
-		taskList.set(lineToBeEdit, task);
+		task.setStart(newStartTime);
+		task.setEnd(newEndTime);
 		modifier.saveFile(taskList);
 		
 		OutputScreenPane.displayList(taskList);

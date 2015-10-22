@@ -2,10 +2,8 @@ package listItLogic;
 
 import java.io.File;
 
-import fileModifier.EditModifier;
 import fileModifier.FileModifier;
 import listItUI.FeedbackPane;
-import listItUI.TextScreenPenal;
 
 public class EditLogic {
 	
@@ -18,16 +16,15 @@ public class EditLogic {
 	}
 
 	public static void editEvent(String command) {
-		File currentFile = modifier.getFile();
+		File currentFile = modifier.createTempFile();
 		undoRedo.storeFileToUndo(currentFile);
-		int lineToBeEdit = Integer.parseInt(command.substring(5, 6));
+		int IndexToBeEdit = Integer.parseInt(command.substring(5, 6));
 		
 		if(command.contains("by date")) {
 			String newDate = command.substring(command.indexOf("by date") + 8);
 			
 			if(AddLogic.checkValidDate(newDate)) {
-				FileModifier.editDate(lineToBeEdit, newDate);
-				FeedbackPane.displaySuccessfulEdit();
+				modifier.editDate(IndexToBeEdit - 1, newDate);
 			}
 			
 			else {
@@ -38,30 +35,20 @@ public class EditLogic {
 		else if(command.contains("by title")) {
 			String newTitle = command.substring(command.indexOf("by title") + 9);
 			
-			FileModifier.editTitle(lineToBeEdit, newTitle);
-			FeedbackPane.displaySuccessfulEdit();
+			modifier.editTitle(IndexToBeEdit - 1, newTitle);
 		}
 		
 		else if(command.contains("by importance")) {
 			String newImportance = command.substring(command.indexOf("rank") + 5);
 			
-			FileModifier.editTitle(lineToBeEdit, newImportance);
-			FeedbackPane.displaySuccessfulEdit();
+			modifier.editTitle(IndexToBeEdit - 1, newImportance);
 		}
 		
-		else if(command.contains("by all")) {
-			String newTitle = command.substring(command.indexOf("by all") + 7, command.lastIndexOf("rank") - 12);
-			String newDate = command.substring(command.lastIndexOf("by") + 3);
-			String newImportance = command.substring(command.lastIndexOf("rank") + 5);
+		else if(command.contains("by time")) {
+			String newStartTime = command.substring(command.indexOf("from") + 5, command.indexOf("to") - 1);
+			String newEndTime = command.substring(command.indexOf("to") + 3);
 			
-			if(AddLogic.checkValidDate(newDate)) {
-				FileModifier.editAll(lineToBeEdit, newTitle, newDate, newImportance);
-				FeedbackPane.displaySuccessfulEdit();
-			}
-			
-			else {
-				FeedbackPane.displayInvalidDate();
-			}
+			modifier.editTime(IndexToBeEdit - 1, newStartTime, newEndTime);
 		}
 	}
 }

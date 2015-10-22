@@ -15,17 +15,18 @@ public class AddLogic {
 	private static FileModifier modifier = FileModifier.getInstance();
 
 	public static void addEventWithDeadline(String command) {
-		File currentFile = modifier.getFile();
+		File currentFile = modifier.createTempFile();
 		undoRedo.storeFileToUndo(currentFile);
 		String eventTitle = null;
+		String deadline = null;
 
 		try {
 			eventTitle = command.substring(4, command.lastIndexOf("by") - 1);
+			deadline = command.substring(command.lastIndexOf("by") + 3);
 		} catch (Exception e) {
 			addEventDefault(command);
+			return;
 		}
-
-		String deadline = command.substring(command.lastIndexOf("by") + 3);
 
 		if (checkValidDate(deadline)) {
 
@@ -35,6 +36,7 @@ public class AddLogic {
 		} 
 		else {
 			addEventDefault(command);
+			return;
 		}
 	}
 
@@ -56,7 +58,7 @@ public class AddLogic {
 	}
 
 	public static void addEventDefault(String command) {
-		File currentFile = modifier.getFile();
+		File currentFile = modifier.createTempFile();
 		undoRedo.storeFileToUndo(currentFile);
 		String eventTitle = command.substring(4);
 
@@ -66,7 +68,7 @@ public class AddLogic {
 	}
 
 	public static void addEventWithImportance(String command) {
-		File currentFile = modifier.getFile();
+		File currentFile = modifier.createTempFile();
 		undoRedo.storeFileToUndo(currentFile);
 		String eventTitle = new String();
 		if (command.contains("by")) {
@@ -77,6 +79,7 @@ public class AddLogic {
 				deadline = command.substring(command.lastIndexOf("by") + 3, command.lastIndexOf("rank") - 1);
 			} catch (Exception e) {
 				addEventWithDeadline(command);
+				return;
 			}
 
 			try {
@@ -92,8 +95,10 @@ public class AddLogic {
 				}
 			} catch (Exception e) {
 				addEventWithDeadline(command);
+				return;
 			}
-		} else {
+		} 
+		else {
 			try {
 				eventTitle = command.substring(4, command.lastIndexOf("rank") - 1);
 				int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 5));
@@ -101,12 +106,13 @@ public class AddLogic {
 				modifier.addTask(newTask);
 			} catch (Exception e) {
 				addEventDefault(command);
+				return;
 			}
 		}
 	}
 
 	public static void addEventWithTimeline(String command) {
-		File currentFile = modifier.getFile();
+		File currentFile = modifier.createTempFile();
 		undoRedo.storeFileToUndo(currentFile);
 		String eventTitle = new String();
 		String deadline = new String();
@@ -118,6 +124,7 @@ public class AddLogic {
 			start = command.substring(command.lastIndexOf("from") + 5, command.lastIndexOf("to") - 1);
 		} catch (Exception e) {
 			addEventWithImportance(command);
+			return;
 		}
 
 		if (checkValidDate(deadline) && checkValidTime(start)) {
@@ -134,13 +141,16 @@ public class AddLogic {
 					modifier.addTask(newTask);
 				}
 
-			} else {
+			} 
+			else {
 				String end = command.substring(command.lastIndexOf("to") + 1);
 				Task newTask = new Task(eventTitle, deadline, start, end);
 				modifier.addTask(newTask);
 			}
-		} else {
+		} 
+		else {
 			addEventWithImportance(command);
+			return;
 		}
 	}
 
