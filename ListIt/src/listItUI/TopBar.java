@@ -27,18 +27,20 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 		minimizeButton = new Button("Hide");	
 		closeButton.setOnAction(this);
 		
-		setConstraints(listItLabel, 0, 0);
-		setConstraints(closeButton, 1, 0);
-		setConstraints(minimizeButton, 2, 0);
+		setConstraints(listItLabel, 1, 0);
+		setConstraints(closeButton, 2, 0);
+		setConstraints(minimizeButton, 3, 0);
 		
+		ColumnConstraints col0Constraints = new ColumnConstraints();
+		col0Constraints.setPercentWidth(2);
 		ColumnConstraints col1Constraints = new ColumnConstraints();
-		col1Constraints.setPercentWidth(80);
+		col1Constraints.setPercentWidth(78);
 		ColumnConstraints col2Constraints = new ColumnConstraints();
 		col2Constraints.setPercentWidth(10);
 		ColumnConstraints col3Constraints = new ColumnConstraints();
 		col3Constraints.setPercentWidth(10);
 		
-		getColumnConstraints().addAll(col1Constraints, col2Constraints, col3Constraints);
+		getColumnConstraints().addAll(col0Constraints, col1Constraints, col2Constraints, col3Constraints);
 		getChildren().addAll(listItLabel, closeButton, minimizeButton);
 	}
 

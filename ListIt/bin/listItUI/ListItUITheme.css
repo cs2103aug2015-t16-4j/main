@@ -1,4 +1,5 @@
 .root {
-	-fx-background-image: url("depositphotos_1617655-Brushed-silver-metallic-background.jpg");
+	-fx-background-image: url("background.jpg");
 	-fx-background-repeat: no-repeat;
+	-fx-background-size: 2000, 2000;
 }
