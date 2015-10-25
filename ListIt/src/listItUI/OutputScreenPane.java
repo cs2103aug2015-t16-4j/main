@@ -3,6 +3,7 @@ package listItUI;
 import java.util.ArrayList;
 
 import javafx.geometry.Insets;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -14,6 +15,7 @@ public class OutputScreenPane extends GridPane {
 	
 	private Text displayHeader;
 	private static VBox taskList;
+	private static ScrollPane Screen;
 	
 	public OutputScreenPane() {
 		setPadding(new Insets(10, 10, 10, 10));
@@ -27,10 +29,14 @@ public class OutputScreenPane extends GridPane {
 		
 		taskList.setPrefSize(500, 400);
 		
-		setConstraints(displayHeader, 0, 0);
-		setConstraints(taskList, 0, 1);
+		Screen = new ScrollPane();
 		
-		getChildren().addAll(displayHeader, taskList);
+		Screen.setContent(taskList);
+		
+		setConstraints(displayHeader, 0, 0);
+		setConstraints(Screen, 0, 1);
+		
+		getChildren().addAll(displayHeader, Screen);
 	}
 	
 	public static void displayList(ArrayList<Task> list) {
