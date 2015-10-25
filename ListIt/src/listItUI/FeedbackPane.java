@@ -16,11 +16,11 @@ public class FeedbackPane extends GridPane{
 		setPadding(new Insets(10, 10, 10, 10));
 		
 		label = new Text("Feedback:");
-		label.setFont(Font.font("Verdana", FontPosture.ITALIC, 14));
+		label.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
 		label.setStyle("-fx-fill: linear-gradient(#0033CC 30%, #0029A3 60%, #001A66 90%);");
 		
 		feedbackScreen = new TextArea();
-		feedbackScreen.setPrefSize(500, 100);
+		feedbackScreen.setPrefSize(150, 450);
 		feedbackScreen.setEditable(false);
 		
 		setConstraints(label, 0, 0);

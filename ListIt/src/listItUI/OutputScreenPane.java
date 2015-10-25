@@ -27,9 +27,10 @@ public class OutputScreenPane extends GridPane {
 		taskList = new VBox();
 		taskList.setStyle("-fx-background-color: #FFFFFF;");
 		
-		taskList.setPrefSize(500, 400);
+		taskList.setPrefSize(420, 450);
 		
 		Screen = new ScrollPane();
+		Screen.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		
 		Screen.setContent(taskList);
 		
