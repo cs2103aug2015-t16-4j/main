@@ -91,25 +91,32 @@ public class OutputScreenPane extends GridPane {
 
 	private static GridPane createFloatingTaskDetail(Task tempTask) {
 		GridPane taskDetail = new GridPane();
+		Text index = new Text(tempTask.getIndex().toString() + ". ");
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
 		Text rank = new Text(getRankingText(tempTask.getImportance()));
 		Text emptyLine = new Text("");
 		
-		setConstraints(eventTitle, 0, 0);
-		setConstraints(rank, 0, 1);
+		index.setFont(Font.font(18));
+		
+		setConstraints(index, 0, 0);
+		setConstraints(eventTitle, 1, 0);
+		setConstraints(rank, 1, 1);
 		setConstraints(emptyLine, 0, 2);
 		
-		taskDetail.getChildren().addAll(eventTitle, rank, emptyLine);
+		taskDetail.getChildren().addAll(index, eventTitle, rank, emptyLine);
 
 		return taskDetail;
 	}
 
 	private static GridPane createTaskDetail(Task tempTask) {
 		GridPane taskDetail = new GridPane();
+		Text index = new Text(tempTask.getIndex().toString() + ". ");
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 		Text timeLine;
 		Text rank;
+		
+		index.setFont(Font.font(18));
 		
 		if(tempTask.getStartTime() != null) {
 			timeLine = new Text("Time: " + tempTask.getStartTime() + " to " + tempTask.getEndTime());
@@ -120,12 +127,13 @@ public class OutputScreenPane extends GridPane {
 		
 		rank = new Text(getRankingText(tempTask.getImportance()));
 		
-		setConstraints(eventTitle, 0, 0);
-		setConstraints(timeLine, 0, 1);
-		setConstraints(rank, 0, 2);
+		setConstraints(index, 0, 0);
+		setConstraints(eventTitle, 1, 0);
+		setConstraints(timeLine, 1, 1);
+		setConstraints(rank, 1, 2);
 		setConstraints(emptyLine, 0, 3);
 		
-		taskDetail.getChildren().addAll(eventTitle, timeLine, rank, emptyLine);
+		taskDetail.getChildren().addAll(index, eventTitle, timeLine, rank, emptyLine);
 		
 		return taskDetail;
 	}

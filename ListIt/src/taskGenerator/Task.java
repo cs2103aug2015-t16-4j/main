@@ -131,6 +131,10 @@ public class Task implements Serializable {
 	public String getEventTitle() {
 		return eventTitle;
 	}
+	
+	public Integer getIndex() {
+		return index;
+	}
 
 	// SETTERS
 	public void setEventTitle(String eventTitle) {
