@@ -1,5 +1,6 @@
 package listItUI;
 
+import fileModifier.FileModifier;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -10,9 +11,11 @@ public class UIMain extends Application{
 	InputTextPane inputBox;
 	OutputScreenPane screenBox;
 	FeedbackPane FeedbackBox;
+	static FileModifier modifier = FileModifier.getInstance();
 
 	public static void main(String[] args) {
 		launch(args);
+		modifier.display(modifier.getContentList());
 	}
 
 	@Override
@@ -35,5 +38,6 @@ public class UIMain extends Application{
 		
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		modifier.display(modifier.getContentList());
 	}
 }

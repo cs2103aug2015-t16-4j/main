@@ -6,9 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import listItUI.OutputScreenPane;
@@ -18,7 +16,6 @@ import taskGenerator.TaskComparatorImpt;
 
 public class FileModifier {
 	private static FileModifier modifier;
-	private static Integer tempFileIndex = 1;
 	private static String viewMode = "default";
 	private File dataFile;
 	private String fileName = "test1.ser";
