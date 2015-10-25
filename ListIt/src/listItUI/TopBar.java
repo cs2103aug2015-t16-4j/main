@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
@@ -14,7 +16,6 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 	
 	private Text listItLabel;
 	private Button closeButton;
-	private Button minimizeButton;
 	
 	public TopBar() {
 		
@@ -23,25 +24,29 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 		listItLabel.setStyle("-fx-fill: linear-gradient(#0000FF 10%, #FFFFFF 30%, #0000FF 50%, #FFFFFF 70%, #0000FF 90%);"
 				+ "-fx-stroke: black;");
 		
-		closeButton = new Button("Close");
-		minimizeButton = new Button("Hide");	
+		closeButton = new Button();
 		closeButton.setOnAction(this);
+		
+		Image closeIcon = new Image(getClass().getResourceAsStream("icon1.png"));
+		ImageView iconView = new ImageView(closeIcon);
+		iconView.setFitHeight(40);
+		iconView.setFitWidth(40);
+		closeButton.setMaxSize(40, 40);
+		closeButton.setGraphic(iconView);
+		closeButton.setStyle("-fx-focus-color: transparent;");
 		
 		setConstraints(listItLabel, 1, 0);
 		setConstraints(closeButton, 2, 0);
-		setConstraints(minimizeButton, 3, 0);
 		
 		ColumnConstraints col0Constraints = new ColumnConstraints();
 		col0Constraints.setPercentWidth(2);
 		ColumnConstraints col1Constraints = new ColumnConstraints();
-		col1Constraints.setPercentWidth(78);
+		col1Constraints.setPercentWidth(88);
 		ColumnConstraints col2Constraints = new ColumnConstraints();
 		col2Constraints.setPercentWidth(10);
-		ColumnConstraints col3Constraints = new ColumnConstraints();
-		col3Constraints.setPercentWidth(10);
 		
-		getColumnConstraints().addAll(col0Constraints, col1Constraints, col2Constraints, col3Constraints);
-		getChildren().addAll(listItLabel, closeButton, minimizeButton);
+		getColumnConstraints().addAll(col0Constraints, col1Constraints, col2Constraints);
+		getChildren().addAll(listItLabel, closeButton);
 	}
 
 	@Override
