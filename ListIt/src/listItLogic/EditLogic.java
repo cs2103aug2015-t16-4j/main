@@ -5,11 +5,7 @@ import listItUI.FeedbackPane;
 
 public class EditLogic {
 
-	private static FileModifier modifier;
-
-	public EditLogic() {
-		FileModifier modifier = FileModifier.getInstance();
-	}
+	private static FileModifier modifier = FileModifier.getInstance();
 
 	public static void editEvent(String command) {
 		int IndexToBeEdit = Integer.parseInt(command.substring(5, 6));
@@ -30,7 +26,7 @@ public class EditLogic {
 			modifier.editTitle(IndexToBeEdit - 1, newTitle);
 			
 		} else if (command.contains("by importance")) {
-			String newImportance = command.substring(command.indexOf("rank") + 5);
+			String newImportance = command.substring(command.indexOf("importance") + 11);
 
 			modifier.editImportance(IndexToBeEdit - 1, newImportance);
 			

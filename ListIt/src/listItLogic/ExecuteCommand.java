@@ -108,7 +108,7 @@ public class ExecuteCommand {
 				previousTaskList = undoRedo.getListFromUndo();
 				undoRedo.storeListToRedo(modifier.getContentList());
 				modifier.saveFile(previousTaskList);
-				modifier.display();
+				modifier.display(previousTaskList);
 			}
 		}
 
@@ -120,8 +120,8 @@ public class ExecuteCommand {
 				lastTaskList = undoRedo.getListFromRedo();
 				undoRedo.storeListToUndo(modifier.getContentList());
 				modifier.saveFile(lastTaskList);
+				modifier.display(lastTaskList);
 			}
-			modifier.display();
 		} else {
 			FeedbackPane.displayInvalidInput();
 		}

@@ -21,7 +21,8 @@ public class SearchLogic {
 			keyword = keyword.substring(5);
 			taskList = modifier.searchByDate(keyword);
 			
-			Collections.sort(taskList, new TaskComparatorDefault());
+			modifier.setViewMode("default");
+			modifier.sort(taskList);
 			
 			modifier.display(taskList);
 			
@@ -31,16 +32,18 @@ public class SearchLogic {
 			int imptLevel = Integer.parseInt(keyword);
 			taskList = modifier.searchByImportance(imptLevel);
 			
-			Collections.sort(taskList, new TaskComparatorImpt());
+			modifier.setViewMode("impt");
+			modifier.sort(taskList);
 			
-			modifier.displayImpt(taskList);
+			modifier.display(taskList);
 		} 
 		else {
 			taskList = modifier.searchKeyword(keyword);
 			
-			Collections.sort(taskList, new TaskComparatorAlpha());
-			
-			modifier.displayAlpha(taskList);
+			modifier.setViewMode("alpha");
+			modifier.sort(taskList);
+
+			modifier.display(taskList);
 		}
 	}
 	

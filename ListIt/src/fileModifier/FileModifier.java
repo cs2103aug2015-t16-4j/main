@@ -14,12 +14,14 @@ import java.util.Collections;
 import listItUI.OutputScreenPane;
 import taskGenerator.Task;
 import taskGenerator.TaskComparatorDefault;
+import taskGenerator.TaskComparatorImpt;
 
 public class FileModifier {
 	private static FileModifier modifier;
 	private static Integer tempFileIndex = 1;
+	private static String viewMode = "default";
 	private File dataFile;
-	private String fileName = "test1.ser"; 
+	private String fileName = "test1.ser";
 
 	private FileModifier() {
 		dataFile = new File(fileName);
@@ -101,11 +103,9 @@ public class FileModifier {
 		
 		modifier.saveFile(newList);
 		
-		Collections.sort(newList, new TaskComparatorDefault());
-		
-		OutputScreenPane.displayList(newList);
+		modifier.display(newList);
 	}
-	
+
 	public void removeTask(int index) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		
@@ -113,32 +113,24 @@ public class FileModifier {
 		
 		modifier.saveFile(taskList);
 		
-		if(taskList.isEmpty()) {
-			OutputScreenPane.displayEmpty();
-		}
-		else {
-			OutputScreenPane.displayList(taskList);
-		}
-	}
-	
-	public void display() {
-		OutputScreenPane.displayList(getContentList());
+		modifier.display(taskList);
 	}
 	
 	public void display(ArrayList<Task> taskList) {
-		OutputScreenPane.displayList(taskList);
-	}
-	
-	public void displayEmpty() {
-		OutputScreenPane.displayEmpty();
-	}
-	
-	public void displayAlpha(ArrayList<Task> taskList) {
-		OutputScreenPane.displayListAlpha(taskList);
-	}
-	
-	public void displayImpt(ArrayList<Task> taskList) {
-		OutputScreenPane.displayListImpt(taskList);
+		
+		if(taskList.isEmpty()) {
+			OutputScreenPane.displayEmpty();
+		}
+		
+		else if(viewMode.equals("default")) {
+			OutputScreenPane.displayList(taskList);
+		}
+		else if(viewMode.equals("impt")) {
+			OutputScreenPane.displayListImpt(taskList);
+		}
+		else if(viewMode.equals("alpha")) {
+			OutputScreenPane.displayListAlpha(taskList);
+		}
 	}
 	
 	public void clearAll() {
@@ -148,7 +140,7 @@ public class FileModifier {
 		
 		modifier.saveFile(taskList);
 		
-		OutputScreenPane.displayEmpty();
+		modifier.display(taskList);
 	}
 
 	public ArrayList<Task> searchKeyword(String keyword) {
@@ -213,7 +205,7 @@ public class FileModifier {
 		taskList.set(lineToBeEdit, task);
 		modifier.saveFile(taskList);
 		
-		OutputScreenPane.displayList(taskList);
+		modifier.display(taskList);
 	}
 	
 	public void editImportance(int lineToBeEdit, String newImportance) {
@@ -226,7 +218,7 @@ public class FileModifier {
 		taskList.set(lineToBeEdit, task);
 		modifier.saveFile(taskList);
 		
-		OutputScreenPane.displayList(taskList);
+		modifier.display(taskList);
 	}
 
 	public void editTime(int indexToBeEdit, String newStartTime, String newEndTime) {
@@ -236,8 +228,26 @@ public class FileModifier {
 		
 		task.setStart(newStartTime);
 		task.setEnd(newEndTime);
+		
 		modifier.saveFile(taskList);
 		
-		OutputScreenPane.displayList(taskList);
+		modifier.display(taskList);
+	}
+	
+	public void sort(ArrayList<Task> taskList) {
+		if(viewMode.equals("default")) {
+			Collections.sort((taskList), new TaskComparatorDefault());
+		}
+		else if(viewMode.equals("impt")) {
+			Collections.sort((taskList), new TaskComparatorImpt());
+		}
+		
+		else if(viewMode.equals("alpha")) {
+			Collections.sort(taskList, new TaskComparatorImpt());
+		}
+	}
+	
+	public void setViewMode(String newMode) {
+		viewMode = newMode;
 	}
 }

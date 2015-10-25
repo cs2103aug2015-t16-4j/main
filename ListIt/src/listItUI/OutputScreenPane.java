@@ -41,6 +41,11 @@ public class OutputScreenPane extends GridPane {
 		
 		taskList.getChildren().clear();
 		
+		if(list.isEmpty()) {
+			displayEmpty();
+			return;
+		}
+		
 		if(list.get(0).getDate() != null) {
 			currentHeader = list.get(0).getDate();
 			headerText = new Text(currentHeader);

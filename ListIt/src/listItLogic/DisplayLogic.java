@@ -10,13 +10,12 @@ import taskGenerator.TaskComparatorImpt;
 import java.util.Collections;
 
 public class DisplayLogic {
-	
+
 	private static final String DISPLAY_ALPHA = "display alphabetic";
 	private static final String DISPLAY_IMPT = "display impt";
 	private static ArrayList<Task> list = new ArrayList<Task>();
 	static FileModifier modifier = FileModifier.getInstance();
-	
-	
+
 	public static void determineDisplayMode(String command) {
 		if (command.equals(DISPLAY_ALPHA)) {
 			displayByAlpha();
@@ -26,36 +25,28 @@ public class DisplayLogic {
 			defaultDisplay();
 		}
 	}
+
 	private static void displayByAlpha() {
 		list = modifier.getContentList();
-		if(list.isEmpty() == false) {
-			Collections.sort(list, new TaskComparatorAlpha());
-			modifier.displayAlpha(list);
-		}
-		else {
-			modifier.displayEmpty();
-		}
+		modifier.setViewMode("alpha");
+		modifier.sort(list);
+		modifier.saveFile(list);
+		modifier.display(list);
 	}
-	
+
 	private static void displayByImportance() {
 		list = modifier.getContentList();
-		if(list.isEmpty() == false) {
-			Collections.sort(list, new TaskComparatorImpt());
-			modifier.displayImpt(list);
-		}
-		else {
-			modifier.displayEmpty();
-		}
+		modifier.setViewMode("impt");
+		modifier.sort(list);
+		modifier.saveFile(list);
+		modifier.display(list);
 	}
-	
+
 	public static void defaultDisplay() {
 		list = modifier.getContentList();
-		if(list.isEmpty() == false) {
-			Collections.sort(list, new TaskComparatorDefault());
-			modifier.display(list);
-		}
-		else {
-			modifier.displayEmpty();
-		}
+		modifier.setViewMode("default");
+		modifier.sort(list);
+		modifier.saveFile(list);
+		modifier.display(list);
 	}
 }
