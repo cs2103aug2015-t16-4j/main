@@ -1,4 +1,4 @@
 .root {
-	-fx-background-color:
-    linear-gradient(#E0E0E0 0%, #00CCFF 10%, #FFFFFF 90%);
+	-fx-background-image: url("depositphotos_1617655-Brushed-silver-metallic-background.jpg");
+	-fx-background-repeat: no-repeat;
 }
