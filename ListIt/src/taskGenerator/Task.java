@@ -14,6 +14,7 @@ public class Task implements Serializable {
 	private Date start;
 	private Date end;
 	private Integer importance;
+	private Integer index;
 	private SimpleDateFormat dateInputFormatter = new SimpleDateFormat("ddMMyyyy");
 	private SimpleDateFormat dateOutputFormatter = new SimpleDateFormat("dd-MMMMM-yyyy");
 	private SimpleDateFormat timeInputFormatter = new SimpleDateFormat("HHmm");
@@ -162,5 +163,9 @@ public class Task implements Serializable {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setIndex(int index) {
+		this.index = index;
 	}
 }

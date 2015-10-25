@@ -30,6 +30,7 @@ public class DisplayLogic {
 		list = modifier.getContentList();
 		modifier.setViewMode("alpha");
 		modifier.sort(list);
+		modifier.updateIndex(list);
 		modifier.saveFile(list);
 		modifier.display(list);
 	}
@@ -38,6 +39,7 @@ public class DisplayLogic {
 		list = modifier.getContentList();
 		modifier.setViewMode("impt");
 		modifier.sort(list);
+		modifier.updateIndex(list);
 		modifier.saveFile(list);
 		modifier.display(list);
 	}
@@ -46,6 +48,7 @@ public class DisplayLogic {
 		list = modifier.getContentList();
 		modifier.setViewMode("default");
 		modifier.sort(list);
+		modifier.updateIndex(list);
 		modifier.saveFile(list);
 		modifier.display(list);
 	}

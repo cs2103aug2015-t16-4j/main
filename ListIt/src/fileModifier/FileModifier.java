@@ -101,6 +101,8 @@ public class FileModifier {
 		
 		newList.add(newtask);
 		
+		modifier.sort(newList);
+		modifier.updateIndex(newList);
 		modifier.saveFile(newList);
 		
 		modifier.display(newList);
@@ -111,6 +113,8 @@ public class FileModifier {
 		
 		taskList.remove(index);
 		
+		modifier.sort(taskList);
+		modifier.updateIndex(taskList);
 		modifier.saveFile(taskList);
 		
 		modifier.display(taskList);
@@ -188,11 +192,14 @@ public class FileModifier {
 		Task task = taskList.get(lineToBeEdit);
 		
 		task.setDate(newDate);
-		
+
 		taskList.set(lineToBeEdit, task);
+		
+		modifier.sort(taskList);
+		modifier.updateIndex(taskList);
 		modifier.saveFile(taskList);
 		
-		OutputScreenPane.displayList(taskList);
+		modifier.display(taskList);
 	}
 	
 	public void editTitle(int lineToBeEdit, String newTitle) {
@@ -203,6 +210,9 @@ public class FileModifier {
 		task.setEventTitle(newTitle);
 		
 		taskList.set(lineToBeEdit, task);
+		
+		modifier.sort(taskList);
+		modifier.updateIndex(taskList);
 		modifier.saveFile(taskList);
 		
 		modifier.display(taskList);
@@ -216,6 +226,9 @@ public class FileModifier {
 		task.setImportance(Integer.parseInt(newImportance));
 		
 		taskList.set(lineToBeEdit, task);
+		
+		modifier.sort(taskList);
+		modifier.updateIndex(taskList);
 		modifier.saveFile(taskList);
 		
 		modifier.display(taskList);
@@ -229,6 +242,8 @@ public class FileModifier {
 		task.setStart(newStartTime);
 		task.setEnd(newEndTime);
 		
+		modifier.sort(taskList);
+		modifier.updateIndex(taskList);
 		modifier.saveFile(taskList);
 		
 		modifier.display(taskList);
@@ -249,5 +264,16 @@ public class FileModifier {
 	
 	public void setViewMode(String newMode) {
 		viewMode = newMode;
+	}
+	
+	public void updateIndex(ArrayList<Task> taskList) {
+		if(taskList.isEmpty()) {
+			return;
+		}
+		else {
+			for(int i=1; i<= taskList.size(); i++) {
+				taskList.get(i-1).setIndex(i);
+			}
+		}
 	}
 }
