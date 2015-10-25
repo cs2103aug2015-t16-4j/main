@@ -216,7 +216,7 @@ public class FileModifier {
 		OutputScreenPane.displayList(taskList);
 	}
 	
-	public static void editImportance(int lineToBeEdit, String newImportance) {
+	public void editImportance(int lineToBeEdit, String newImportance) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		
 		Task task = taskList.get(lineToBeEdit);

@@ -18,7 +18,7 @@ public class EditLogic {
 			String newDate = command.substring(command.indexOf("by date") + 8);
 
 			if (AddLogic.checkValidDate(newDate)) {
-				modifier.editDate(IndexToBeEdit - 1, newDate);
+				modifier.editDate(IndexToBeEdit-1, newDate);
 			}
 
 			else {
@@ -28,15 +28,19 @@ public class EditLogic {
 			String newTitle = command.substring(command.indexOf("by title") + 9);
 
 			modifier.editTitle(IndexToBeEdit - 1, newTitle);
+			
 		} else if (command.contains("by importance")) {
 			String newImportance = command.substring(command.indexOf("rank") + 5);
 
-			modifier.editTitle(IndexToBeEdit - 1, newImportance);
+			modifier.editImportance(IndexToBeEdit - 1, newImportance);
+			
 		} else if (command.contains("by time")) {
 			String newStartTime = command.substring(command.indexOf("from") + 5, command.indexOf("to") - 1);
 			String newEndTime = command.substring(command.indexOf("to") + 3);
 
 			modifier.editTime(IndexToBeEdit - 1, newStartTime, newEndTime);
-		}
+			
+		} 
+		
 	}
 }
