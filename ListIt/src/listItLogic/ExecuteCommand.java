@@ -1,6 +1,5 @@
 package listItLogic;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import fileModifier.FileModifier;
@@ -29,7 +28,7 @@ public class ExecuteCommand {
 		String commandType = command.substring(0, command.indexOf(" "));
 
 		if (commandType.equals(ADD_COMMAND)) {
-			if (undoRedo.isRedoEmpty() == false) {
+			if (!undoRedo.isRedoEmpty()) {
 				undoRedo.clearRedo();
 			}
 			ArrayList<Task> taskList = new ArrayList<Task>();
@@ -57,9 +56,7 @@ public class ExecuteCommand {
 			undoRedo.storeListToUndo(taskList);
 
 			DeleteLogic.deleteEvent(command);
-		}
-
-		else if (commandType.equals(EDIT_COMMAND)) {
+		} else if (commandType.equals(EDIT_COMMAND)) {
 			if (undoRedo.isRedoEmpty() == false) {
 				undoRedo.clearRedo();
 			}
@@ -68,28 +65,19 @@ public class ExecuteCommand {
 			undoRedo.storeListToUndo(taskList);
 
 			EditLogic.editEvent(command);
-		}
-
-		else if (commandType.equals(SEARCH_COMMAND)) {
+		} else if (commandType.equals(SEARCH_COMMAND)) {
 			SearchLogic.searchKeyWord(command);
-		}
-
-		else if (commandType.equals(DISPLAY_COMMAND)) {
+		} else if (commandType.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.determineDisplayMode(command);
-		}
-
-		else {
+		} else {
 			FeedbackPane.displayInvalidInput();
 		}
 	}
 
 	public static void processCommandWithoutSpace(String command) {
-
 		if (command.contains(DISPLAY_COMMAND)) {
 			DisplayLogic.defaultDisplay();
-		}
-
-		else if (command.equals(CLEAR_COMMAND)) {
+		} else if (command.equals(CLEAR_COMMAND)) {
 			if (undoRedo.isRedoEmpty() == false) {
 				undoRedo.clearRedo();
 			}
@@ -98,9 +86,7 @@ public class ExecuteCommand {
 			undoRedo.storeListToUndo(taskList);
 
 			DeleteLogic.clearFile();
-		}
-
-		else if (command.equals(UNDO_COMMAND)) {
+		} else if (command.equals(UNDO_COMMAND)) {
 			if (undoRedo.isUndoEmpty()) {
 				FeedbackPane.displayInvalidUndo();
 			} else {
@@ -110,9 +96,7 @@ public class ExecuteCommand {
 				modifier.saveFile(previousTaskList);
 				modifier.display(previousTaskList);
 			}
-		}
-
-		else if (command.equals(REDO_COMMAND)) { // Shrestha Goswami :)
+		} else if (command.equals(REDO_COMMAND)) { // Shrestha Goswami :)
 			if (undoRedo.isRedoEmpty()) {
 				FeedbackPane.displayInvalidRedo();
 			} else {
