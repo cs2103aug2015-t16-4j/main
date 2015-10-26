@@ -10,6 +10,8 @@ import javafx.scene.Node;
 public class Task implements Serializable {
 
 	private String eventTitle;
+	private String startDay;
+	private String endDay;
 	private Date date;
 	private Date start;
 	private Date end;
@@ -34,6 +36,8 @@ public class Task implements Serializable {
 		this.isRepeat = false;
 		this.repeatday = null;
 		this.exception = null;
+		this.startDay = null;
+		this.endDay = null;
 	}
 
 	public Task(String eventTitle, String date, int importance) {
@@ -94,6 +98,24 @@ public class Task implements Serializable {
 		this.exception = exception;
 	}
 	
+	public Task(String eventTitle) {
+		this.eventTitle = eventTitle;
+		this.importance = 3;
+	}
+
+	public Task(String eventTitle, String startDay, String endDay) {
+		this.eventTitle = eventTitle;
+		this.importance = 3;
+		try {
+			this.startDay = dateInputFormatter.parse(startDay);
+			this.endDay = dateInputFormatter.parse(endDay);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	// GETTERS
+	
 	public boolean getRepeat() {
 		return this.isRepeat;
 	}
@@ -109,13 +131,7 @@ public class Task implements Serializable {
 	public String getRepeatCycle() {
 		return this.repeatCycle;
 	}
-
-	public Task(String eventTitle) {
-		this.eventTitle = eventTitle;
-		this.importance = 3;
-	}
-
-	// GETTERS
+	
 	public String getTitle() {
 		return eventTitle;
 	}

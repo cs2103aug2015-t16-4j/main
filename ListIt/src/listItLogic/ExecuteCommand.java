@@ -26,6 +26,7 @@ public class ExecuteCommand {
 	private static final String REPEAT_DAILY = "daily";
 	private static final String REPEAT_YEARLY = "yearly";
 	private static final String TYPE_BLOCK = "block";
+	private static final String CHANGE_DIRECTORY_COMMAND = "cd";
 
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	private static FileModifier modifier = FileModifier.getInstance();
@@ -82,6 +83,8 @@ public class ExecuteCommand {
 			SearchLogic.searchKeyWord(command);
 		} else if (commandType.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.determineDisplayMode(command);
+		} else if (commandType.equals(CHANGE_DIRECTORY_COMMAND)) {
+			ChangeDirectoryLogic.changeDirectory(command);
 		} else {
 			FeedbackPane.displayInvalidInput();
 		}
