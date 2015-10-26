@@ -29,6 +29,14 @@ public class AddLogic {
 			addEventDefault(command);
 		}
 	}
+	
+	public static void addRecursiveEvent(String command) {
+		String eventTitle = command.substring(0, command.lastIndexOf("repeat") - 2);
+		String repeatCycle = command.substring(command.lastIndexOf("repeat") + 7);
+		
+		Task newTask = new Task(eventTitle, repeatCycle, "repeat");
+		modifier.addTask(newTask);
+	}
 
 	private static String getEventDeadline(String command) {
 		return command.substring(command.lastIndexOf("by") + 3);

@@ -20,6 +20,7 @@ public class ExecuteCommand {
 	private static final String UNDO_COMMAND = "undo";
 	private static final String REDO_COMMAND = "redo";
 	private static final String SEARCH_COMMAND = "search";
+	private static final String TYPE_RECURSIVE = "repeat";
 
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	private static FileModifier modifier = FileModifier.getInstance();
@@ -42,6 +43,14 @@ public class ExecuteCommand {
 				AddLogic.addEventWithImportance(command);
 			} else if (command.contains(WITH_DEADLINE)) {
 				AddLogic.addEventWithDeadline(command);
+			} else if (command.contains(TYPE_RECURSIVE)) {
+				String repeatCycle = getRepeatCycle(command);
+				if(repeatCycle.equals("monthly") || repeatCycle.equals("daily") 
+				  || repeatCycle.equals("yearly") || repeatCycle.equals("weekly")) {
+				    AddLogic.addRecursiveEvent(command);
+				} else {
+					AddLogic.addEventDefault(command);
+				}
 			} else {
 				AddLogic.addEventDefault(command);
 			}
@@ -72,6 +81,10 @@ public class ExecuteCommand {
 		} else {
 			FeedbackPane.displayInvalidInput();
 		}
+	}
+	
+	private static String getRepeatCycle(String command) {
+		return command.substring(command.lastIndexOf("repeat") + 7);
 	}
 
 	public static void processCommandWithoutSpace(String command) {

@@ -13,12 +13,14 @@ public class Task implements Serializable {
 	private Date date;
 	private Date start;
 	private Date end;
+	private String repeat;
 	private Integer importance;
 	private Integer index;
 	private SimpleDateFormat dateInputFormatter = new SimpleDateFormat("ddMMyyyy");
 	private SimpleDateFormat dateOutputFormatter = new SimpleDateFormat("dd-MMMMM-yyyy");
 	private SimpleDateFormat timeInputFormatter = new SimpleDateFormat("HHmm");
 	private SimpleDateFormat timeOutputFormatter = new SimpleDateFormat("HH:mm");
+	private String repeatCycle;
 
 	// CONSTRUCTORS
 	public Task() {
@@ -27,6 +29,7 @@ public class Task implements Serializable {
 		this.importance = null;
 		this.start = null;
 		this.end = null;
+		this.repeat = null;
 	}
 
 	public Task(String eventTitle, String date, int importance) {
@@ -77,6 +80,20 @@ public class Task implements Serializable {
 			e.printStackTrace();
 		}
 		this.importance = 3;
+	}
+	
+	public Task(String eventTitle, String repeatCycle, String repeat) {
+		this.eventTitle = eventTitle;
+		this.repeatCycle = repeatCycle;
+		this.repeat = repeat;
+	}
+	
+	public String getRepeat() {
+		return this.repeat;
+	}
+	
+	public String getRepeatCycle() {
+		return this.repeatCycle;
 	}
 
 	public Task(String eventTitle) {
