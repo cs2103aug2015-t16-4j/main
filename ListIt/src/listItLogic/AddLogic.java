@@ -16,29 +16,32 @@ public class AddLogic {
 		String deadline = null;
 
 		try {
-			eventTitle = command.substring(4, command.lastIndexOf("by") - 1);
-			deadline = command.substring(command.lastIndexOf("by") + 3);
+			eventTitle = getEventTitleDeadline(command);
+			deadline = getEventDeadline(command);
 		} catch (Exception e) {
 			addEventDefault(command);
-			return;
 		}
 
-		if (checkValidDate(deadline)) {
-
+		if (isValidDate(deadline)) {
 			Task newTask = new Task(eventTitle, deadline);
-
 			modifier.addTask(newTask);
 		} else {
 			addEventDefault(command);
-			return;
 		}
 	}
 
-	static boolean checkValidDate(String deadline) {
+	private static String getEventDeadline(String command) {
+		return command.substring(command.lastIndexOf("by") + 3);
+	}
+
+	private static String getEventTitleDeadline(String command) {
+		return command.substring(4, command.lastIndexOf("by") - 1);
+	}
+
+	static boolean isValidDate(String deadline) {
 		boolean isValid = false;
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
-
 		dateFormat.setLenient(false);
 
 		try {
@@ -52,34 +55,34 @@ public class AddLogic {
 	}
 
 	public static void addEventDefault(String command) {
-		String eventTitle = command.substring(4);
-
+		String eventTitle = getEventTitleDefault(command);
 		Task newTask = new Task(eventTitle);
-
 		modifier.addTask(newTask);
+	}
+
+	private static String getEventTitleDefault(String command) {
+		return command.substring(4);
 	}
 
 	public static void addEventWithImportance(String command) {
 		String eventTitle = new String();
-		if (command.contains("by")) {
-
+		if (isEventWithDeadline(command)) {
 			String deadline = new String();
 			try {
-				eventTitle = command.substring(4, command.lastIndexOf("by") - 1);
-				deadline = command.substring(command.lastIndexOf("by") + 3, command.lastIndexOf("rank") - 1);
+				eventTitle = getEventTitleDeadline(command);
+				deadline = getEventDeadlineImportance(command);
 			} catch (Exception e) {
 				addEventWithDeadline(command);
 				return;
 			}
 
 			try {
-				int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 5));
-
-				if (checkValidDate(deadline)) {
+				int rank = convertStringToInt(command);
+				if (isValidDate(deadline)) {
 					Task newTask = new Task(eventTitle, deadline, rank);
 					modifier.addTask(newTask);
 				} else {
-					eventTitle = command.substring(4, command.lastIndexOf("rank") - 1);
+					eventTitle = getEventTitleImportance(command);
 					Task newTask = new Task(eventTitle, rank);
 					modifier.addTask(newTask);
 				}
@@ -89,8 +92,8 @@ public class AddLogic {
 			}
 		} else {
 			try {
-				eventTitle = command.substring(4, command.lastIndexOf("rank") - 1);
-				int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 5));
+				eventTitle = getEventTitleImportance(command);
+				int rank = convertStringToInt(command);
 				Task newTask = new Task(eventTitle, rank);
 				modifier.addTask(newTask);
 			} catch (Exception e) {
@@ -100,36 +103,51 @@ public class AddLogic {
 		}
 	}
 
+	private static int convertStringToInt(String command) {
+		return Integer.parseInt(command.substring(command.lastIndexOf("rank") + 5));
+	}
+
+	private static String getEventTitleImportance(String command) {
+		return command.substring(4, command.lastIndexOf("rank") - 1);
+	}
+
+	private static String getEventDeadlineImportance(String command) {
+		return command.substring(command.lastIndexOf("by") + 3, command.lastIndexOf("rank") - 1);
+	}
+
+	private static boolean isEventWithDeadline(String command) {
+		return command.contains("by");
+	}
+
 	public static void addEventWithTimeline(String command) {
 		String eventTitle = new String();
 		String deadline = new String();
 		String start = new String();
 
 		try {
-			eventTitle = command.substring(4, command.lastIndexOf("by") - 1);
-			deadline = command.substring(command.lastIndexOf("by") + 3, command.lastIndexOf("from") - 1);
-			start = command.substring(command.lastIndexOf("from") + 5, command.lastIndexOf("to") - 1);
+			eventTitle = getEventTitleDeadline(command);
+			deadline = getEventDeadlineTimeline(command);
+			start = getStartTime(command);
 		} catch (Exception e) {
 			addEventWithImportance(command);
 			return;
 		}
 
-		if (checkValidDate(deadline) && checkValidTime(start)) {
-
-			if (command.contains("rank")) {
+		if (isValidDate(deadline) && isValidTime(start)) {
+			if (isEventWithImportance(command)) {
 				try {
-					int rank = Integer.parseInt(command.substring(command.lastIndexOf("rank") + 5));
-					String end = command.substring(command.lastIndexOf("to") + 3, command.lastIndexOf("rank") - 1);
+					int rank = convertStringToInt(command);
+					String end = getEndTimeImportance(command);
 					Task newTask = new Task(eventTitle, deadline, start, end, rank);
 					modifier.addTask(newTask);
 				} catch (Exception e) {
-					String end = command.substring(command.lastIndexOf("to") + 3);
+					String end = getEndTime(command);
 					Task newTask = new Task(eventTitle, deadline, start, end);
 					modifier.addTask(newTask);
 				}
 
 			} else {
-				String end = command.substring(command.lastIndexOf("to") + 3);
+				String end = getEndTime(command);
 				Task newTask = new Task(eventTitle, deadline, start, end);
 				modifier.addTask(newTask);
 			}
@@ -139,7 +157,27 @@ public class AddLogic {
 		}
 	}
 
-	private static boolean checkValidTime(String start) {
+	private static String getEndTime(String command) {
+		return command.substring(command.lastIndexOf("to") + 3);
+	}
+
+	private static String getEndTimeImportance(String command) {
+		return command.substring(command.lastIndexOf("to") + 3, command.lastIndexOf("rank") - 1);
+	}
+
+	private static boolean isEventWithImportance(String command) {
+		return command.contains("rank");
+	}
+
+	private static String getStartTime(String command) {
+		return command.substring(command.lastIndexOf("from") + 5, command.lastIndexOf("to") - 1);
+	}
+
+	private static String getEventDeadlineTimeline(String command) {
+		return command.substring(command.lastIndexOf("by") + 3, command.lastIndexOf("from") - 1);
+	}
+
+	private static boolean isValidTime(String start) {
 		boolean isValid = false;
 		SimpleDateFormat formatter = new SimpleDateFormat("HHmm");
 
