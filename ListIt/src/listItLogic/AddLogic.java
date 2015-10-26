@@ -31,10 +31,24 @@ public class AddLogic {
 	}
 	
 	public static void addRecursiveEvent(String command) {
+		String repeatDay = null;
+		String exception = null;
 		String eventTitle = command.substring(0, command.lastIndexOf("repeat") - 2);
-		String repeatCycle = command.substring(command.lastIndexOf("repeat") + 7);
+		String repeatCycle = command.substring(command.lastIndexOf("repeat") + 7, command.lastIndexOf("on") - 2);
+		if(repeatCycle.equals("weekly") || repeatCycle.equals("yearly") || repeatCycle.equals("monthly")) {
+			if(command.contains("ex")) {
+			    repeatDay = command.substring(command.lastIndexOf("on") + 3, command.lastIndexOf("ex") - 2);
+			    exception = command.substring(command.lastIndexOf("ex") + 3);
+			} else {
+				repeatDay = command.substring(command.lastIndexOf("on") + 3);
+			}
+		} else {
+			if(command.contains("ex")) {
+				exception = command.substring(command.lastIndexOf("ex") + 3);
+			}
+		}
 		
-		Task newTask = new Task(eventTitle, repeatCycle, "repeat");
+		Task newTask = new Task(eventTitle, repeatCycle, repeatDay, exception, true);
 		modifier.addTask(newTask);
 	}
 

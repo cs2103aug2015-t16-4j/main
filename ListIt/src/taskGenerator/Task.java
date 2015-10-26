@@ -13,7 +13,7 @@ public class Task implements Serializable {
 	private Date date;
 	private Date start;
 	private Date end;
-	private String repeat;
+	private boolean isRepeat;
 	private Integer importance;
 	private Integer index;
 	private SimpleDateFormat dateInputFormatter = new SimpleDateFormat("ddMMyyyy");
@@ -21,6 +21,8 @@ public class Task implements Serializable {
 	private SimpleDateFormat timeInputFormatter = new SimpleDateFormat("HHmm");
 	private SimpleDateFormat timeOutputFormatter = new SimpleDateFormat("HH:mm");
 	private String repeatCycle;
+	private String repeatday;
+	private String exception;
 
 	// CONSTRUCTORS
 	public Task() {
@@ -29,7 +31,9 @@ public class Task implements Serializable {
 		this.importance = null;
 		this.start = null;
 		this.end = null;
-		this.repeat = null;
+		this.isRepeat = false;
+		this.repeatday = null;
+		this.exception = null;
 	}
 
 	public Task(String eventTitle, String date, int importance) {
@@ -82,14 +86,24 @@ public class Task implements Serializable {
 		this.importance = 3;
 	}
 	
-	public Task(String eventTitle, String repeatCycle, String repeat) {
+	public Task(String eventTitle, String repeatCycle, String repeatday, String exception, boolean isRepeat) {
 		this.eventTitle = eventTitle;
 		this.repeatCycle = repeatCycle;
-		this.repeat = repeat;
+		this.isRepeat = isRepeat;
+		this.repeatday = repeatday;
+		this.exception = exception;
 	}
 	
-	public String getRepeat() {
-		return this.repeat;
+	public boolean getRepeat() {
+		return this.isRepeat;
+	}
+	
+	public String getRepeatDay() {
+		return this.repeatday;
+	}
+	
+	public String getException() {
+		return this.exception;
 	}
 	
 	public String getRepeatCycle() {
