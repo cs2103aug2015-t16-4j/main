@@ -18,10 +18,14 @@ public class UndoAndRedoLogic {
 	}
 	
 	public static UndoAndRedoLogic getInstance() {
-		if(storage == null) {
+		if(isStorageNull()) {
 			storage = new UndoAndRedoLogic();
 		}
 		return storage;
+	}
+
+	private static boolean isStorageNull() {
+		return storage == null;
 	}
 	
 	public void storeListToUndo(ArrayList<Task> list) {

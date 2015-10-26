@@ -92,8 +92,7 @@ public class Task implements Serializable {
 	public String getDate() {
 		if (this.date != null) {
 			return dateOutputFormatter.format(date);
-		} 
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -107,19 +106,17 @@ public class Task implements Serializable {
 	}
 
 	public String getStartTime() {
-		if(this.start != null) {
+		if (this.start != null) {
 			return timeOutputFormatter.format(start);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
 	
 	public String getEndTime() {
-		if(this.end != null) {
+		if (this.end != null) {
 			return timeOutputFormatter.format(end);
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
