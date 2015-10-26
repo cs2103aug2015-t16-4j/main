@@ -29,7 +29,7 @@ public class AddLogic {
 			addEventDefault(command);
 		}
 	}
-	
+
 	public static void addRecursiveEvent(String command) {
 		String repeatDay = null;
 		String exception = null;
@@ -37,8 +37,8 @@ public class AddLogic {
 		String repeatCycle = command.substring(command.lastIndexOf("repeat") + 7, command.lastIndexOf("on") - 2);
 		if(repeatCycle.equals("weekly") || repeatCycle.equals("yearly") || repeatCycle.equals("monthly")) {
 			if(command.contains("ex")) {
-			    repeatDay = command.substring(command.lastIndexOf("on") + 3, command.lastIndexOf("ex") - 2);
-			    exception = command.substring(command.lastIndexOf("ex") + 3);
+				repeatDay = command.substring(command.lastIndexOf("on") + 3, command.lastIndexOf("ex") - 2);
+				exception = command.substring(command.lastIndexOf("ex") + 3);
 			} else {
 				repeatDay = command.substring(command.lastIndexOf("on") + 3);
 			}
@@ -47,7 +47,7 @@ public class AddLogic {
 				exception = command.substring(command.lastIndexOf("ex") + 3);
 			}
 		}
-		
+
 		Task newTask = new Task(eventTitle, repeatCycle, repeatDay, exception, true);
 		modifier.addTask(newTask);
 	}
@@ -212,5 +212,23 @@ public class AddLogic {
 
 		return isValid;
 	}
+
+	public static void addBlockEvent(String command){
+		String eventTitle = getEventTitleBlockDate(command);
+		String end = getEndTime(command);
+		String start = getBlockEventStartDate(command);
+		Task newTask = new Task(eventTitle,start,end); 
+		modifier.addTask(newTask); 
+	}
+
+	private static String getBlockEventStartDate(String command) {
+		return command.substring(command.lastIndexOf("block") + 5, command.lastIndexOf("to") - 1);	
+
+	}
+	private static String getEventTitleBlockDate(String command) {
+		return command.substring(4, command.lastIndexOf("block") - 1);
+
+	}
+
 
 }
