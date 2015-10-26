@@ -8,13 +8,15 @@ public class CommandParser {
 	}
 	
 	public static void processCommand(String command) {
-		if(command.contains(" ")) {
+		if (hasWhitespace(command)) {
 			ExecuteCommand.processCommandWithSpace(command);
-		}
-		
-		else {
+		} else {
 			ExecuteCommand.processCommandWithoutSpace(command);
 		}
+	}
+
+	private static boolean hasWhitespace(String command) {
+		return command.contains(" ");
 	}
 }
 	

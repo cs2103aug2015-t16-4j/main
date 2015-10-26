@@ -13,7 +13,7 @@ public class EditLogic {
 		if (command.contains("by date")) {
 			String newDate = command.substring(command.indexOf("by date") + 8);
 
-			if (AddLogic.checkValidDate(newDate)) {
+			if (AddLogic.isValidDate(newDate)) {
 				modifier.editDate(IndexToBeEdit-1, newDate);
 			}
 

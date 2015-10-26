@@ -11,24 +11,36 @@ import java.util.Collections;
 
 public class DisplayLogic {
 
-	private static final String DISPLAY_ALPHA = "display alphabetic";
+	private static final String DISPLAY_ALPHA = "display alpha";
 	private static final String DISPLAY_IMPT = "display impt";
 	private static ArrayList<Task> list = new ArrayList<Task>();
 	static FileModifier modifier = FileModifier.getInstance();
 
 	public static void determineDisplayMode(String command) {
-		if (command.equals(DISPLAY_ALPHA)) {
+		if (isDisplayAlphabetically(command)) {
 			displayByAlpha();
-		} else if (command.equals(DISPLAY_IMPT)) {
+		} else if (isDisplayByImportance(command)) {
 			displayByImportance();
 		} else {
 			defaultDisplay();
 		}
 	}
 
+	private static boolean isDisplayByImportance(String command) {
+		return command.equals(DISPLAY_IMPT);
+	}
+
+	private static boolean isDisplayAlphabetically(String command) {
+		return command.equals(DISPLAY_ALPHA);
+	}
+
 	private static void displayByAlpha() {
 		list = modifier.getContentList();
 		modifier.setViewMode("alpha");
+		updateFile();
+	}
+
+	private static void updateFile() {
 		modifier.sort(list);
 		modifier.updateIndex(list);
 		modifier.saveFile(list);
@@ -38,18 +50,12 @@ public class DisplayLogic {
 	private static void displayByImportance() {
 		list = modifier.getContentList();
 		modifier.setViewMode("impt");
-		modifier.sort(list);
-		modifier.updateIndex(list);
-		modifier.saveFile(list);
-		modifier.display(list);
+		updateFile();
 	}
 
 	public static void defaultDisplay() {
 		list = modifier.getContentList();
 		modifier.setViewMode("default");
-		modifier.sort(list);
-		modifier.updateIndex(list);
-		modifier.saveFile(list);
-		modifier.display(list);
+		updateFile();
 	}
 }
