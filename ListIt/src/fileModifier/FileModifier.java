@@ -19,6 +19,10 @@ public class FileModifier {
 	private static String viewMode = "default";
 	private File dataFile;
 	private String fileName = "test1.ser";
+	private static final String MODE_DEFAULT = "default";
+	private static final String MODE_IMPT = "impt";
+	private static final String MODE_ALPHA = "alpha";
+	
 
 	private FileModifier() {
 		dataFile = new File(fileName);
@@ -30,7 +34,7 @@ public class FileModifier {
 	}
 
 	public static FileModifier getInstance() {
-		if(modifier == null) {
+		if (modifier == null) {
 			modifier = new FileModifier();
 		}
 		return modifier;
@@ -42,7 +46,7 @@ public class FileModifier {
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
 			oos.writeObject(dataStorage);
 			oos.close();
-		} catch(Exception e){
+		} catch (Exception e){
 			e.printStackTrace(); 
 		}
 	}
@@ -51,87 +55,85 @@ public class FileModifier {
 		ArrayList<Task> list = new ArrayList<Task>();
 		
 		//Retrieve the list if the list exist, if not, create a empty list then retrieve
-		if(fileContainsData()) {
+		if (!isListEmpty()) {
 			try{
 				FileInputStream fis = new FileInputStream(dataFile);
 				ObjectInputStream ois = new ObjectInputStream(fis);
 				list = (ArrayList<Task>) ois.readObject();
 				ois.close();
-			} catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		
-		else {
-			
-			try{
+		} else {
+			try {
 				FileOutputStream fos = new FileOutputStream(dataFile, false);
 				ObjectOutputStream oos = new ObjectOutputStream(fos);
 				oos.writeObject(new ArrayList<Task>());
 				oos.close();
-			} catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
 		}
 
 		return list;
 	}
 
-	private boolean fileContainsData() {
-		boolean isDataExist = false;
+	private boolean isListEmpty() {
+		boolean isEmpty = true;
 		
-		try{
+		try {
 			FileInputStream fis = new FileInputStream(dataFile);
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			ArrayList<Task> list = (ArrayList<Task>) ois.readObject();
 			ois.close();
-			isDataExist = true;
-		} catch(Exception e) {
-			isDataExist = false;
+			isEmpty = false;
+		} catch (Exception e) {
+			isEmpty = true;
 		}
-		return isDataExist;
+		return isEmpty;
 	}
 	
 	public void addTask(Task newtask) {
 		ArrayList<Task> newList = modifier.getContentList();
-		
 		newList.add(newtask);
-		
+		updateFile(newList);
+	}
+
+	private void updateFile(ArrayList<Task> newList) {
 		modifier.sort(newList);
 		modifier.updateIndex(newList);
 		modifier.saveFile(newList);
-		
 		modifier.display(newList);
 	}
 
 	public void removeTask(int index) {
 		ArrayList<Task> taskList = modifier.getContentList();
-		
 		taskList.remove(index);
-		
-		modifier.sort(taskList);
-		modifier.updateIndex(taskList);
-		modifier.saveFile(taskList);
-		
-		modifier.display(taskList);
+		updateFile(taskList);
 	}
 	
 	public void display(ArrayList<Task> taskList) {
-		
 		if(taskList.isEmpty()) {
 			OutputScreenPane.displayEmpty();
-		}
-		
-		else if(viewMode.equals("default")) {
+		} else if (isViewModeDefault()) {
 			OutputScreenPane.displayList(taskList);
-		}
-		else if(viewMode.equals("impt")) {
+		} else if (isViewModeImpt()) {
 			OutputScreenPane.displayListImpt(taskList);
-		}
-		else if(viewMode.equals("alpha")) {
+		} else if (isViewModeAlpha()) {
 			OutputScreenPane.displayListAlpha(taskList);
 		}
+	}
+
+	private boolean isViewModeAlpha() {
+		return viewMode.equals(MODE_ALPHA);
+	}
+
+	private boolean isViewModeImpt() {
+		return viewMode.equals(MODE_IMPT);
+	}
+
+	private boolean isViewModeDefault() {
+		return viewMode.equals(MODE_DEFAULT);
 	}
 	
 	public void clearAll() {
@@ -140,7 +142,6 @@ public class FileModifier {
 		taskList.clear();
 		
 		modifier.saveFile(taskList);
-		
 		modifier.display(taskList);
 	}
 
@@ -148,22 +149,22 @@ public class FileModifier {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
 		
-		for ( int i =0;i<taskList.size();i++ ){
+		for (int i = 0; i < taskList.size(); i++){
 			Task task = taskList.get(i);
-			if(task.getTitle().contains(keyword)){
+			if (task.getTitle().contains(keyword)){
 				searchList.add(task);
 			}	
 		}
 		return searchList; 
 	}
 
-	public ArrayList<Task> searchByImportance(int searchKey ) {
+	public ArrayList<Task> searchByImportance(int searchKey) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
 		
-		for ( int i =0;i<taskList.size();i++ ){
+		for (int i = 0; i < taskList.size(); i++ ){
 			Task task = taskList.get(i);
-			if(task.getImportance()==searchKey){
+			if (task.getImportance() == searchKey){
 				searchList.add(task);
 			}	
 		}
@@ -174,9 +175,9 @@ public class FileModifier {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
 		
-		for ( int i =0;i<taskList.size();i++ ){
+		for (int i = 0; i < taskList.size(); i++ ){
 			Task task = taskList.get(i);
-			if(task.getDateInputForm().contains(date)){
+			if (task.getDateInputForm().contains(date)){
 				searchList.add(task);
 			}	
 		}
@@ -185,76 +186,44 @@ public class FileModifier {
 	
 	public void editDate(int lineToBeEdit, String newDate) {
 		ArrayList<Task> taskList = modifier.getContentList();
-		
 		Task task = taskList.get(lineToBeEdit);
-		
 		task.setDate(newDate);
-
 		taskList.set(lineToBeEdit, task);
-		
-		modifier.sort(taskList);
-		modifier.updateIndex(taskList);
-		modifier.saveFile(taskList);
-		
-		modifier.display(taskList);
+		updateFile(taskList);
 	}
 	
 	public void editTitle(int lineToBeEdit, String newTitle) {
 		ArrayList<Task> taskList = modifier.getContentList();
-		
 		Task task = taskList.get(lineToBeEdit);
-		
 		task.setEventTitle(newTitle);
-		
 		taskList.set(lineToBeEdit, task);
-		
-		modifier.sort(taskList);
-		modifier.updateIndex(taskList);
-		modifier.saveFile(taskList);
-		
-		modifier.display(taskList);
+		updateFile(taskList);
 	}
 	
 	public void editImportance(int lineToBeEdit, String newImportance) {
 		ArrayList<Task> taskList = modifier.getContentList();
-		
-		Task task = taskList.get(lineToBeEdit);
-		
+		Task task = taskList.get(lineToBeEdit);		
 		task.setImportance(Integer.parseInt(newImportance));
-		
 		taskList.set(lineToBeEdit, task);
-		
-		modifier.sort(taskList);
-		modifier.updateIndex(taskList);
-		modifier.saveFile(taskList);
-		
-		modifier.display(taskList);
+		updateFile(taskList);
 	}
 
 	public void editTime(int indexToBeEdit, String newStartTime, String newEndTime) {
 		ArrayList<Task> taskList = modifier.getContentList();
-		
 		Task task = taskList.get(indexToBeEdit);
-		
+
 		task.setStart(newStartTime);
 		task.setEnd(newEndTime);
 		
-		modifier.sort(taskList);
-		modifier.updateIndex(taskList);
-		modifier.saveFile(taskList);
-		
-		modifier.display(taskList);
+		updateFile(taskList);
 	}
 	
 	public void sort(ArrayList<Task> taskList) {
-		if(viewMode.equals("default")) {
+		if (isViewModeDefault()) {
 			Collections.sort((taskList), new TaskComparatorDefault());
-		}
-		else if(viewMode.equals("impt")) {
+		} else if (isViewModeImpt()) {
 			Collections.sort((taskList), new TaskComparatorImpt());
-		}
-		
-		else if(viewMode.equals("alpha")) {
+		} else if (isViewModeAlpha()) {
 			Collections.sort(taskList, new TaskComparatorImpt());
 		}
 	}
@@ -264,11 +233,10 @@ public class FileModifier {
 	}
 	
 	public void updateIndex(ArrayList<Task> taskList) {
-		if(taskList.isEmpty()) {
+		if (taskList.isEmpty()) {
 			return;
-		}
-		else {
-			for(int i=1; i<= taskList.size(); i++) {
+		} else {
+			for (int i = 1; i <= taskList.size(); i++) {
 				taskList.get(i-1).setIndex(i);
 			}
 		}
