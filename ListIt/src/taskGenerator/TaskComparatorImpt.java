@@ -18,9 +18,13 @@ public class TaskComparatorImpt implements Comparator<Task> {
 			result = task1.getImportance().compareTo(task2.getImportance());
 		}
 
-		if (result == 0) {
+		if (isResultZero(result)) {
 			result = task1.getTitle().compareTo(task2.getTitle());
 		}
 		return result;
+	}
+
+	private boolean isResultZero(int result) {
+		return result == 0;
 	}
 }
