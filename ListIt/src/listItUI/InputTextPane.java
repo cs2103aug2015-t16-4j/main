@@ -31,7 +31,7 @@ public class InputTextPane extends GridPane implements EventHandler<ActionEvent>
 	}
 	
 	public void handle(ActionEvent event) {
-		if(event.getSource() == inputField) {
+		if (event.getSource() == inputField) {
 			String command = inputField.getText();
 			CommandParser.processCommand(command);
 			inputField.setText("");

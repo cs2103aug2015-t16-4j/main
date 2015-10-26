@@ -51,7 +51,7 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 
 	@Override
 	public void handle(ActionEvent event) {
-		if(event.getSource() == closeButton) {
+		if (event.getSource() == closeButton) {
 			System.exit(0);
 		}
 	}

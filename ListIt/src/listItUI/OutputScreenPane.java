@@ -53,7 +53,7 @@ public class OutputScreenPane extends GridPane {
 			return;
 		}
 		
-		if(list.get(0).getDate() != null) {
+		if (list.get(0).getDate() != null) {
 			currentHeader = list.get(0).getDate();
 			headerText = new Text(currentHeader);
 
@@ -63,15 +63,14 @@ public class OutputScreenPane extends GridPane {
 		
 		for(int i = 0; i<list.size(); i++) {
 			tempTask = list.get(i);
-			if(tempTask.getDate() != null && isFloatingState == false) {
-				if(!tempTask.getDate().equals(currentHeader)) {
+			if (tempTask.getDate() != null && isFloatingState == false) {
+				if (!tempTask.getDate().equals(currentHeader)) {
 					currentHeader = tempTask.getDate();
 					headerText = new Text(currentHeader);
 					headerText.setFont(Font.font("Georgia", 20));
 					taskList.getChildren().add(headerText);
 				}
-			}
-			else if(tempTask.getDate() == null && isFloatingState == false){
+			} else if (isDateNull(tempTask) && isFloatingState == false){
 				headerText = new Text("Floating");
 				headerText.setFont(Font.font("Georgia", 20));
 				taskList.getChildren().add(headerText);
@@ -80,10 +79,9 @@ public class OutputScreenPane extends GridPane {
 			
 			GridPane taskDetail = new GridPane();
 			
-			if(isFloatingState) {
+			if (isFloatingState) {
 				taskDetail = createFloatingTaskDetail(tempTask);
-			}
-			else {
+			} else {
 				taskDetail = createTaskDetail(tempTask);
 			}
 			taskList.getChildren().add(taskDetail);
@@ -119,10 +117,9 @@ public class OutputScreenPane extends GridPane {
 		
 		index.setFont(Font.font(18));
 		
-		if(tempTask.getStartTime() != null) {
+		if (tempTask.getStartTime() != null) {
 			timeLine = new Text("Time: " + tempTask.getStartTime() + " to " + tempTask.getEndTime());
-		}
-		else {
+		} else {
 			timeLine = new Text("Time: -NA");
 		}
 		
@@ -142,13 +139,11 @@ public class OutputScreenPane extends GridPane {
 	private static String getRankingText(Integer importance) {
 		String rankDetail;
 		
-		if(importance == 1) {
+		if (importance == 1) {
 			rankDetail = "Very Important";
-		}
-		else if(importance == 2) {
+		} else if(importance == 2) {
 			rankDetail = "Important";
-		}
-		else {
+		} else {
 			rankDetail = "Not so Important";
 		}
 		
@@ -176,9 +171,11 @@ public class OutputScreenPane extends GridPane {
 		
 		taskList.getChildren().add(headerText);
 		
-		for(int i = 0; i<list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			tempTask = list.get(i);
-			if(list.get(i).getTitle().substring(0, 1).equals(currentHeader) == false) {
+			//Shi hao can you please refractor the conditional statement to another method
+			//it must be of type boolean and the name must positive so you will  put !method
+			if (list.get(i).getTitle().substring(0, 1).equals(currentHeader) == false) {
 				currentHeader = tempTask.getTitle().substring(0, 1);
 				headerText = new Text(currentHeader);
 				
@@ -187,13 +184,11 @@ public class OutputScreenPane extends GridPane {
 				taskList.getChildren().add(headerText);
 			}
 			
-			if(tempTask.getDate() == null) {
+			if (isDateNull(tempTask)) {
 				taskDetail = createFloatingTaskDetail(tempTask);
-			}
-
-			else {
+			} else {
 				taskDetail = createTaskDetail(tempTask);
-				}
+			}
 			taskList.getChildren().add(taskDetail);
 		}
 	}
@@ -210,9 +205,11 @@ public class OutputScreenPane extends GridPane {
 		
 		taskList.getChildren().add(headerText);
 		
-		for(int i = 0; i<list.size(); i++) {
+		for (int i = 0; i < list.size(); i++) {
 			tempTask = list.get(i);
-			if(getRankingText(tempTask.getImportance()).equals(currentHeader) == false) {
+			//Shi Hao can you please refractor the statement in the bracket to a method
+			//it must be of type boolean and the name must positive so you will  put !method
+			if (getRankingText(tempTask.getImportance()).equals(currentHeader) == false) {
 				currentHeader = getRankingText(tempTask.getImportance());
 				headerText = new Text(currentHeader);
 				
@@ -220,14 +217,16 @@ public class OutputScreenPane extends GridPane {
 				taskList.getChildren().add(headerText);
 			}
 			
-			if(tempTask.getDate() == null) {
+			if (isDateNull(tempTask)) {
 				taskDetail = createFloatingTaskDetail(tempTask);
-			}
-
-			else {
+			} else {
 				taskDetail = createTaskDetail(tempTask);
-				}
+			}
 			taskList.getChildren().add(taskDetail);
 		}
+	}
+
+	private static boolean isDateNull(Task tempTask) {
+		return tempTask.getDate() == null;
 	}
 }
