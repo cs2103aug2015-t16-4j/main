@@ -8,11 +8,11 @@ public class TaskComparatorDefault implements Comparator<Task> {
 	public int compare(Task task1, Task task2) {
 		int result = 0;
 		
-		if (task1.getDate() != null && task2.getDate() == null) {
+		if (task1.getEndDate() != null && task2.getEndDate() == null) {
 			return -1;
-		} else if (task1.getDate() == null && task2.getDate() != null) {
+		} else if (task1.getEndDate() == null && task2.getEndDate() != null) {
 			return 1;
-		} else if (task1.getDate() == null && task2.getDate() == null) {
+		} else if (task1.getEndDate() == null && task2.getEndDate() == null) {
 			return 0;
 		} else {
 			result = task1.getDateInDate().compareTo(task2.getDateInDate());

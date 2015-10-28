@@ -60,17 +60,28 @@ public class AddLogic {
 		return command.substring(4, command.lastIndexOf("by") - 1);
 	}
 
-	static boolean isValidDate(String deadline) {
+	static boolean isValidDate(String newDate) {
 		boolean isValid = false;
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("ddMMyyyy");
+		SimpleDateFormat dateTimeFormat = new SimpleDateFormat("ddMMyyyy HHmm");
 		dateFormat.setLenient(false);
+		dateTimeFormat.setLenient(false);
 
 		try {
-			Date date = dateFormat.parse(deadline);
+			Date date = dateFormat.parse(newDate);
 			isValid = true;
 		} catch (ParseException e) {
 			isValid = false;
+		}
+		
+		if(isValid == false) {
+			try {
+			Date date = dateTimeFormat.parse(newDate);
+			isValid = true;
+			} catch (ParseException e) {
+				isValid = false;
+			}
 		}
 
 		return isValid;
@@ -143,34 +154,33 @@ public class AddLogic {
 
 	public static void addEventWithTimeline(String command) {
 		String eventTitle = new String();
-		String deadline = new String();
-		String start = new String();
+		String startDate = new String();
+		String endDate = new String();
 
 		try {
-			eventTitle = getEventTitleDeadline(command);
-			deadline = getEventDeadlineTimeline(command);
-			start = getStartTime(command);
+			eventTitle = getEventTitleTimeline(command);
+			startDate = getStartDate(command);
 		} catch (Exception e) {
 			addEventWithImportance(command);
 			return;
 		}
 
-		if (isValidDate(deadline) && isValidTime(start)) {
+		if (isValidDate(startDate)) {
 			if (isEventWithImportance(command)) {
 				try {
 					int rank = convertStringToInt(command);
-					String end = getEndTimeImportance(command);
-					Task newTask = new Task(eventTitle, deadline, start, end, rank);
+					endDate = getEndDateImportance(command);
+					Task newTask = new Task(eventTitle, startDate, endDate, rank);
 					modifier.addTask(newTask);
 				} catch (Exception e) {
-					String end = getEndTime(command);
-					Task newTask = new Task(eventTitle, deadline, start, end);
+					endDate = getEndDateTimeline(command);
+					Task newTask = new Task(eventTitle, startDate, endDate);
 					modifier.addTask(newTask);
 				}
 
 			} else {
-				String end = getEndTime(command);
-				Task newTask = new Task(eventTitle, deadline, start, end);
+				endDate = getEndDateTimeline(command);
+				Task newTask = new Task(eventTitle, startDate, endDate);
 				modifier.addTask(newTask);
 			}
 		} else {
@@ -179,38 +189,28 @@ public class AddLogic {
 		}
 	}
 
+	private static String getEndDateTimeline(String command) {
+		return command.substring(command.lastIndexOf("to") + 3);
+	}
+
+	private static String getStartDate(String command) {
+		return command.substring(command.lastIndexOf("from") + 5, command.lastIndexOf("to") - 1);
+	}
+
+	private static String getEventTitleTimeline(String command) {
+		return command.substring(4, command.lastIndexOf("from") - 1);
+	}
+
 	private static String getEndTime(String command) {
 		return command.substring(command.lastIndexOf("to") + 3);
 	}
 
-	private static String getEndTimeImportance(String command) {
+	private static String getEndDateImportance(String command) {
 		return command.substring(command.lastIndexOf("to") + 3, command.lastIndexOf("rank") - 1);
 	}
 
 	private static boolean isEventWithImportance(String command) {
 		return command.contains("rank");
-	}
-
-	private static String getStartTime(String command) {
-		return command.substring(command.lastIndexOf("from") + 5, command.lastIndexOf("to") - 1);
-	}
-
-	private static String getEventDeadlineTimeline(String command) {
-		return command.substring(command.lastIndexOf("by") + 3, command.lastIndexOf("from") - 1);
-	}
-
-	private static boolean isValidTime(String start) {
-		boolean isValid = false;
-		SimpleDateFormat formatter = new SimpleDateFormat("HHmm");
-
-		try {
-			formatter.parse(start);
-			isValid = true;
-		} catch (ParseException e) {
-			isValid = false;
-		}
-
-		return isValid;
 	}
 
 	public static void addBlockEvent(String command){

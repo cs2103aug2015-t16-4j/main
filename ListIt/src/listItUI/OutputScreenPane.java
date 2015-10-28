@@ -54,8 +54,8 @@ public class OutputScreenPane extends GridPane {
 			return;
 		}
 		
-		if (list.get(0).getDate() != null) {
-			currentHeader = list.get(0).getDate();
+		if (list.get(0).getEndDate() != null) {
+			currentHeader = list.get(0).getEndDate();
 			headerText = new Text(currentHeader);
 			headerText.setFont(Font.font("Georgia", 20));
 			HBox header = generateHearder(headerText);
@@ -65,10 +65,11 @@ public class OutputScreenPane extends GridPane {
 		
 		for(int i = 0; i<list.size(); i++) {
 			tempTask = list.get(i);
-			if (tempTask.getDate() != null && isFloatingState == false) {
-				if (!tempTask.getDate().equals(currentHeader)) {
-					currentHeader = tempTask.getDate();
+			if (tempTask.getEndDate() != null && isFloatingState == false) {
+				if (!tempTask.getEndDate().equals(currentHeader)) {
+					currentHeader = tempTask.getEndDate();
 					headerText = new Text(currentHeader);
+					headerText.setFont(Font.font("Georgia", 20));
 					HBox header = generateHearder(headerText);
 					header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
 					taskList.getChildren().add(header);
@@ -123,29 +124,37 @@ public class OutputScreenPane extends GridPane {
 
 	private static GridPane createTaskDetail(Task tempTask) {
 		GridPane taskDetail = new GridPane();
+		boolean showDates = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
-		Text timeLine;
+		Text startDate = null;
+		Text endDate = null;
 		Text rank;
 		
 		index.setFont(Font.font(18));
 		
-		if (tempTask.getStartTime() != null) {
-			timeLine = new Text("Time: " + tempTask.getStartTime() + " to " + tempTask.getEndTime());
-		} else {
-			timeLine = new Text("Time: -NA");
+		if (tempTask.getStartDate() != null) {
+			startDate = new Text("Date of Start: " + tempTask.getStartDate() + " " + tempTask.getStartTime());
+			endDate = new Text("Date of End: " + tempTask.getEndDate() + " " + tempTask.getEndTime());
+			showDates = true;
 		}
 		
 		rank = new Text(getRankingText(tempTask.getImportance()));
 		
 		setConstraints(index, 0, 0);
 		setConstraints(eventTitle, 1, 0);
-		setConstraints(timeLine, 1, 1);
-		setConstraints(rank, 1, 2);
-		setConstraints(emptyLine, 0, 3);
-		
-		taskDetail.getChildren().addAll(index, eventTitle, timeLine, rank, emptyLine);
+		if(showDates) {
+			setConstraints(startDate, 1, 1);
+			setConstraints(endDate, 1, 2);
+			setConstraints(rank, 1, 3);
+			setConstraints(emptyLine, 0, 4);
+			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, rank, emptyLine);
+		} else {
+			setConstraints(rank, 1, 1);
+			setConstraints(emptyLine, 0, 2);
+			taskDetail.getChildren().addAll(index, eventTitle, rank, emptyLine);
+		}
 		
 		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
 		
@@ -207,10 +216,56 @@ public class OutputScreenPane extends GridPane {
 			if (isDateNull(tempTask)) {
 				taskDetail = createFloatingTaskDetail(tempTask);
 			} else {
-				taskDetail = createTaskDetail(tempTask);
+				taskDetail = createTaskDetailAlpha(tempTask);
 			}
 			taskList.getChildren().add(taskDetail);
 		}
+	}
+
+	private static GridPane createTaskDetailAlpha(Task tempTask) {
+		GridPane taskDetail = new GridPane();
+		boolean showDates = false;
+		Text index = new Text(tempTask.getIndex().toString() + ". ");
+		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text emptyLine = new Text("");
+		Text startDate = null;
+		Text endDate = null;
+		Text rank;
+		
+		index.setFont(Font.font(18));
+		
+		if (tempTask.getStartDate() != null) {
+			startDate = new Text("Date of Start: " + tempTask.getStartDate() + " " + tempTask.getStartTime());
+			endDate = new Text("Date of End: " + tempTask.getEndDate() + " " + tempTask.getEndTime());
+			showDates = true;
+		}
+		
+		if(showDates == false) {
+			if (tempTask.getEndDate() != null) {
+				endDate = new Text("Date of End: " + tempTask.getEndDate());
+			}
+		}
+		
+		rank = new Text(getRankingText(tempTask.getImportance()));
+		
+		setConstraints(index, 0, 0);
+		setConstraints(eventTitle, 1, 0);
+		if(showDates) {
+			setConstraints(startDate, 1, 1);
+			setConstraints(endDate, 1, 2);
+			setConstraints(rank, 1, 3);
+			setConstraints(emptyLine, 0, 4);
+			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, rank, emptyLine);
+		} else{
+			setConstraints(endDate, 1, 1);
+			setConstraints(rank, 1, 2);
+			setConstraints(emptyLine, 0, 3);
+			taskDetail.getChildren().addAll(index, eventTitle, endDate, rank, emptyLine);
+		}
+		
+		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
+		
+		return taskDetail;
 	}
 
 	public static void displayListImpt(ArrayList<Task> list) {
@@ -240,15 +295,73 @@ public class OutputScreenPane extends GridPane {
 			}
 			
 			if (isDateNull(tempTask)) {
-				taskDetail = createFloatingTaskDetail(tempTask);
+				taskDetail = createFloatingTaskDetailImpt(tempTask);
 			} else {
-				taskDetail = createTaskDetail(tempTask);
+				taskDetail = createTaskDetailImpt(tempTask);
 			}
 			taskList.getChildren().add(taskDetail);
 		}
 	}
 
+	private static GridPane createFloatingTaskDetailImpt(Task tempTask) {
+		GridPane taskDetail = new GridPane();
+		Text index = new Text(tempTask.getIndex().toString() + ". ");
+		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text emptyLine = new Text("");
+		
+		index.setFont(Font.font(18));
+		
+		setConstraints(index, 0, 0);
+		setConstraints(eventTitle, 1, 0);
+		setConstraints(emptyLine, 0, 2);
+		
+		taskDetail.getChildren().addAll(index, eventTitle, emptyLine);
+		
+		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #FFCCFF 20%, #FFFFFF 80%);");
+
+		return taskDetail;
+	}
+
+	private static GridPane createTaskDetailImpt(Task tempTask) {
+		GridPane taskDetail = new GridPane();
+		boolean showDates = false;
+		Text index = new Text(tempTask.getIndex().toString() + ". ");
+		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text emptyLine = new Text("");
+		Text startDate = null;
+		Text endDate = null;
+		
+		index.setFont(Font.font(18));
+		
+		if (tempTask.getStartDate() != null) {
+			startDate = new Text("Date of Start: " + tempTask.getStartDate() + " " + tempTask.getStartTime());
+			endDate = new Text("Date of End: " + tempTask.getEndDate() + " " + tempTask.getEndTime());
+			showDates = true;
+		}
+		
+		if(showDates == false) {
+			endDate = new Text("Date of End: " + tempTask.getEndDate());
+		}
+		
+		setConstraints(index, 0, 0);
+		setConstraints(eventTitle, 1, 0);
+		if(showDates) {
+			setConstraints(startDate, 1, 1);
+			setConstraints(endDate, 1, 2);
+			setConstraints(emptyLine, 0, 3);
+			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, emptyLine);
+		} else {
+			setConstraints(endDate, 1, 1);
+			setConstraints(emptyLine, 0, 2);
+			taskDetail.getChildren().addAll(index, eventTitle, endDate, emptyLine);
+		}
+		
+		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
+		
+		return taskDetail;
+	}
+
 	private static boolean isDateNull(Task tempTask) {
-		return tempTask.getDate() == null;
+		return tempTask.getEndDate() == null;
 	}
 }

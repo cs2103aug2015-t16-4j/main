@@ -42,8 +42,7 @@ public class ExecuteCommand {
 			taskList = modifier.getContentList();
 			undoRedo.storeListToUndo(taskList);
 
-			if (command.contains(WITH_TIMELINE_CONDITION1) && command.contains(WITH_TIMELINE_CONDITION2)
-					&& command.contains(WITH_DEADLINE)) {
+			if (command.contains(WITH_TIMELINE_CONDITION1) && command.contains(WITH_TIMELINE_CONDITION2)) {
 				AddLogic.addEventWithTimeline(command);
 			} else if (command.contains(WITH_IMPT)) {
 				AddLogic.addEventWithImportance(command);

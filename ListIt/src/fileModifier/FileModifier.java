@@ -11,6 +11,7 @@ import java.util.Collections;
 
 import listItUI.OutputScreenPane;
 import taskGenerator.Task;
+import taskGenerator.TaskComparatorAlpha;
 import taskGenerator.TaskComparatorDefault;
 import taskGenerator.TaskComparatorImpt;
 
@@ -184,10 +185,19 @@ public class FileModifier {
 		return searchList;
 	}
 	
-	public void editDate(int lineToBeEdit, String newDate) {
+	public void editEndDate(int lineToBeEdit, String endDate) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task task = taskList.get(lineToBeEdit);
-		task.setDate(newDate);
+		task.setEndDate(endDate);
+		taskList.set(lineToBeEdit, task);
+		updateFile(taskList);
+	}
+	
+	public void editTimeline(int lineToBeEdit, String startDate, String endDate) {
+		ArrayList<Task> taskList = modifier.getContentList();
+		Task task = taskList.get(lineToBeEdit);
+		task.setStartDate(startDate);
+		task.setEndDate(endDate);
 		taskList.set(lineToBeEdit, task);
 		updateFile(taskList);
 	}
@@ -207,16 +217,6 @@ public class FileModifier {
 		taskList.set(lineToBeEdit, task);
 		updateFile(taskList);
 	}
-
-	public void editTime(int indexToBeEdit, String newStartTime, String newEndTime) {
-		ArrayList<Task> taskList = modifier.getContentList();
-		Task task = taskList.get(indexToBeEdit);
-
-		task.setStart(newStartTime);
-		task.setEnd(newEndTime);
-		
-		updateFile(taskList);
-	}
 	
 	public void sort(ArrayList<Task> taskList) {
 		if (isViewModeDefault()) {
@@ -224,7 +224,7 @@ public class FileModifier {
 		} else if (isViewModeImpt()) {
 			Collections.sort((taskList), new TaskComparatorImpt());
 		} else if (isViewModeAlpha()) {
-			Collections.sort(taskList, new TaskComparatorImpt());
+			Collections.sort(taskList, new TaskComparatorAlpha());
 		}
 	}
 	

@@ -19,7 +19,7 @@ public class EditLogic {
 		if (isEditByDate(command)) {
 			String newDate = getNewDate(command);
 			if (AddLogic.isValidDate(newDate)) {
-				modifier.editDate(IndexToBeEdit-1, newDate);
+				modifier.editEndDate(IndexToBeEdit-1, newDate);
 			} else {
 				FeedbackPane.displayInvalidDate();
 			}
@@ -30,17 +30,17 @@ public class EditLogic {
 			String newImportance = getNewImportanceLevel(command);
 			modifier.editImportance(IndexToBeEdit - 1, newImportance);
 		} else if (isEditByTimeline(command)) {
-			String newStartTime = getNewStartTime(command);
-			String newEndTime = getNewEndTime(command);
-			modifier.editTime(IndexToBeEdit - 1, newStartTime, newEndTime);
+			String newStartDate = getNewStartDate(command);
+			String newEndDate = getNewEndDate(command);
+			modifier.editTimeline(IndexToBeEdit - 1, newStartDate, newEndDate);
 		} 
 	}
 
-	private static String getNewEndTime(String command) {
+	private static String getNewEndDate(String command) {
 		return command.substring(command.indexOf(COMMAND_TO) + 3);
 	}
 
-	private static String getNewStartTime(String command) {
+	private static String getNewStartDate(String command) {
 		return command.substring(command.indexOf(COMMAND_FROM) + 5, command.indexOf(COMMAND_TO) - 1);
 	}
 
