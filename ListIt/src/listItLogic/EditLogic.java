@@ -45,7 +45,7 @@ public class EditLogic {
 	}
 
 	private static String getNewImportanceLevel(String command) {
-		return command.substring(command.indexOf(COMMAND_IMPORTANCE) + 11);
+		return command.substring(command.indexOf(COMMAND_IMPORTANCE) + 8);
 	}
 
 	private static String getNewTitle(String command) {

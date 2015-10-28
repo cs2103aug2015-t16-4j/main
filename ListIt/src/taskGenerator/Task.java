@@ -188,7 +188,7 @@ public class Task implements Serializable {
 	
 	public void setEndDate(String end) {
 		try {
-			this.endDate = dateTimeInputFormatter.parse(end);
+			this.endDate = dateInputFormatter.parse(end);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -196,5 +196,13 @@ public class Task implements Serializable {
 	
 	public void setIndex(int index) {
 		this.index = index;
+	}
+
+	public void setEndDateWithTime(String endDate) {
+		try {
+			this.endDate = dateTimeInputFormatter.parse(endDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 }

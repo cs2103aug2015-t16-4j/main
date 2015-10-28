@@ -197,7 +197,7 @@ public class FileModifier {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task task = taskList.get(lineToBeEdit);
 		task.setStartDate(startDate);
-		task.setEndDate(endDate);
+		task.setEndDateWithTime(endDate);
 		taskList.set(lineToBeEdit, task);
 		updateFile(taskList);
 	}
