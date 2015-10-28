@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -56,9 +57,10 @@ public class OutputScreenPane extends GridPane {
 		if (list.get(0).getDate() != null) {
 			currentHeader = list.get(0).getDate();
 			headerText = new Text(currentHeader);
-
 			headerText.setFont(Font.font("Georgia", 20));
-			taskList.getChildren().add(headerText);
+			HBox header = generateHearder(headerText);
+			header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+			taskList.getChildren().add(header);
 		}
 		
 		for(int i = 0; i<list.size(); i++) {
@@ -67,13 +69,16 @@ public class OutputScreenPane extends GridPane {
 				if (!tempTask.getDate().equals(currentHeader)) {
 					currentHeader = tempTask.getDate();
 					headerText = new Text(currentHeader);
-					headerText.setFont(Font.font("Georgia", 20));
-					taskList.getChildren().add(headerText);
+					HBox header = generateHearder(headerText);
+					header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+					taskList.getChildren().add(header);
 				}
 			} else if (isDateNull(tempTask) && isFloatingState == false){
 				headerText = new Text("Floating");
 				headerText.setFont(Font.font("Georgia", 20));
-				taskList.getChildren().add(headerText);
+				HBox header = generateHearder(headerText);
+				header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+				taskList.getChildren().add(header);
 				isFloatingState = true;
 			}
 			
@@ -86,6 +91,13 @@ public class OutputScreenPane extends GridPane {
 			}
 			taskList.getChildren().add(taskDetail);
 		}
+	}
+
+	private static HBox generateHearder(Text headerText) {
+		HBox header = new HBox();
+		header.getChildren().add(headerText);
+		
+		return header;
 	}
 
 	private static GridPane createFloatingTaskDetail(Task tempTask) {
@@ -103,6 +115,8 @@ public class OutputScreenPane extends GridPane {
 		setConstraints(emptyLine, 0, 2);
 		
 		taskDetail.getChildren().addAll(index, eventTitle, rank, emptyLine);
+		
+		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #FFCCFF 20%, #FFFFFF 80%);");
 
 		return taskDetail;
 	}
@@ -132,6 +146,8 @@ public class OutputScreenPane extends GridPane {
 		setConstraints(emptyLine, 0, 3);
 		
 		taskDetail.getChildren().addAll(index, eventTitle, timeLine, rank, emptyLine);
+		
+		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
 		
 		return taskDetail;
 	}
@@ -169,7 +185,9 @@ public class OutputScreenPane extends GridPane {
 		
 		headerText.setFont(Font.font("Georgia", 20));
 		
-		taskList.getChildren().add(headerText);
+		HBox header = generateHearder(headerText);
+		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+		taskList.getChildren().add(header);
 		
 		for (int i = 0; i < list.size(); i++) {
 			tempTask = list.get(i);
@@ -181,7 +199,9 @@ public class OutputScreenPane extends GridPane {
 				
 				headerText.setFont(Font.font("Georgia", 20));
 				
-				taskList.getChildren().add(headerText);
+				header = generateHearder(headerText);
+				header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+				taskList.getChildren().add(header);
 			}
 			
 			if (isDateNull(tempTask)) {
@@ -203,18 +223,20 @@ public class OutputScreenPane extends GridPane {
 		
 		taskList.getChildren().clear();
 		
-		taskList.getChildren().add(headerText);
+		HBox header = generateHearder(headerText);
+		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+		taskList.getChildren().add(header);
 		
 		for (int i = 0; i < list.size(); i++) {
 			tempTask = list.get(i);
-			//Shi Hao can you please refractor the statement in the bracket to a method
-			//it must be of type boolean and the name must positive so you will  put !method
 			if (getRankingText(tempTask.getImportance()).equals(currentHeader) == false) {
 				currentHeader = getRankingText(tempTask.getImportance());
 				headerText = new Text(currentHeader);
 				
 				headerText.setFont(Font.font("Georgia", 20));
-				taskList.getChildren().add(headerText);
+				header = generateHearder(headerText);
+				header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+				taskList.getChildren().add(header);
 			}
 			
 			if (isDateNull(tempTask)) {
