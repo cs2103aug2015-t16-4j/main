@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fileModifier.FileModifier;
+import listItUI.FeedbackPane;
 import taskGenerator.Task;
 
 public class AddLogic {
@@ -88,13 +89,24 @@ public class AddLogic {
 	}
 
 	public static void addEventDefault(String command) {
-		String eventTitle = getEventTitleDefault(command);
-		Task newTask = new Task(eventTitle);
-		modifier.addTask(newTask);
+		String eventTitle = null;
+		try {
+		eventTitle = getEventTitleDefault(command);
+		} catch (InvalidCommandException e) {
+			FeedbackPane.displayInvalidTitle();
+		}
+		if(eventTitle != null) {
+			Task newTask = new Task(eventTitle);
+			modifier.addTask(newTask);
+		}
 	}
 
-	private static String getEventTitleDefault(String command) {
-		return command.substring(4);
+	private static String getEventTitleDefault(String command) throws InvalidCommandException {
+		if (command.length() > 3) {
+			return command.substring(4);
+		} else  {
+			throw new InvalidCommandException("Please enter an event title");
+		}
 	}
 
 	public static void addEventWithImportance(String command) {
