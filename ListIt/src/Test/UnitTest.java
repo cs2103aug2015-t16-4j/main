@@ -24,6 +24,7 @@ public class UnitTest {
 		DeleteLogic.clearFile();
 		testDeleteLogicClear(expected, "test clear");
 		
+		//creates a task object and adds it to the expected output 
 		Task task1 = new Task("EE2020 Oscilloscope project", "03112015");
 		expected.add(task1);
 		AddLogic.addEventWithDeadline("add Complete EE2020 oscilloscope project by 03112015");
