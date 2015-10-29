@@ -19,6 +19,7 @@ public class UnitTest {
 	@Test
 	public void test() throws InvalidCommandException {
 		ArrayList<Task> expected = new ArrayList<Task>();
+		String addMessage = null;
 		String deleteMessage = null;
 		DeleteLogic.clearFile();
 		testDeleteLogicClear(expected, "test clear");
@@ -27,6 +28,7 @@ public class UnitTest {
 		AddLogic.addEventWithDeadline("add Complete EE2020 oscilloscope project by 03112015");
 		testAddWithDeadlineLogic(modifier.getContentList(), expected, 
 				                 "test add with deadline logic");
+		
 		Task task2 = new Task("OP2 presentation", "06112015");
 		expected.add(task2);
 		AddLogic.addEventWithDeadline("add Oral Presentation 2 of Software Demo by 06112015");
@@ -50,6 +52,21 @@ public class UnitTest {
 			deleteMessage = e.getMessage();
 		}
 		testDeleteLogicDeleteEvent("null", deleteMessage, expected, "test delete 2");
+		try {
+			AddLogic.addEventDefault("add "); 
+		} catch (InvalidCommandException e) {
+			addMessage = e.getMessage();
+		}
+		testAddDefaultLogic("test default add", expected, "Please enter an event title", addMessage);
+	}
+	
+	private void testAddDefaultLogic(String description, ArrayList<Task> expected, String expectedMessage, String actualMessage) {
+		if(actualMessage == null) {
+			ArrayList<Task> actual = modifier.getContentList();
+			assertEquals(description, expected, actual);
+		} else {
+			assertEquals(description, expectedMessage, actualMessage);
+		}
 	}
     
 	private void testDeleteLogicClear(ArrayList<Task> expected, String description) {
