@@ -54,7 +54,7 @@ public class UnitTest {
     
 	private void testDeleteLogicClear(ArrayList<Task> expected, String description) {
 		ArrayList<Task> actual = modifier.getContentList();
-		assertEquals(description, expected, actual);
+		assertEquals(description, expected.size(), actual.size());
 	}
 	
 	private void testDeleteLogicDeleteEvent(String expectedMessage, String actualMessage,  

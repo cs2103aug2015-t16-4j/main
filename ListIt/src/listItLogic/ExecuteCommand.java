@@ -31,7 +31,7 @@ public class ExecuteCommand {
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	private static FileModifier modifier = FileModifier.getInstance();
 
-	public static void processCommandWithSpace(String command) {
+	public static void processCommandWithSpace(String command) throws InvalidCommandException {
 		String commandType = command.substring(0, command.indexOf(" "));
 
 		if (commandType.equals(ADD_COMMAND)) {
