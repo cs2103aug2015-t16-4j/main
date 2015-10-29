@@ -12,13 +12,14 @@ public class Task implements Serializable {
 	private String eventTitle;
 	private Date startDate;
 	private Date endDate;
+	private boolean hasTime = false;
 	private boolean isRepeat;
 	private Integer importance;
 	private Integer index;
 	private SimpleDateFormat dateTimeInputFormatter = new SimpleDateFormat("ddMMyyyy HHmm");
 	private SimpleDateFormat dateInputFormatter = new SimpleDateFormat("ddMMyyyy");
-	private SimpleDateFormat dateOutputFormatter = new SimpleDateFormat("dd-MMMMM-yyyy");
-	private SimpleDateFormat timeOutputFormatter = new SimpleDateFormat("HH:mm");
+	private SimpleDateFormat dateTimeOutputFormatter = new SimpleDateFormat("dd-MMMMM-yyyy HH:mm");
+	private SimpleDateFormat dateOutputFormatter = new SimpleDateFormat("dd-MMMM-yyyy");
 	private String repeatCycle;
 	private String repeatday;
 	private String exception;
@@ -43,6 +44,17 @@ public class Task implements Serializable {
 		}
 		this.importance = importance;
 	}
+	
+	public Task(String eventTitle, String date, int importance, boolean hasTime) {
+		this.eventTitle = eventTitle;
+		try {
+			this.endDate = dateTimeInputFormatter.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.hasTime = hasTime;
+		this.importance = importance;
+	}
 
 	public Task(String eventTitle, int importance) {
 		this.eventTitle = eventTitle;
@@ -52,15 +64,38 @@ public class Task implements Serializable {
 	public Task(String eventTitle, String start, String end, int importance) {
 		this.eventTitle = eventTitle;
 		try {
+			this.startDate = dateInputFormatter.parse(start);
+			this.endDate = dateInputFormatter.parse(end);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		this.importance = importance;
+	}
+	
+	public Task(String eventTitle, String start, String end, int importance, boolean hasTime) {
+		this.eventTitle = eventTitle;
+		try {
 			this.startDate = dateTimeInputFormatter.parse(start);
 			this.endDate = dateTimeInputFormatter.parse(end);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		this.importance = importance;
+		this.hasTime = hasTime;
 	}
 
 	public Task(String eventTitle, String start, String end) {
+		this.eventTitle = eventTitle;
+		this.importance = 3;
+		try {
+			this.startDate = dateInputFormatter.parse(start);
+			this.endDate = dateInputFormatter.parse(end);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public Task(String eventTitle, String start, String end, boolean hasTime) {
 		this.eventTitle = eventTitle;
 		this.importance = 3;
 		try {
@@ -69,6 +104,7 @@ public class Task implements Serializable {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		this.hasTime = hasTime;
 	}
 
 	public Task(String eventTitle, String date) {
@@ -79,7 +115,17 @@ public class Task implements Serializable {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public Task(String eventTitle, String date, boolean hasTime) {
+		this.eventTitle = eventTitle;
 		this.importance = 3;
+		try {
+			this.endDate = dateTimeInputFormatter.parse(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.hasTime = hasTime;
 	}
 	
 	public Task(String eventTitle, String repeatCycle, String repeatday, String exception, boolean isRepeat) {
@@ -118,7 +164,9 @@ public class Task implements Serializable {
 	}
 
 	public String getStartDate() {
-		if (this.startDate != null) {
+		if (this.startDate != null && hasTime) {
+			return dateTimeOutputFormatter.format(startDate);
+		} else if(this.startDate != null) {
 			return dateOutputFormatter.format(startDate);
 		} else {
 			return null;
@@ -126,11 +174,17 @@ public class Task implements Serializable {
 	}
 	
 	public String getEndDate() {
-		if (this.endDate != null) {
+		if (this.endDate != null && hasTime) {
+			return dateTimeOutputFormatter.format(endDate);
+		} else if(this.endDate != null) {
 			return dateOutputFormatter.format(endDate);
 		} else {
 			return null;
 		}
+	}
+	
+	public String getEndDateWithoutTime() {
+		return dateOutputFormatter.format(endDate);
 	}
 	
 	public String getDateInputForm() {
@@ -139,22 +193,6 @@ public class Task implements Serializable {
 	
 	public Date getDateInDate() {
 		return endDate;
-	}
-
-	public String getStartTime() {
-		if (this.startDate != null) {
-			return timeOutputFormatter.format(startDate);
-		} else {
-			return null;
-		}
-	}
-	
-	public String getEndTime() {
-		if (this.endDate != null) {
-			return timeOutputFormatter.format(endDate);
-		} else {
-			return null;
-		}
 	}
 
 	public Integer getImportance() {
@@ -180,6 +218,14 @@ public class Task implements Serializable {
 	
 	public void setStartDate(String start) {
 		try {
+			this.startDate = dateInputFormatter.parse(start);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void setStartDateWithTime(String start) {
+		try {
 			this.startDate = dateTimeInputFormatter.parse(start);
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -204,5 +250,9 @@ public class Task implements Serializable {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setHasTime(boolean set) {
+		this.hasTime = set;
 	}
 }

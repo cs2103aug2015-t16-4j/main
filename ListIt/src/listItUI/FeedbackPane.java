@@ -35,7 +35,7 @@ public class FeedbackPane extends GridPane{
 	}
 	
 	public static void displayInvalidIndexToDelete() {
-		feedbackScreen.appendText("Index is out of bounds");
+		feedbackScreen.appendText("Index is out of bounds!\n");
 	}
 
 	public static void displayInvalidRedo() {
