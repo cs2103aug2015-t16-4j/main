@@ -67,7 +67,7 @@ public class OutputScreenPane extends GridPane {
 			tempTask = list.get(i);
 			if (tempTask.getEndDate() != null && isFloatingState == false) {
 				if (!tempTask.getEndDateWithoutTime().equals(currentHeader)) {
-					currentHeader = tempTask.getEndDate();
+					currentHeader = tempTask.getEndDateWithoutTime();
 					headerText = new Text(currentHeader);
 					headerText.setFont(Font.font("Georgia", 20));
 					HBox header = generateHearder(headerText);
