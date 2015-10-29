@@ -33,6 +33,10 @@ public class FeedbackPane extends GridPane{
 	public static void displayInvalidInput() {
 		feedbackScreen.appendText("Invalid input!\n");
 	}
+	
+	public static void displayInvalidIndexToDelete() {
+		feedbackScreen.appendText("Index is out of bounds");
+	}
 
 	public static void displayInvalidRedo() {
 		feedbackScreen.appendText("No action can be redo!\n");

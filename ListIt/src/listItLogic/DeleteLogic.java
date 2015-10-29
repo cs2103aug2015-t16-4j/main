@@ -1,6 +1,7 @@
 package listItLogic;
 
 import fileModifier.FileModifier;
+import listItUI.FeedbackPane;
 
 public class DeleteLogic {
 	
@@ -9,9 +10,10 @@ public class DeleteLogic {
 	public static void deleteEvent(String command) throws InvalidCommandException {
 		int taskIndexToBeDelete = convertStringIndexToInt(command);
 		int sizeOfFile = modifier.getContentList().size();
-		if((taskIndexToBeDelete-1) < sizeOfFile) {
+		if((taskIndexToBeDelete-1) < sizeOfFile && taskIndexToBeDelete-1 >= 0) {
 			modifier.removeTask(taskIndexToBeDelete - 1);
 		} else {
+			FeedbackPane.displayInvalidIndexToDelete();
 			throw new InvalidCommandException("Index is out of bounds");
 		}
 	}

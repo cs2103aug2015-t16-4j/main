@@ -37,7 +37,19 @@ public class UnitTest {
 		}
 		testDeleteLogicDeleteEvent("Index is out of bounds", deleteMessage, expected, 
 				                   "test delete 3");
-		
+		try {
+			DeleteLogic.deleteEvent("delete 0");
+		} catch (InvalidCommandException e) {
+			deleteMessage = e.getMessage();
+		}
+		testDeleteLogicDeleteEvent("Index is out of bounds", deleteMessage, expected, 
+				                   "test delete 0");
+		try {
+			DeleteLogic.deleteEvent("delete 2");
+		} catch (InvalidCommandException e) {
+			deleteMessage = e.getMessage();
+		}
+		testDeleteLogicDeleteEvent("null", deleteMessage, expected, "test delete 2");
 	}
     
 	private void testDeleteLogicClear(ArrayList<Task> expected, String description) {
@@ -51,6 +63,8 @@ public class UnitTest {
 			assertEquals(description, expectedMessage, actualMessage);
 		} else {
 			ArrayList<Task> actual = modifier.getContentList();
+			int indexToDelete = Integer.parseInt(description.substring(11));
+			expected.remove(indexToDelete-1);
 			assertEquals(description, expected, actual);
 		}
 	}
