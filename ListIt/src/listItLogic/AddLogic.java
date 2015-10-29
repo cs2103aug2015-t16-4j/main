@@ -11,6 +11,7 @@ import taskGenerator.Task;
 public class AddLogic {
 
 	private static FileModifier modifier = FileModifier.getInstance();
+	private static String addMessage = null;
 
 	public static void addEventWithDeadline(String command) {
 		String eventTitle = null;
@@ -88,24 +89,30 @@ public class AddLogic {
 		return isValid;
 	}
 
-	public static void addEventDefault(String command) throws InvalidCommandException {
+	public static void addEventDefault(String command) {
 		String eventTitle = null;
 		eventTitle = getEventTitleDefault(command);
-	    FeedbackPane.displayInvalidTitle();
-		if(eventTitle != null) {
+		if(eventTitle == null) {
+			FeedbackPane.displayInvalidTitle();
+		} else {
 			Task newTask = new Task(eventTitle);
 			modifier.addTask(newTask);
 		}
 	}
 
-	private static String getEventTitleDefault(String command) throws InvalidCommandException {
+	private static String getEventTitleDefault(String command) {
 		if (command.length() > 3) {
 			return command.substring(4);
 		} else  {
-			throw new InvalidCommandException("Please enter an event title");
+			addMessage = "Please enter an event title";
+			return null;
 		}
 	}
-
+	
+	public static String getMessage() {
+		return addMessage;
+	}
+	
 	public static void addEventWithImportance(String command) {
 		String eventTitle = new String();
 		if (isEventWithDeadline(command)) {
