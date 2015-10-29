@@ -47,7 +47,7 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayInvalidUndo() {
-		feedbackScreen.appendText("No action can be undo!\n");
+		feedbackScreen.appendText("Redo not available before an undo!\n");
 		
 	}
 }
