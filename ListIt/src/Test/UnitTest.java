@@ -19,8 +19,9 @@ public class UnitTest {
 	@Test
 	public void test() throws InvalidCommandException {
 		ArrayList<Task> expected = new ArrayList<Task>();
+		String deleteMessage = null;
 		DeleteLogic.clearFile();
-		testDeleteLogic(expected, "test clear");
+		testDeleteLogicClear(expected, "test clear");
 		Task task1 = new Task("EE2020 Oscilloscope project", "03112015");
 		expected.add(task1);
 		AddLogic.addEventWithDeadline("add Complete EE2020 oscilloscope project by 03112015");
@@ -29,11 +30,29 @@ public class UnitTest {
 		Task task2 = new Task("OP2 presentation", "06112015");
 		expected.add(task2);
 		AddLogic.addEventWithDeadline("add Oral Presentation 2 of Software Demo by 06112015");
+		try {
+			DeleteLogic.deleteEvent("delete 3");
+		} catch (InvalidCommandException e) {
+			deleteMessage = e.getMessage();
+		}
+		testDeleteLogicDeleteEvent("Index is out of bounds", deleteMessage, expected, 
+				                   "test delete 3");
+		
 	}
     
-	private void testDeleteLogic(ArrayList<Task> expected, String description) {
+	private void testDeleteLogicClear(ArrayList<Task> expected, String description) {
 		ArrayList<Task> actual = modifier.getContentList();
 		assertEquals(description, expected, actual);
+	}
+	
+	private void testDeleteLogicDeleteEvent(String expectedMessage, String actualMessage,  
+			                                ArrayList<Task> expected, String description) {
+		if(actualMessage != null) {
+			assertEquals(description, expectedMessage, actualMessage);
+		} else {
+			ArrayList<Task> actual = modifier.getContentList();
+			assertEquals(description, expected, actual);
+		}
 	}
 	
 	private void testAddWithDeadlineLogic(ArrayList<Task> actual, ArrayList<Task> expected, 
