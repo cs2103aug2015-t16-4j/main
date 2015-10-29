@@ -88,13 +88,10 @@ public class AddLogic {
 		return isValid;
 	}
 
-	public static void addEventDefault(String command) {
+	public static void addEventDefault(String command) throws InvalidCommandException {
 		String eventTitle = null;
-		try {
 		eventTitle = getEventTitleDefault(command);
-		} catch (InvalidCommandException e) {
-			FeedbackPane.displayInvalidTitle();
-		}
+	    FeedbackPane.displayInvalidTitle();
 		if(eventTitle != null) {
 			Task newTask = new Task(eventTitle);
 			modifier.addTask(newTask);

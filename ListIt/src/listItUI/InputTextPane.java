@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import listItLogic.CommandParser;
+import listItLogic.InvalidCommandException;
 
 public class InputTextPane extends GridPane implements EventHandler<ActionEvent> {
 	
@@ -33,7 +34,11 @@ public class InputTextPane extends GridPane implements EventHandler<ActionEvent>
 	public void handle(ActionEvent event) {
 		if (event.getSource() == inputField) {
 			String command = inputField.getText();
-			CommandParser.processCommand(command);
+			try {
+				CommandParser.processCommand(command);
+			} catch (InvalidCommandException e) {
+				e.printStackTrace();
+			}
 			inputField.setText("");
 		}
 	}
