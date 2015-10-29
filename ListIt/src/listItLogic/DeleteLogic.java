@@ -6,9 +6,14 @@ public class DeleteLogic {
 	
 	private static FileModifier modifier = FileModifier.getInstance();
 
-	public static void deleteEvent(String command) {
+	public static void deleteEvent(String command) throws InvalidCommandException {
 		int taskIndexToBeDelete = convertStringIndexToInt(command);
-		modifier.removeTask(taskIndexToBeDelete - 1);	
+		int sizeOfFile = modifier.getContentList().size();
+		if((taskIndexToBeDelete-1) < sizeOfFile) {
+			modifier.removeTask(taskIndexToBeDelete - 1);
+		} else {
+			throw new InvalidCommandException("Index is out of bounds");
+		}
 	}
 
 	private static int convertStringIndexToInt(String command) {
