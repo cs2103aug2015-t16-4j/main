@@ -188,7 +188,14 @@ public class FileModifier {
 	public void editEndDate(int lineToBeEdit, String endDate) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task task = taskList.get(lineToBeEdit);
-		task.setEndDate(endDate);
+		if(endDate.contains(" ")) {
+			task.setEndDateWithTime(endDate);
+			task.setHasTime(true);
+		}
+		else {
+			task.setEndDate(endDate);
+			task.setHasTime(false);
+		}
 		taskList.set(lineToBeEdit, task);
 		updateFile(taskList);
 	}
@@ -196,8 +203,15 @@ public class FileModifier {
 	public void editTimeline(int lineToBeEdit, String startDate, String endDate) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task task = taskList.get(lineToBeEdit);
-		task.setStartDate(startDate);
-		task.setEndDateWithTime(endDate);
+		if(startDate.contains(" ")) {
+			task.setStartDateWithTime(startDate);
+			task.setEndDateWithTime(endDate);
+			task.setHasTime(true);
+		} else {
+			task.setStartDate(startDate);
+			task.setEndDate(endDate);
+			task.setHasTime(false);
+		}
 		taskList.set(lineToBeEdit, task);
 		updateFile(taskList);
 	}
