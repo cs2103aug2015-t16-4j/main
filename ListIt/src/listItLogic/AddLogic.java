@@ -5,11 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import fileModifier.FileModifier;
+import listItUI.FeedbackPane;
 import taskGenerator.Task;
 
 public class AddLogic {
 
 	private static FileModifier modifier = FileModifier.getInstance();
+	private static String addMessage = null;
 
 	public static void addEventWithDeadline(String command) {
 		String eventTitle = null;
@@ -93,15 +95,29 @@ public class AddLogic {
 	}
 
 	public static void addEventDefault(String command) {
-		String eventTitle = getEventTitleDefault(command);
-		Task newTask = new Task(eventTitle);
-		modifier.addTask(newTask);
+		String eventTitle = null;
+		eventTitle = getEventTitleDefault(command);
+		if(eventTitle == null) {
+			FeedbackPane.displayInvalidTitle();
+		} else {
+			Task newTask = new Task(eventTitle);
+			modifier.addTask(newTask);
+		}
 	}
 
 	private static String getEventTitleDefault(String command) {
-		return command.substring(4);
+		if (command.length() > 3) {
+			return command.substring(4);
+		} else  {
+			addMessage = "Please enter an event title";
+			return null;
+		}
 	}
-
+	
+	public static String getMessage() {
+		return addMessage;
+	}
+	
 	public static void addEventWithImportance(String command) {
 		String eventTitle = new String();
 		if (isEventWithDeadline(command)) {
