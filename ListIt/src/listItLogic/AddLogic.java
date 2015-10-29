@@ -25,7 +25,12 @@ public class AddLogic {
 		}
 
 		if (isValidDate(deadline)) {
-			Task newTask = new Task(eventTitle, deadline);
+			Task newTask;
+			if(containsTime(deadline)) {
+				newTask = new Task(eventTitle, deadline, true);
+			} else {
+				newTask = new Task(eventTitle, deadline);
+			}
 			modifier.addTask(newTask);
 		} else {
 			addEventDefault(command);
@@ -128,7 +133,12 @@ public class AddLogic {
 			try {
 				int rank = convertStringToInt(command);
 				if (isValidDate(deadline)) {
-					Task newTask = new Task(eventTitle, deadline, rank);
+					Task newTask;
+					if(containsTime(deadline)) {
+						newTask = new Task(eventTitle, deadline, rank, true);
+					} else {
+						newTask = new Task(eventTitle, deadline, rank);
+					}
 					modifier.addTask(newTask);
 				} else {
 					eventTitle = getEventTitleImportance(command);
@@ -186,17 +196,32 @@ public class AddLogic {
 				try {
 					int rank = convertStringToInt(command);
 					endDate = getEndDateImportance(command);
-					Task newTask = new Task(eventTitle, startDate, endDate, rank);
+					Task newTask;
+					if(containsTime(endDate)) {
+						newTask = new Task(eventTitle, startDate, endDate, rank, true);
+					} else {
+						newTask = new Task(eventTitle, startDate, endDate, rank);
+					}
 					modifier.addTask(newTask);
 				} catch (Exception e) {
 					endDate = getEndDateTimeline(command);
-					Task newTask = new Task(eventTitle, startDate, endDate);
+					Task newTask;
+					if(containsTime(endDate)) {
+						newTask = new Task(eventTitle, startDate, endDate, true);
+					} else {
+						newTask = new Task(eventTitle, startDate, endDate);
+					}
 					modifier.addTask(newTask);
 				}
 
 			} else {
 				endDate = getEndDateTimeline(command);
-				Task newTask = new Task(eventTitle, startDate, endDate);
+				Task newTask;
+				if(containsTime(endDate)) {
+					newTask = new Task(eventTitle, startDate, endDate, true);
+				} else {
+					newTask = new Task(eventTitle, startDate, endDate);
+				}
 				modifier.addTask(newTask);
 			}
 		} else {
@@ -244,6 +269,14 @@ public class AddLogic {
 	private static String getEventTitleBlockDate(String command) {
 		return command.substring(4, command.lastIndexOf("block") - 1);
 
+	}
+	
+	public static boolean containsTime(String date) {
+		if(date.contains(" ")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 

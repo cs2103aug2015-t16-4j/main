@@ -55,7 +55,7 @@ public class OutputScreenPane extends GridPane {
 		}
 		
 		if (list.get(0).getEndDate() != null) {
-			currentHeader = list.get(0).getEndDate();
+			currentHeader = list.get(0).getEndDateWithoutTime();
 			headerText = new Text(currentHeader);
 			headerText.setFont(Font.font("Georgia", 20));
 			HBox header = generateHearder(headerText);
@@ -66,7 +66,7 @@ public class OutputScreenPane extends GridPane {
 		for(int i = 0; i<list.size(); i++) {
 			tempTask = list.get(i);
 			if (tempTask.getEndDate() != null && isFloatingState == false) {
-				if (!tempTask.getEndDate().equals(currentHeader)) {
+				if (!tempTask.getEndDateWithoutTime().equals(currentHeader)) {
 					currentHeader = tempTask.getEndDate();
 					headerText = new Text(currentHeader);
 					headerText.setFont(Font.font("Georgia", 20));
@@ -135,9 +135,11 @@ public class OutputScreenPane extends GridPane {
 		index.setFont(Font.font(18));
 		
 		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Date of Start: " + tempTask.getStartDate() + " " + tempTask.getStartTime());
-			endDate = new Text("Date of End: " + tempTask.getEndDate() + " " + tempTask.getEndTime());
+			startDate = new Text("Date of Start: " + tempTask.getStartDate());
+			endDate = new Text("Date of End: " + tempTask.getEndDate());
 			showDates = true;
+		} else {
+			endDate = new Text("Date of End: " + tempTask.getEndDate());
 		}
 		
 		rank = new Text(getRankingText(tempTask.getImportance()));
@@ -151,9 +153,10 @@ public class OutputScreenPane extends GridPane {
 			setConstraints(emptyLine, 0, 4);
 			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, rank, emptyLine);
 		} else {
-			setConstraints(rank, 1, 1);
-			setConstraints(emptyLine, 0, 2);
-			taskDetail.getChildren().addAll(index, eventTitle, rank, emptyLine);
+			setConstraints(endDate, 1, 1);
+			setConstraints(rank, 1, 2);
+			setConstraints(emptyLine, 0, 3);
+			taskDetail.getChildren().addAll(index, eventTitle, endDate, rank, emptyLine);
 		}
 		
 		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
@@ -235,8 +238,8 @@ public class OutputScreenPane extends GridPane {
 		index.setFont(Font.font(18));
 		
 		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Date of Start: " + tempTask.getStartDate() + " " + tempTask.getStartTime());
-			endDate = new Text("Date of End: " + tempTask.getEndDate() + " " + tempTask.getEndTime());
+			startDate = new Text("Date of Start: " + tempTask.getStartDate());
+			endDate = new Text("Date of End: " + tempTask.getEndDate());
 			showDates = true;
 		}
 		
@@ -334,8 +337,8 @@ public class OutputScreenPane extends GridPane {
 		index.setFont(Font.font(18));
 		
 		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Date of Start: " + tempTask.getStartDate() + " " + tempTask.getStartTime());
-			endDate = new Text("Date of End: " + tempTask.getEndDate() + " " + tempTask.getEndTime());
+			startDate = new Text("Date of Start: " + tempTask.getStartDate());
+			endDate = new Text("Date of End: " + tempTask.getEndDate());
 			showDates = true;
 		}
 		
