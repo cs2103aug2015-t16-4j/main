@@ -9,7 +9,6 @@ import org.junit.Test;
 import fileModifier.FileModifier;
 import listItLogic.AddLogic;
 import listItLogic.DeleteLogic;
-import listItLogic.InvalidCommandException;
 import taskGenerator.Task;
 
 public class UnitTest {
