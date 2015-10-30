@@ -1,5 +1,7 @@
 package listItLogic;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import fileModifier.FileModifier;
@@ -21,17 +23,14 @@ public class ExecuteCommand {
 	private static final String REDO_COMMAND = "redo";
 	private static final String SEARCH_COMMAND = "search";
 	private static final String TYPE_RECURSIVE = "repeat";
-	private static final String REPEAT_MONTHLY = "monthly";
-	private static final String REPEAT_WEEKLY = "weekly";
-	private static final String REPEAT_DAILY = "daily";
-	private static final String REPEAT_YEARLY = "yearly";
 	private static final String TYPE_BLOCK = "block";
 	private static final String CHANGE_DIRECTORY_COMMAND = "cd";
+	private static final String WITH_DEADLINE_TYPE2 = "on";
 
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	private static FileModifier modifier = FileModifier.getInstance();
 
-	public static void processCommandWithSpace(String command) throws InvalidCommandException {
+	public static void processCommandWithSpace(String command) throws InvalidCommandException, FileNotFoundException, IOException {
 		String commandType = command.substring(0, command.indexOf(" "));
 
 		if (commandType.equals(ADD_COMMAND)) {
@@ -50,13 +49,8 @@ public class ExecuteCommand {
 				AddLogic.addEventWithDeadline(command);
 			} else if(command.contains(TYPE_BLOCK)){
 				AddLogic.addBlockEvent(command);
-			}else if (command.contains(TYPE_RECURSIVE)) {
-				String repeatCycle = getRepeatCycle(command);
-				if(isValidRecursiveType(repeatCycle)) {
-					AddLogic.addRecursiveEvent(command);
-				} else {
-					AddLogic.addEventDefault(command);
-				}
+			} else if (command.contains(TYPE_RECURSIVE) && (command.contains(WITH_DEADLINE_TYPE2))) {
+				AddLogic.addRecursiveEventDeadline(command);
 			} else {
 				AddLogic.addEventDefault(command);
 			}
@@ -87,15 +81,6 @@ public class ExecuteCommand {
 		} else {
 			FeedbackPane.displayInvalidInput();
 		}
-	}
-
-	private static boolean isValidRecursiveType(String repeatCycle) {
-		return repeatCycle.equals(REPEAT_MONTHLY) || repeatCycle.equals(REPEAT_DAILY) 
-				|| repeatCycle.equals(REPEAT_YEARLY) || repeatCycle.equals(REPEAT_WEEKLY);
-	}
-
-	private static String getRepeatCycle(String command) {
-		return command.substring(command.lastIndexOf("repeat") + 7);
 	}
 
 	public static void processCommandWithoutSpace(String command) {

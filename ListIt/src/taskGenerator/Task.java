@@ -5,8 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javafx.scene.Node;
-
 public class Task implements Serializable {
 
 	private String eventTitle;
@@ -14,22 +12,25 @@ public class Task implements Serializable {
 	private Date endDate;
 	private boolean hasTime = false;
 	private boolean isRepeat;
+	private boolean complete = false;
 	private Integer importance;
 	private Integer index;
 	private SimpleDateFormat dateTimeInputFormatter = new SimpleDateFormat("ddMMyyyy HHmm");
 	private SimpleDateFormat dateInputFormatter = new SimpleDateFormat("ddMMyyyy");
 	private SimpleDateFormat dateTimeOutputFormatter = new SimpleDateFormat("dd-MMMMM-yyyy HH:mm");
 	private SimpleDateFormat dateOutputFormatter = new SimpleDateFormat("dd-MMMM-yyyy");
-	private String repeatCycle;
-	private String repeatday;
+	private String repeatType;
+	private int repeatCycle;
 	private String exception;
 
 	// CONSTRUCTORS
 	public Task() {
 		this.eventTitle = null;
 		this.importance = null;
+		this.hasTime = false;
 		this.isRepeat = false;
-		this.repeatday = null;
+		this.repeatType = null;
+		this.repeatCycle = 0;
 		this.exception = null;
 		this.startDate = null;
 		this.endDate = null;
@@ -128,35 +129,53 @@ public class Task implements Serializable {
 		this.hasTime = hasTime;
 	}
 	
-	public Task(String eventTitle, String repeatCycle, String repeatday, String exception, boolean isRepeat) {
-		this.eventTitle = eventTitle;
-		this.repeatCycle = repeatCycle;
-		this.isRepeat = isRepeat;
-		this.repeatday = repeatday;
-		this.exception = exception;
-	}
-	
 	public Task(String eventTitle) {
 		this.eventTitle = eventTitle;
 		this.importance = 3;
 	}
+	
+	public Task(String eventTitle, String repeatType, int repeatCycle, String deadline, boolean isRepeat) {
+		this.eventTitle = eventTitle;
+		try {
+			this.endDate = dateInputFormatter.parse(deadline);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.isRepeat = isRepeat;
+		this.repeatType = repeatType;
+		this.repeatCycle = repeatCycle;	
+		this.importance = 3;
+	}
+	
+	public Task(String eventTitle, String repeatType, int repeatCycle, String deadline, boolean isRepeat, boolean hasTime) {
+		this.eventTitle = eventTitle;
+		try {
+			this.endDate = dateTimeInputFormatter.parse(deadline);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.isRepeat = isRepeat;
+		this.hasTime = hasTime;
+		this.repeatType = repeatType;
+		this.repeatCycle = repeatCycle;
+		this.importance = 3;
+	}
 
 	// GETTERS
-	
 	public boolean getRepeat() {
 		return this.isRepeat;
 	}
 	
-	public String getRepeatDay() {
-		return this.repeatday;
+	public int getRepeatCycle() {
+		return this.repeatCycle;
 	}
 	
 	public String getException() {
 		return this.exception;
 	}
 	
-	public String getRepeatCycle() {
-		return this.repeatCycle;
+	public String getRepeatType() {
+		return this.repeatType;
 	}
 	
 	public String getTitle() {
@@ -254,5 +273,17 @@ public class Task implements Serializable {
 	
 	public void setHasTime(boolean set) {
 		this.hasTime = set;
+	}
+	
+	public void setComplete(boolean done) {
+		this.complete = true;
+	}
+	
+	public void setRepeatCycle(int cycle) {
+		this.repeatCycle = cycle;
+	}
+	
+	public void setRepeatType(String type) {
+		this.repeatType = type;
 	}
 }
