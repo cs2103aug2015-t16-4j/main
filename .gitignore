@@ -1,10 +1,6 @@
 ListIt/test1.ser
-<<<<<<< HEAD
 ListIt/bin/listItLogic/AddLogic.class
 ListIt/bin/listItUI/FeedbackPane.class
 ListIt/bin/Test/UnitTest.class
 *.class
 *.ser
-=======
-ListIt/test1.ser
->>>>>>> origin/master
