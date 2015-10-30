@@ -37,28 +37,6 @@ public class AddLogic {
 		}
 	}
 
-	public static void addRecursiveEvent(String command) {
-		String repeatDay = null;
-		String exception = null;
-		String eventTitle = command.substring(0, command.lastIndexOf("repeat") - 2);
-		String repeatCycle = command.substring(command.lastIndexOf("repeat") + 7, command.lastIndexOf("on") - 2);
-		if(repeatCycle.equals("weekly") || repeatCycle.equals("yearly") || repeatCycle.equals("monthly")) {
-			if(command.contains("ex")) {
-				repeatDay = command.substring(command.lastIndexOf("on") + 3, command.lastIndexOf("ex") - 2);
-				exception = command.substring(command.lastIndexOf("ex") + 3);
-			} else {
-				repeatDay = command.substring(command.lastIndexOf("on") + 3);
-			}
-		} else {
-			if(command.contains("ex")) {
-				exception = command.substring(command.lastIndexOf("ex") + 3);
-			}
-		}
-
-		Task newTask = new Task(eventTitle, repeatCycle, repeatDay, exception, true);
-		modifier.addTask(newTask);
-	}
-
 	private static String getEventDeadline(String command) {
 		return command.substring(command.lastIndexOf("by") + 3);
 	}
@@ -252,6 +230,48 @@ public class AddLogic {
 
 	private static boolean isEventWithImportance(String command) {
 		return command.contains("rank");
+	}
+	
+	public static void addRecursiveEventDeadline(String command) {
+		String deadline = null;
+		String repeatType = null;
+		int repeatCycle = 0;
+		String eventTitle = command.substring(4, command.lastIndexOf("repeat") - 1);
+		String repeatCommand = command.substring(command.lastIndexOf("repeat") + 7, command.lastIndexOf("on") - 1);
+		if(isCorrectRepeatCycle(repeatCommand)) {
+			repeatType = parseRepeatType(repeatCommand);
+			repeatCycle = parseRepeatAmount(repeatCommand);
+			deadline = command.substring(command.lastIndexOf("on") + 3);
+			if(containsTime(deadline)) {
+				Task newTask = new Task(eventTitle, repeatType, repeatCycle, deadline, true, true);
+				modifier.addTask(newTask);
+			} else {
+				Task newTask = new Task(eventTitle, repeatType, repeatCycle, deadline, true);
+				modifier.addTask(newTask);
+			}
+		} else {
+			addEventWithDeadline(command);
+			return;
+		}
+	}
+
+	private static int parseRepeatAmount(String repeatCycle) {
+		return Integer.parseInt(repeatCycle.substring(0, repeatCycle.indexOf(" ")));
+	}
+
+	private static String parseRepeatType(String repeatCycle) {
+		return repeatCycle.substring(repeatCycle.indexOf(" ") + 1);
+	}
+
+	private static boolean isCorrectRepeatCycle(String repeatCycle) {
+		boolean result = false;
+		
+		if(repeatCycle.contains("day") || repeatCycle.contains("month") || repeatCycle.contains("year") ||
+				repeatCycle.contains("week")) {
+			result = true;
+			
+		}
+		return result;
 	}
 
 	public static void addBlockEvent(String command){

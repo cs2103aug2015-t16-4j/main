@@ -125,33 +125,53 @@ public class OutputScreenPane extends GridPane {
 	private static GridPane createTaskDetail(Task tempTask) {
 		GridPane taskDetail = new GridPane();
 		boolean showDates = false;
+		boolean showRepeat = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 		Text startDate = null;
 		Text endDate = null;
 		Text rank;
+		Text repeatCycle = null;
 		
 		index.setFont(Font.font(18));
 		
 		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Date of Start: " + tempTask.getStartDate());
-			endDate = new Text("Date of End: " + tempTask.getEndDate());
+			startDate = new Text("Start Date: " + tempTask.getStartDate());
+			endDate = new Text("End Date: " + tempTask.getEndDate());
 			showDates = true;
 		} else {
-			endDate = new Text("Date of End: " + tempTask.getEndDate());
+			endDate = new Text("End Date: " + tempTask.getEndDate());
 		}
 		
 		rank = new Text(getRankingText(tempTask.getImportance()));
 		
+		if(tempTask.getRepeat()) {
+			showRepeat = true;
+			repeatCycle = new Text("Repeat for each: " + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
+		}
+		
 		setConstraints(index, 0, 0);
 		setConstraints(eventTitle, 1, 0);
-		if(showDates) {
+		if(showDates && showRepeat) {
+			setConstraints(startDate, 1, 1);
+			setConstraints(endDate, 1, 2);
+			setConstraints(repeatCycle, 1, 3);
+			setConstraints(rank, 1, 4);
+			setConstraints(emptyLine, 0, 5);
+			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, repeatCycle, rank, emptyLine);
+		} else if(showDates){
 			setConstraints(startDate, 1, 1);
 			setConstraints(endDate, 1, 2);
 			setConstraints(rank, 1, 3);
 			setConstraints(emptyLine, 0, 4);
 			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, rank, emptyLine);
+		} else if(showRepeat) {
+			setConstraints(endDate, 1, 1);
+			setConstraints(repeatCycle, 1, 2);
+			setConstraints(rank, 1, 3);
+			setConstraints(emptyLine, 0, 4);
+			taskDetail.getChildren().addAll(index, eventTitle, endDate, repeatCycle, rank, emptyLine);
 		} else {
 			setConstraints(endDate, 1, 1);
 			setConstraints(rank, 1, 2);
@@ -203,8 +223,6 @@ public class OutputScreenPane extends GridPane {
 		
 		for (int i = 0; i < list.size(); i++) {
 			tempTask = list.get(i);
-			//Shi hao can you please refractor the conditional statement to another method
-			//it must be of type boolean and the name must positive so you will  put !method
 			if (list.get(i).getTitle().substring(0, 1).equals(currentHeader) == false) {
 				currentHeader = tempTask.getTitle().substring(0, 1);
 				headerText = new Text(currentHeader);
@@ -228,38 +246,58 @@ public class OutputScreenPane extends GridPane {
 	private static GridPane createTaskDetailAlpha(Task tempTask) {
 		GridPane taskDetail = new GridPane();
 		boolean showDates = false;
+		boolean showRepeat = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 		Text startDate = null;
 		Text endDate = null;
+		Text repeatCycle = null;
 		Text rank;
 		
 		index.setFont(Font.font(18));
 		
-		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Date of Start: " + tempTask.getStartDate());
-			endDate = new Text("Date of End: " + tempTask.getEndDate());
+		if(tempTask.getStartDate() != null) {
+			startDate = new Text("Start Date: " + tempTask.getStartDate());
+			endDate = new Text("End Date: " + tempTask.getEndDate());
 			showDates = true;
 		}
 		
 		if(showDates == false) {
 			if (tempTask.getEndDate() != null) {
-				endDate = new Text("Date of End: " + tempTask.getEndDate());
+				endDate = new Text("End Date: " + tempTask.getEndDate());
 			}
+		}
+		
+		if(tempTask.getRepeat()) {
+			showRepeat = true;
+			repeatCycle = new Text("Repeat for each: " + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
 		}
 		
 		rank = new Text(getRankingText(tempTask.getImportance()));
 		
 		setConstraints(index, 0, 0);
 		setConstraints(eventTitle, 1, 0);
-		if(showDates) {
+		if(showDates && showRepeat) {
+			setConstraints(startDate, 1, 1);
+			setConstraints(endDate, 1, 2);
+			setConstraints(repeatCycle, 1, 3);
+			setConstraints(rank, 1, 4);
+			setConstraints(emptyLine, 0, 5);
+			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, repeatCycle, rank, emptyLine);
+		} else if(showDates) {
 			setConstraints(startDate, 1, 1);
 			setConstraints(endDate, 1, 2);
 			setConstraints(rank, 1, 3);
 			setConstraints(emptyLine, 0, 4);
 			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, rank, emptyLine);
-		} else{
+		} else if(showRepeat) {
+			setConstraints(endDate, 1, 1);
+			setConstraints(repeatCycle, 1, 2);
+			setConstraints(rank, 1, 3);
+			setConstraints(emptyLine, 0, 4);
+			taskDetail.getChildren().addAll(index, eventTitle, endDate, repeatCycle, rank, emptyLine);
+		} else {
 			setConstraints(endDate, 1, 1);
 			setConstraints(rank, 1, 2);
 			setConstraints(emptyLine, 0, 3);
@@ -328,31 +366,49 @@ public class OutputScreenPane extends GridPane {
 	private static GridPane createTaskDetailImpt(Task tempTask) {
 		GridPane taskDetail = new GridPane();
 		boolean showDates = false;
+		boolean showRepeat = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 		Text startDate = null;
 		Text endDate = null;
+		Text repeatCycle = null;
 		
 		index.setFont(Font.font(18));
 		
-		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Date of Start: " + tempTask.getStartDate());
-			endDate = new Text("Date of End: " + tempTask.getEndDate());
+		if(tempTask.getStartDate() != null) {
+			startDate = new Text("Start Date: " + tempTask.getStartDate());
+			endDate = new Text("End Date: " + tempTask.getEndDate());
 			showDates = true;
 		}
 		
 		if(showDates == false) {
-			endDate = new Text("Date of End: " + tempTask.getEndDate());
+			endDate = new Text("End Date: " + tempTask.getEndDate());
+		}
+		
+		if(tempTask.getRepeat()) {
+			showRepeat = true;
+			repeatCycle = new Text("Repeat for each: " + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
 		}
 		
 		setConstraints(index, 0, 0);
 		setConstraints(eventTitle, 1, 0);
-		if(showDates) {
+		if(showDates && showRepeat) {
+			setConstraints(startDate, 1, 1);
+			setConstraints(endDate, 1, 2);
+			setConstraints(repeatCycle, 1, 3);
+			setConstraints(emptyLine, 0, 4);
+			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, repeatCycle, emptyLine);
+		} else if(showDates) {
 			setConstraints(startDate, 1, 1);
 			setConstraints(endDate, 1, 2);
 			setConstraints(emptyLine, 0, 3);
 			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, emptyLine);
+		} else if(showRepeat) {
+			setConstraints(endDate, 1, 1);
+			setConstraints(repeatCycle, 1, 2);
+			setConstraints(emptyLine, 0, 3);
+			taskDetail.getChildren().addAll(index, eventTitle, endDate, repeatCycle, emptyLine);
 		} else {
 			setConstraints(endDate, 1, 1);
 			setConstraints(emptyLine, 0, 2);
