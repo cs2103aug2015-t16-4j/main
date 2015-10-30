@@ -1,5 +1,7 @@
 package listItLogic;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import fileModifier.FileModifier;
@@ -31,7 +33,7 @@ public class ExecuteCommand {
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	private static FileModifier modifier = FileModifier.getInstance();
 
-	public static void processCommandWithSpace(String command) throws InvalidCommandException {
+	public static void processCommandWithSpace(String command) throws InvalidCommandException, FileNotFoundException, IOException {
 		String commandType = command.substring(0, command.indexOf(" "));
 
 		if (commandType.equals(ADD_COMMAND)) {
