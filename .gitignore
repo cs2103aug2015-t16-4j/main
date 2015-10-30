@@ -1,1 +1,6 @@
 ListIt/test1.ser
+ListIt/bin/listItLogic/AddLogic.class
+ListIt/bin/listItUI/FeedbackPane.class
+ListIt/bin/Test/UnitTest.class
+*.class
+*.ser
