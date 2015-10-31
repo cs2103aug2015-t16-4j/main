@@ -1,17 +1,11 @@
 package listItLogic;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-
 import fileModifier.FileModifier;
 import listItUI.FeedbackPane;
-import taskGenerator.Task;
 
 public class ChangeDirectoryLogic {
 	static FileModifier modifier = FileModifier.getInstance();
@@ -21,8 +15,9 @@ public class ChangeDirectoryLogic {
 		BufferedWriter textFileWriter;
 		
 		try {
-			textFileWriter = new BufferedWriter(new FileWriter(modifier.getPathFile(), false));
+			textFileWriter = new BufferedWriter(new FileWriter(modifier.getPathFile()));
 			textFileWriter.write(newPath);
+			textFileWriter.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
