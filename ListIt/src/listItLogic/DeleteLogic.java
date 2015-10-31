@@ -7,6 +7,7 @@ public class DeleteLogic {
 	
 	private static FileModifier modifier = FileModifier.getInstance();
 	private static String message = null;
+	private static final String MESSAGE_OUT_OF_BOUNDS = "Index is out of bounds";
 
 	public static void deleteEvent(String command) {
 		int taskIndexToBeDelete = convertStringIndexToInt(command);
@@ -15,7 +16,7 @@ public class DeleteLogic {
 			modifier.removeTask(taskIndexToBeDelete - 1);
 		} else {
 			FeedbackPane.displayInvalidIndexToDelete();
-			message = "Index is out of bounds";
+			message = MESSAGE_OUT_OF_BOUNDS;
 		}
 	}
 

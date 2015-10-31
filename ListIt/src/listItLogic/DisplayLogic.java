@@ -13,6 +13,9 @@ public class DisplayLogic {
 
 	private static final String DISPLAY_ALPHA = "display alpha";
 	private static final String DISPLAY_IMPT = "display impt";
+	private static final String COMMAND_ALPHA = "alpha";
+	private static final String COMMAND_IMPT = "impt";
+	private static final String COMMAND_DEFAULT = "default";
 	private static ArrayList<Task> list = new ArrayList<Task>();
 	static FileModifier modifier = FileModifier.getInstance();
 
@@ -36,7 +39,7 @@ public class DisplayLogic {
 
 	private static void displayByAlpha() {
 		list = modifier.getContentList();
-		modifier.setViewMode("alpha");
+		modifier.setViewMode(COMMAND_ALPHA);
 		updateFile();
 	}
 
@@ -49,13 +52,13 @@ public class DisplayLogic {
 
 	private static void displayByImportance() {
 		list = modifier.getContentList();
-		modifier.setViewMode("impt");
+		modifier.setViewMode(COMMAND_IMPT);
 		updateFile();
 	}
 
 	public static void defaultDisplay() {
 		list = modifier.getContentList();
-		modifier.setViewMode("default");
+		modifier.setViewMode(COMMAND_DEFAULT);
 		updateFile();
 	}
 }
