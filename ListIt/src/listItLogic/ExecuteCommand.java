@@ -51,6 +51,8 @@ public class ExecuteCommand {
 				AddLogic.addBlockEvent(command);
 			} else if (command.contains(TYPE_RECURSIVE) && (command.contains(WITH_DEADLINE_TYPE2))) {
 				AddLogic.addRecursiveEventDeadline(command);
+			} else if (command.contains(WITH_DEADLINE_TYPE2)) {
+				AddLogic.addEventWithDeadlineUsingOn(command);
 			} else {
 				AddLogic.addEventDefault(command);
 			}

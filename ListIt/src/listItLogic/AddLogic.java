@@ -51,13 +51,45 @@ public class AddLogic {
 			addEventDefault(command);
 		}
 	}
+	
+	public static void addEventWithDeadlineUsingOn(String command) {
+		String eventTitle = null;
+		String deadline = null;
+
+		try {
+			eventTitle = getEventTitleDeadlineWithOn(command);
+			deadline = getEventDeadlineWithOn(command);
+		} catch (Exception e) {
+			addEventDefault(command);
+		}
+
+		if (isValidDate(deadline)) {
+			Task newTask;
+			if(containsTime(deadline)) {
+				newTask = new Task(eventTitle, deadline, true);
+			} else {
+				newTask = new Task(eventTitle, deadline);
+			}
+			modifier.addTask(newTask);
+		} else {
+			addEventDefault(command);
+		}
+	}
 
 	private static String getEventDeadline(String command) {
 		return command.substring(command.lastIndexOf(COMMAND_BY) + 3);
 	}
+	
+	private static String getEventDeadlineWithOn(String command) {
+		return command.substring(command.lastIndexOf(COMMAND_ON) + 3);
+	}
 
 	private static String getEventTitleDeadline(String command) {
 		return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
+	}
+	
+	private static String getEventTitleDeadlineWithOn(String command) {
+		return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
 	}
 
 	static boolean isValidDate(String newDate) {
