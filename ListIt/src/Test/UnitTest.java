@@ -62,16 +62,33 @@ public class UnitTest {
 		testSearchLogicDate("test search date which is not present" , expected); 
 		
 	   //test for importance ( 1 & 4) 
-		SearchLogic.searchKeyWord("search impt 1");
+		SearchLogic.searchKeyWord("search impt 3");
 		
 		SearchLogic.searchKeyWord("search impt 4");
 
 	   //test key word present and not present . 
 		SearchLogic.searchKeyWord("search Oral Presentation 2"); 
 		
-		SearchLogic.searchKeyWord("search tutorial work"); 	
+		SearchLogic.searchKeyWord("search tutorial work"); 
+		testSort(); 
 	}
 	
+	private void testSort() {
+		ArrayList<Task> expected = new ArrayList<Task>(); 
+		ArrayList<Task> actual = new ArrayList<Task>(); 
+		Task task1 = new Task("EE2020 Oscilloscope project");
+		expected.add(task1); 
+		Task task2 = new Task("OP2 presentation");
+		expected.add(task2); 
+		
+		AddLogic.addEventDefault("EE2020 Oscilloscope project");
+		AddLogic.addEventDefault("OP2 presentation");
+		actual = modifier.getContentList(); 
+		
+		assertEquals("test if sort works" , expected , actual); 	
+		
+	}
+
 	private void testSearchLogicDate(String description, ArrayList<Task> expected ) {
 		 // i need to get the searchList . 	
 	}
