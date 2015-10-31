@@ -256,8 +256,16 @@ public class FileModifier {
 		}
 	}
 
-	public void completeTask(int i) {
-		// TODO Auto-generated method stub
+	public void completeTask(int index) {
+		ArrayList<Task> completedList = new ArrayList<Task>(); 
+		ArrayList<Task> taskList = modifier.getContentList();
 		
+		Task completedTitle = taskList.get(index); 
+		completedList.add(completedTitle); 
+		taskList.remove(index); 
+		updateFile(taskList);  
+		saveFile(completedList); 
+		// need to display this. 
+		//modifier.displayComplete(completedList);	
 	}
 }

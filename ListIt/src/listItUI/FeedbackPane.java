@@ -60,7 +60,6 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayInvalidIndexComplete() {
-		feedbackScreen.appendText("Invalid input , index is out of bounds!\n"); 
-		
+		feedbackScreen.appendText("Invalid input , index is out of bounds!\n"); 	
 	}
 }
