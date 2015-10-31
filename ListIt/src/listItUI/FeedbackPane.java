@@ -61,4 +61,12 @@ public class FeedbackPane extends GridPane{
 	public static void displayInvalidIndexComplete() {
 		feedbackScreen.appendText("Invalid input , index is out of bounds!\n"); 	
 	}
+
+	public static void displayInvalidAdd() {
+		feedbackScreen.appendText("Cannot add when viewing complete List!\n");
+	}
+
+	public static void displayInvalidEdit() {
+		feedbackScreen.appendText("Cannot edit when viewing complete List!\n");
+	}
 }
