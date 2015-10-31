@@ -69,4 +69,8 @@ public class FeedbackPane extends GridPane{
 	public static void displayInvalidEdit() {
 		feedbackScreen.appendText("Cannot edit when viewing complete List!\n");
 	}
+
+	public static void displayInvalidComplete() {
+		feedbackScreen.appendText("Cannot complete event when viewing complete List!\n");
+	}
 }

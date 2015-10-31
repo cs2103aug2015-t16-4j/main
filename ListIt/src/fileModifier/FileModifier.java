@@ -203,6 +203,15 @@ public class FileModifier {
 		}
 
 	}
+	
+	public void display() {
+		if(isViewModeComplete()) {
+			display(getCompleteContentList());
+		}
+		else {
+			display(getContentList());
+		}
+	}
 
 	public void display(ArrayList<Task> taskList) {
 		if (taskList.isEmpty()) {

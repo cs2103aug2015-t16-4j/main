@@ -42,10 +42,12 @@ public class ExecuteCommand {
 			
 			if (!undoRedo.isRedoEmpty()) {
 				undoRedo.clearRedo();
+				undoRedo.clearRedoComplete();
 			}
-			ArrayList<Task> taskList = new ArrayList<Task>();
-			taskList = modifier.getContentList();
+			ArrayList<Task> taskList = modifier.getContentList();
+			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
 			undoRedo.storeListToUndo(taskList);
+			undoRedo.storeListToUndoComplete(taskCompleteList);
 			
 			if (command.contains(TYPE_RECURSIVE) && command.contains(WITH_TIMELINE_CONDITION1) 
 					&& command.contains(WITH_TIMELINE_CONDITION2)) {
@@ -66,13 +68,14 @@ public class ExecuteCommand {
 				AddLogic.addEventDefault(command);
 			}
 		}else if (commandType.equals(DELETE_COMMAND)) {
-			if (undoRedo.isRedoEmpty() == false) {
+			if (!undoRedo.isRedoEmpty()) {
 				undoRedo.clearRedo();
+				undoRedo.clearRedoComplete();
 			}
-			ArrayList<Task> taskList = new ArrayList<Task>();
-			taskList = modifier.getContentList();
+			ArrayList<Task> taskList = modifier.getContentList();
+			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
 			undoRedo.storeListToUndo(taskList);
-
+			undoRedo.storeListToUndoComplete(taskCompleteList);
 			DeleteLogic.deleteEvent(command);
 		} else if (commandType.equals(EDIT_COMMAND)) {
 			if(modifier.isViewModeComplete()) {
@@ -80,12 +83,14 @@ public class ExecuteCommand {
 				return;
 			}
 			
-			if (undoRedo.isRedoEmpty() == false) {
+			if (!undoRedo.isRedoEmpty()) {
 				undoRedo.clearRedo();
+				undoRedo.clearRedoComplete();
 			}
-			ArrayList<Task> taskList = new ArrayList<Task>();
-			taskList = modifier.getContentList();
+			ArrayList<Task> taskList = modifier.getContentList();
+			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
 			undoRedo.storeListToUndo(taskList);
+			undoRedo.storeListToUndoComplete(taskCompleteList);
 
 			EditLogic.editEvent(command);
 		} else if (commandType.equals(SEARCH_COMMAND)) {
@@ -95,6 +100,20 @@ public class ExecuteCommand {
 		} else if (commandType.equals(CHANGE_DIRECTORY_COMMAND)) {
 			ChangeDirectoryLogic.changeDirectory(command);
 		} else if(commandType.equals(COMPLETE_COMMAND)){
+			if(modifier.isViewModeComplete()) {
+				FeedbackPane.displayInvalidComplete();
+				return;
+			}
+			
+			if (!undoRedo.isRedoEmpty()) {
+				undoRedo.clearRedo();
+				undoRedo.clearRedoComplete();
+			}
+			ArrayList<Task> taskList = modifier.getContentList();
+			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
+			undoRedo.storeListToUndo(taskList);
+			undoRedo.storeListToUndoComplete(taskCompleteList);
+			
 			CompleteLogic.completeEvent(command); 
 		}else {
 			FeedbackPane.displayInvalidInput();
@@ -106,33 +125,39 @@ public class ExecuteCommand {
 		if (command.contains(DISPLAY_COMMAND)) {
 			DisplayLogic.defaultDisplay();
 		} else if (command.equals(CLEAR_COMMAND)) {
-			if (undoRedo.isRedoEmpty() == false) {
+			if (!undoRedo.isRedoEmpty()) {
 				undoRedo.clearRedo();
+				undoRedo.clearRedoComplete();
 			}
-			ArrayList<Task> taskList = new ArrayList<Task>();
-			taskList = modifier.getContentList();
+			ArrayList<Task> taskList = modifier.getContentList();
+			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
 			undoRedo.storeListToUndo(taskList);
+			undoRedo.storeListToUndoComplete(taskCompleteList);
 
 			DeleteLogic.clearFile();
 		} else if (command.equals(UNDO_COMMAND)) {
 			if (undoRedo.isUndoEmpty()) {
 				FeedbackPane.displayInvalidUndo();
 			} else {
-				ArrayList<Task> previousTaskList = new ArrayList<Task>();
-				previousTaskList = undoRedo.getListFromUndo();
-				undoRedo.storeListToRedo(modifier.getContentList());
+				ArrayList<Task> previousTaskList = undoRedo.getListFromUndo();
+				ArrayList<Task> previousCompleteTaskList = undoRedo.getListFromUndoComplete();
+ 				undoRedo.storeListToRedo(modifier.getContentList());
+ 				undoRedo.storeListToRedoComplete(modifier.getCompleteContentList());
 				modifier.saveFile(previousTaskList);
-				modifier.display(previousTaskList);
+				modifier.saveCompleteFile(previousCompleteTaskList);
+				modifier.display();
 			}
 		} else if (command.equals(REDO_COMMAND)) { 
 			if (undoRedo.isRedoEmpty()) {
 				FeedbackPane.displayInvalidRedo();
 			} else {
-				ArrayList<Task> lastTaskList = new ArrayList<Task>();
-				lastTaskList = undoRedo.getListFromRedo();
+				ArrayList<Task> lastTaskList = undoRedo.getListFromRedo();
+				ArrayList<Task> lastCompleteTaskList = undoRedo.getListFromRedoComplete();
 				undoRedo.storeListToUndo(modifier.getContentList());
+				undoRedo.storeListToUndoComplete(lastCompleteTaskList);
 				modifier.saveFile(lastTaskList);
-				modifier.display(lastTaskList);
+				modifier.saveCompleteFile(lastCompleteTaskList);
+				modifier.display();
 			}
 		} else {
 			FeedbackPane.displayInvalidInput();
