@@ -9,6 +9,7 @@ import org.junit.Test;
 import fileModifier.FileModifier;
 import listItLogic.AddLogic;
 import listItLogic.DeleteLogic;
+import listItLogic.SearchLogic;
 import taskGenerator.Task;
 
 public class UnitTest {
@@ -52,8 +53,29 @@ public class UnitTest {
 		AddLogic.addEventDefault("add "); 
 		addMessage = AddLogic.getMessage();
 		testAddDefaultLogic("test default add", expected, "Please enter an event title", addMessage);
+		
+		SearchLogic.searchKeyWord("search date 03112015");
+		testSearchLogicDate("test search by date" , expected); 
+		
+		//testing a date not present 
+		SearchLogic.searchKeyWord("search data 05112015"); 
+		testSearchLogicDate("test search date which is not present" , expected); 
+		
+	   //test for importance ( 1 & 4) 
+		SearchLogic.searchKeyWord("search impt 1");
+		
+		SearchLogic.searchKeyWord("search impt 4");
+
+	   //test key word present and not present . 
+		SearchLogic.searchKeyWord("search Oral Presentation 2"); 
+		
+		SearchLogic.searchKeyWord("search tutorial work"); 	
 	}
 	
+	private void testSearchLogicDate(String description, ArrayList<Task> expected ) {
+		 // i need to get the searchList . 	
+	}
+
 	private void testAddDefaultLogic(String description, ArrayList<Task> expected, String expectedMessage, String actualMessage) {
 		if(actualMessage == null) {
 			ArrayList<Task> actual = modifier.getContentList();
