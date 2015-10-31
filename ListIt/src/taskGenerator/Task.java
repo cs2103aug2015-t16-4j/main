@@ -12,7 +12,6 @@ public class Task implements Serializable {
 	private Date endDate;
 	private boolean hasTime = false;
 	private boolean isRepeat;
-	private boolean complete = false;
 	private Integer importance;
 	private Integer index;
 	private SimpleDateFormat dateTimeInputFormatter = new SimpleDateFormat("ddMMyyyy HHmm");
@@ -273,10 +272,6 @@ public class Task implements Serializable {
 	
 	public void setHasTime(boolean set) {
 		this.hasTime = set;
-	}
-	
-	public void setComplete(boolean done) {
-		this.complete = true;
 	}
 	
 	public void setRepeatCycle(int cycle) {

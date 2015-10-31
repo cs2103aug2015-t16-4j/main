@@ -11,7 +11,12 @@ public class DeleteLogic {
 
 	public static void deleteEvent(String command) {
 		int taskIndexToBeDelete = convertStringIndexToInt(command);
-		int sizeOfFile = modifier.getContentList().size();
+		int sizeOfFile = 0;
+		if(modifier.isViewModeComplete()) {
+			sizeOfFile  = modifier.getCompleteContentList().size();
+		} else {
+			sizeOfFile = modifier.getContentList().size();
+		}
 		if((taskIndexToBeDelete-1) < sizeOfFile && taskIndexToBeDelete-1 >= 0) {
 			modifier.removeTask(taskIndexToBeDelete - 1);
 		} else {

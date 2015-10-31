@@ -35,6 +35,11 @@ public class ExecuteCommand {
 		String commandType = command.substring(0, command.indexOf(" "));
 
 		if (commandType.equals(ADD_COMMAND)) {
+			if(modifier.isViewModeComplete()) {
+				FeedbackPane.displayInvalidAdd();
+				return;
+			}
+			
 			if (!undoRedo.isRedoEmpty()) {
 				undoRedo.clearRedo();
 			}
@@ -67,6 +72,11 @@ public class ExecuteCommand {
 
 			DeleteLogic.deleteEvent(command);
 		} else if (commandType.equals(EDIT_COMMAND)) {
+			if(modifier.isViewModeComplete()) {
+				FeedbackPane.displayInvalidEdit();
+				return;
+			}
+			
 			if (undoRedo.isRedoEmpty() == false) {
 				undoRedo.clearRedo();
 			}
