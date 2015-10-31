@@ -177,8 +177,8 @@ public class FileModifier {
 	private void updateFile(ArrayList<Task> newList) {
 		modifier.sort(newList);
 		modifier.updateIndex(newList);
+		TaskCheckLogic.overDateCheck(newList);
 		modifier.saveFile(newList);
-		TaskCheckLogic.overDateCheck();
 		modifier.display(newList);
 	}
 

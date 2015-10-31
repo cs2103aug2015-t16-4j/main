@@ -99,12 +99,9 @@ public class ExecuteCommand {
 		}else {
 			FeedbackPane.displayInvalidInput();
 		}
-		
-		TaskCheckLogic.overDateCheck();
 	}
 
 	public static void processCommandWithoutSpace(String command) {
-		TaskCheckLogic.overDateCheck();
 		
 		if (command.contains(DISPLAY_COMMAND)) {
 			DisplayLogic.defaultDisplay();
