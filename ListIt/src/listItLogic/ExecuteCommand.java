@@ -33,6 +33,8 @@ public class ExecuteCommand {
 
 	public static void processCommandWithSpace(String command) throws InvalidCommandException, FileNotFoundException, IOException {
 		String commandType = command.substring(0, command.indexOf(" "));
+		
+		TaskCheckLogic.overDateCheck();
 
 		if (commandType.equals(ADD_COMMAND)) {
 			if(modifier.isViewModeComplete()) {
@@ -96,9 +98,13 @@ public class ExecuteCommand {
 		}else {
 			FeedbackPane.displayInvalidInput();
 		}
+		
+		TaskCheckLogic.overDateCheck();
 	}
 
 	public static void processCommandWithoutSpace(String command) {
+		TaskCheckLogic.overDateCheck();
+		
 		if (command.contains(DISPLAY_COMMAND)) {
 			DisplayLogic.defaultDisplay();
 		} else if (command.equals(CLEAR_COMMAND)) {
@@ -133,5 +139,7 @@ public class ExecuteCommand {
 		} else {
 			FeedbackPane.displayInvalidInput();
 		}
+		
+		TaskCheckLogic.overDateCheck();
 	}
 }

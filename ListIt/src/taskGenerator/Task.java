@@ -12,6 +12,7 @@ public class Task implements Serializable {
 	private Date endDate;
 	private boolean hasTime = false;
 	private boolean isRepeat = false;
+	private boolean isOverDate = false;
 	private Integer importance;
 	private Integer index;
 	private SimpleDateFormat dateTimeInputFormatter = new SimpleDateFormat("ddMMyyyy HHmm");
@@ -232,6 +233,10 @@ public class Task implements Serializable {
 	public Date getEndDateInDateType() {
 		return this.endDate;
 	}
+	
+	public boolean isOverDate() {
+		return this.isOverDate;
+	}
 
 	// SETTERS
 	public void setEventTitle(String eventTitle) {
@@ -292,5 +297,9 @@ public class Task implements Serializable {
 
 	public void setEndDateInDate(Date nextDeadline) {
 		this.endDate = nextDeadline;
+	}
+	
+	public void setOverDate() {
+		this.isOverDate = true;
 	}
 }
