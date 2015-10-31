@@ -20,11 +20,15 @@ public class TaskCheckLogic {
 		Date systemTime = new Date();
 		for(int i = 0; i < taskList.size(); i++) {
 			tempTask = taskList.get(i);
-			if(systemTime.compareTo(tempTask.getEndDateInDateType()) > 0) {
-				tempTask.setOverDate();
-				taskList.set(i, tempTask);
-			}
-			else {
+			if(tempTask.getEndDate() != null) {
+				if(systemTime.compareTo(tempTask.getEndDateInDateType()) > 0) {
+					tempTask.setOverDate();
+					taskList.set(i, tempTask);
+				}
+				else {
+					break;
+				}
+			} else {
 				break;
 			}
 		}

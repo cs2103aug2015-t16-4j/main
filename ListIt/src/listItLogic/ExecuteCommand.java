@@ -33,8 +33,6 @@ public class ExecuteCommand {
 
 	public static void processCommandWithSpace(String command) throws InvalidCommandException, FileNotFoundException, IOException {
 		String commandType = command.substring(0, command.indexOf(" "));
-		
-		TaskCheckLogic.overDateCheck();
 
 		if (commandType.equals(ADD_COMMAND)) {
 			if(modifier.isViewModeComplete()) {

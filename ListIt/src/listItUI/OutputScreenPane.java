@@ -179,7 +179,11 @@ public class OutputScreenPane extends GridPane {
 			taskDetail.getChildren().addAll(index, eventTitle, endDate, rank, emptyLine);
 		}
 
-		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
+		if (tempTask.isOverDate() && tempTask.isComplete() == false) {
+			taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #FF0000 20%, #FFFFFF 80%);");
+		} else {
+			taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
+		}
 
 		return taskDetail;
 	}
@@ -304,7 +308,11 @@ public class OutputScreenPane extends GridPane {
 			taskDetail.getChildren().addAll(index, eventTitle, endDate, rank, emptyLine);
 		}
 
-		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
+		if (tempTask.isOverDate()) {
+			taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #FF0000 20%, #FFFFFF 80%);");
+		} else {
+			taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
+		}
 
 		return taskDetail;
 	}
@@ -415,7 +423,11 @@ public class OutputScreenPane extends GridPane {
 			taskDetail.getChildren().addAll(index, eventTitle, endDate, emptyLine);
 		}
 
-		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
+		if (tempTask.isOverDate()) {
+			taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #FF0000 20%, #FFFFFF 80%);");
+		} else {
+			taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
+		}
 
 		return taskDetail;
 	}
@@ -435,7 +447,7 @@ public class OutputScreenPane extends GridPane {
 			displayEmpty();
 			return;
 		}
-		
+
 		headerText = new Text(currentHeader);
 		headerText.setFont(Font.font("Georgia", 20));
 		HBox header = generateHearder(headerText);
@@ -444,7 +456,7 @@ public class OutputScreenPane extends GridPane {
 
 		for (int i = 0; i < list.size(); i++) {
 			tempTask = list.get(i);
-			
+
 			GridPane taskDetail = new GridPane();
 
 			if (tempTask.getEndDate() == null) {
