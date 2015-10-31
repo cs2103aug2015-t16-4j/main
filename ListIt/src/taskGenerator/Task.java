@@ -46,7 +46,7 @@ public class Task implements Serializable {
 		}
 		this.importance = importance;
 	}
-	
+
 	public Task(String eventTitle, String date, int importance, boolean hasTime) {
 		this.eventTitle = eventTitle;
 		try {
@@ -73,7 +73,7 @@ public class Task implements Serializable {
 		}
 		this.importance = importance;
 	}
-	
+
 	public Task(String eventTitle, String start, String end, int importance, boolean hasTime) {
 		this.eventTitle = eventTitle;
 		try {
@@ -96,7 +96,7 @@ public class Task implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Task(String eventTitle, String start, String end, boolean hasTime) {
 		this.eventTitle = eventTitle;
 		this.importance = 3;
@@ -118,7 +118,7 @@ public class Task implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Task(String eventTitle, String date, boolean hasTime) {
 		this.eventTitle = eventTitle;
 		this.importance = 3;
@@ -129,12 +129,12 @@ public class Task implements Serializable {
 		}
 		this.hasTime = hasTime;
 	}
-	
+
 	public Task(String eventTitle) {
 		this.eventTitle = eventTitle;
 		this.importance = 3;
 	}
-	
+
 	public Task(String eventTitle, String repeatType, int repeatCycle, String deadline, boolean isRepeat) {
 		this.eventTitle = eventTitle;
 		try {
@@ -144,11 +144,12 @@ public class Task implements Serializable {
 		}
 		this.isRepeat = isRepeat;
 		this.repeatType = repeatType;
-		this.repeatCycle = repeatCycle;	
+		this.repeatCycle = repeatCycle;
 		this.importance = 3;
 	}
-	
-	public Task(String eventTitle, String repeatType, int repeatCycle, String deadline, boolean isRepeat, boolean hasTime) {
+
+	public Task(String eventTitle, String repeatType, int repeatCycle, String deadline, boolean isRepeat,
+			boolean hasTime) {
 		this.eventTitle = eventTitle;
 		try {
 			this.endDate = dateTimeInputFormatter.parse(deadline);
@@ -162,27 +163,60 @@ public class Task implements Serializable {
 		this.importance = 3;
 	}
 
+	public Task(String eventTitle, String repeatType, int repeatCycle, String startDate, String endDate,
+			boolean isRepeat, boolean hasTime) {
+		this.eventTitle = eventTitle;
+		try {
+			this.startDate = dateTimeInputFormatter.parse(startDate);
+			this.endDate = dateTimeInputFormatter.parse(endDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.isRepeat = isRepeat;
+		this.hasTime = hasTime;
+		this.repeatType = repeatType;
+		this.repeatCycle = repeatCycle;
+		this.importance = 3;
+	}
+	
+	
+
+	public Task(String eventTitle, String repeatType, int repeatCycle, String startDate, String endDate,
+			boolean isRepeat) {
+		this.eventTitle = eventTitle;
+		try {
+			this.startDate = dateInputFormatter.parse(startDate);
+			this.endDate = dateInputFormatter.parse(endDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		this.isRepeat = isRepeat;
+		this.repeatType = repeatType;
+		this.repeatCycle = repeatCycle;
+		this.importance = 3;
+	}
+
 	// GETTERS
 	public boolean getRepeat() {
 		return this.isRepeat;
 	}
-	
+
 	public boolean getHasTime() {
 		return this.hasTime;
 	}
-	
+
 	public int getRepeatCycle() {
 		return this.repeatCycle;
 	}
-	
+
 	public String getException() {
 		return this.exception;
 	}
-	
+
 	public String getRepeatType() {
 		return this.repeatType;
 	}
-	
+
 	public String getTitle() {
 		return eventTitle;
 	}
@@ -190,31 +224,31 @@ public class Task implements Serializable {
 	public String getStartDate() {
 		if (this.startDate != null && hasTime) {
 			return dateTimeOutputFormatter.format(startDate);
-		} else if(this.startDate != null) {
+		} else if (this.startDate != null) {
 			return dateOutputFormatter.format(startDate);
 		} else {
 			return null;
 		}
 	}
-	
+
 	public String getEndDate() {
 		if (this.endDate != null && hasTime) {
 			return dateTimeOutputFormatter.format(endDate);
-		} else if(this.endDate != null) {
+		} else if (this.endDate != null) {
 			return dateOutputFormatter.format(endDate);
 		} else {
 			return null;
 		}
 	}
-	
+
 	public String getEndDateWithoutTime() {
 		return dateOutputFormatter.format(endDate);
 	}
-	
+
 	public String getDateInputForm() {
 		return dateInputFormatter.format(endDate);
 	}
-	
+
 	public Date getDateInDate() {
 		return endDate;
 	}
@@ -226,19 +260,23 @@ public class Task implements Serializable {
 	public String getEventTitle() {
 		return eventTitle;
 	}
-	
+
 	public Integer getIndex() {
 		return index;
 	}
-	
+
 	public Date getEndDateInDateType() {
 		return this.endDate;
 	}
 	
+	public Date getStartDateInDateType() {
+		return this.startDate;
+	}
+
 	public boolean isOverDate() {
 		return this.isOverDate;
 	}
-	
+
 	public boolean isComplete() {
 		return this.isComplete;
 	}
@@ -251,7 +289,7 @@ public class Task implements Serializable {
 	public void setImportance(Integer importance) {
 		this.importance = importance;
 	}
-	
+
 	public void setStartDate(String start) {
 		try {
 			this.startDate = dateInputFormatter.parse(start);
@@ -259,7 +297,7 @@ public class Task implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setStartDateWithTime(String start) {
 		try {
 			this.startDate = dateTimeInputFormatter.parse(start);
@@ -267,7 +305,7 @@ public class Task implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setEndDate(String end) {
 		try {
 			this.endDate = dateInputFormatter.parse(end);
@@ -275,7 +313,7 @@ public class Task implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setIndex(int index) {
 		this.index = index;
 	}
@@ -287,15 +325,15 @@ public class Task implements Serializable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setHasTime(boolean set) {
 		this.hasTime = set;
 	}
-	
+
 	public void setRepeatCycle(int cycle) {
 		this.repeatCycle = cycle;
 	}
-	
+
 	public void setRepeatType(String type) {
 		this.repeatType = type;
 	}
@@ -304,10 +342,18 @@ public class Task implements Serializable {
 		this.endDate = nextDeadline;
 	}
 	
+	public void setStartDateInDate(Date nextStartDate) {
+		this.startDate = nextStartDate;
+	}
+
 	public void setOverDate() {
 		this.isOverDate = true;
 	}
 	
+	public void setNotOverDate() {
+		this.isOverDate = false;
+	}
+
 	public void setComplete() {
 		this.isComplete = true;
 	}

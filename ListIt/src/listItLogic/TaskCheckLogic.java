@@ -13,10 +13,8 @@ public class TaskCheckLogic {
 		
 	}
 	
-	public static void overDateCheck() {
-		ArrayList<Task> taskList = modifier.getContentList();
+	public static void overDateCheck(ArrayList<Task> taskList) {
 		Task tempTask = new Task();
-		
 		Date systemTime = new Date();
 		for(int i = 0; i < taskList.size(); i++) {
 			tempTask = taskList.get(i);
@@ -24,9 +22,9 @@ public class TaskCheckLogic {
 				if(systemTime.compareTo(tempTask.getEndDateInDateType()) > 0) {
 					tempTask.setOverDate();
 					taskList.set(i, tempTask);
-				}
-				else {
-					break;
+				} else {
+					tempTask.setNotOverDate();
+					taskList.set(i, tempTask);
 				}
 			} else {
 				break;

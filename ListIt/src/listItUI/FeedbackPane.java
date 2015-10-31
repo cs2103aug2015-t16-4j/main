@@ -69,4 +69,16 @@ public class FeedbackPane extends GridPane{
 	public static void displayInvalidEdit() {
 		feedbackScreen.appendText("Cannot edit when viewing complete List!\n");
 	}
+
+	public static void displayInvalidComplete() {
+		feedbackScreen.appendText("Cannot complete event when viewing complete List!\n");
+	}
+
+	public static void displayValidFileMove() {
+		feedbackScreen.appendText("File move complete!");
+	}
+
+	public static void displayInvalidFileMove() {
+		feedbackScreen.appendText("File move failed, please check if datafiles are safe");
+	}
 }

@@ -73,6 +73,7 @@ public class DisplayLogic {
 	private static void updateFile() {
 		modifier.sort(list);
 		modifier.updateIndex(list);
+		TaskCheckLogic.overDateCheck(list);
 		modifier.saveFile(list);
 		modifier.display(list);
 	}

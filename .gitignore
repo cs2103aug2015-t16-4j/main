@@ -38,8 +38,4 @@ local.properties
 # TeXlipse plugin
 .texlipse
 *.ser
-<<<<<<< HEAD
-ListIt/bin/listItLogic/ExecuteCommand.class
-=======
 *.txt
->>>>>>> origin/master

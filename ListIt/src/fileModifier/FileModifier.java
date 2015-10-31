@@ -95,6 +95,7 @@ public class FileModifier {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Task> getContentList() {
 		ArrayList<Task> list = new ArrayList<Task>();
 
@@ -123,6 +124,7 @@ public class FileModifier {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Task> getCompleteContentList() {
 		ArrayList<Task> list = new ArrayList<Task>();
 
@@ -165,6 +167,18 @@ public class FileModifier {
 		}
 		return isEmpty;
 	}
+	
+	public File getDataFile() {
+		return this.dataFile;
+	}
+	
+	public File getCompleteDataFile() {
+		return this.completeDataFile;
+	}
+	
+	public File getPathFile() {
+		return this.pathStorage;
+	}
 
 	public void addTask(Task newtask) {
 		ArrayList<Task> newList = modifier.getContentList();
@@ -175,8 +189,8 @@ public class FileModifier {
 	private void updateFile(ArrayList<Task> newList) {
 		modifier.sort(newList);
 		modifier.updateIndex(newList);
+		TaskCheckLogic.overDateCheck(newList);
 		modifier.saveFile(newList);
-		TaskCheckLogic.overDateCheck();
 		modifier.display(newList);
 	}
 
@@ -200,6 +214,15 @@ public class FileModifier {
 			updateFile(taskList);
 		}
 
+	}
+	
+	public void display() {
+		if(isViewModeComplete()) {
+			display(getCompleteContentList());
+		}
+		else {
+			display(getContentList());
+		}
 	}
 
 	public void display(ArrayList<Task> taskList) {
@@ -374,6 +397,19 @@ public class FileModifier {
 				calendar.setTime(currentDeadline);
 				Date nextDeadline = getNextDeadline(calendar, repeatCycle, repeatType);
 				completedTask.setEndDateInDate(nextDeadline);
+				taskList.set(index, completedTask);
+				updateFile(taskList);
+			} else {
+				Date currentStartDate = completedTask.getStartDateInDateType();
+				Date currentEndDate = completedTask.getEndDateInDateType();
+				int repeatCycle = completedTask.getRepeatCycle();
+				String repeatType = completedTask.getRepeatType();
+				calendar.setTime(currentStartDate);
+				Date nextStartDate = getNextDeadline(calendar, repeatCycle, repeatType);
+				calendar.setTime(currentEndDate);
+				Date nextEndDate = getNextDeadline(calendar, repeatCycle, repeatType);
+				completedTask.setStartDateInDate(nextStartDate);
+				completedTask.setEndDateInDate(nextEndDate);
 				taskList.set(index, completedTask);
 				updateFile(taskList);
 			}
