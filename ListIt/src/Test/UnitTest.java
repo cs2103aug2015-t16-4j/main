@@ -9,6 +9,7 @@ import org.junit.Test;
 import fileModifier.FileModifier;
 import listItLogic.AddLogic;
 import listItLogic.DeleteLogic;
+import listItLogic.EditLogic;
 import listItLogic.SearchLogic;
 import taskGenerator.Task;
 
@@ -70,23 +71,12 @@ public class UnitTest {
 		SearchLogic.searchKeyWord("search Oral Presentation 2"); 
 		
 		SearchLogic.searchKeyWord("search tutorial work"); 
-		testSort(); 
+		testSort(expected,modifier.getContentList() ); 
 	}
-	
-	private void testSort() {
-		ArrayList<Task> expected = new ArrayList<Task>(); 
-		ArrayList<Task> actual = new ArrayList<Task>(); 
-		Task task1 = new Task("EE2020 Oscilloscope project");
-		expected.add(task1); 
-		Task task2 = new Task("OP2 presentation");
-		expected.add(task2); 
-		
-		AddLogic.addEventDefault("EE2020 Oscilloscope project");
-		AddLogic.addEventDefault("OP2 presentation");
-		actual = modifier.getContentList(); 
-		
-		assertEquals("test if sort works" , expected , actual); 	
-		
+
+	private void testSort(ArrayList<Task> expected ,ArrayList<Task> actual ) {
+		String description = "test if sort works"; 		
+		assertEquals(description , expected , actual); 		
 	}
 
 	private void testSearchLogicDate(String description, ArrayList<Task> expected ) {
