@@ -95,6 +95,7 @@ public class FileModifier {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Task> getContentList() {
 		ArrayList<Task> list = new ArrayList<Task>();
 
@@ -123,6 +124,7 @@ public class FileModifier {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	public ArrayList<Task> getCompleteContentList() {
 		ArrayList<Task> list = new ArrayList<Task>();
 
@@ -374,6 +376,19 @@ public class FileModifier {
 				calendar.setTime(currentDeadline);
 				Date nextDeadline = getNextDeadline(calendar, repeatCycle, repeatType);
 				completedTask.setEndDateInDate(nextDeadline);
+				taskList.set(index, completedTask);
+				updateFile(taskList);
+			} else {
+				Date currentStartDate = completedTask.getStartDateInDateType();
+				Date currentEndDate = completedTask.getEndDateInDateType();
+				int repeatCycle = completedTask.getRepeatCycle();
+				String repeatType = completedTask.getRepeatType();
+				calendar.setTime(currentStartDate);
+				Date nextStartDate = getNextDeadline(calendar, repeatCycle, repeatType);
+				calendar.setTime(currentEndDate);
+				Date nextEndDate = getNextDeadline(calendar, repeatCycle, repeatType);
+				completedTask.setStartDateInDate(nextStartDate);
+				completedTask.setEndDateInDate(nextEndDate);
 				taskList.set(index, completedTask);
 				updateFile(taskList);
 			}

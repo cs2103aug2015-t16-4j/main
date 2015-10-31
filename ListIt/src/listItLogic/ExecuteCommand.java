@@ -46,8 +46,11 @@ public class ExecuteCommand {
 			ArrayList<Task> taskList = new ArrayList<Task>();
 			taskList = modifier.getContentList();
 			undoRedo.storeListToUndo(taskList);
-
-			if (command.contains(WITH_TIMELINE_CONDITION1) && command.contains(WITH_TIMELINE_CONDITION2)) {
+			
+			if (command.contains(TYPE_RECURSIVE) && command.contains(WITH_TIMELINE_CONDITION1) 
+					&& command.contains(WITH_TIMELINE_CONDITION2)) {
+				AddLogic.addRecursiveEventTimeline(command);
+			} else if (command.contains(WITH_TIMELINE_CONDITION1) && command.contains(WITH_TIMELINE_CONDITION2)) {
 				AddLogic.addEventWithTimeline(command);
 			} else if (command.contains(WITH_IMPT)) {
 				AddLogic.addEventWithImportance(command);
@@ -137,7 +140,5 @@ public class ExecuteCommand {
 		} else {
 			FeedbackPane.displayInvalidInput();
 		}
-		
-		TaskCheckLogic.overDateCheck();
 	}
 }

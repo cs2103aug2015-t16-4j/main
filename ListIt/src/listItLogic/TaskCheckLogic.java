@@ -24,9 +24,9 @@ public class TaskCheckLogic {
 				if(systemTime.compareTo(tempTask.getEndDateInDateType()) > 0) {
 					tempTask.setOverDate();
 					taskList.set(i, tempTask);
-				}
-				else {
-					break;
+				} else {
+					tempTask.setNotOverDate();
+					taskList.set(i, tempTask);
 				}
 			} else {
 				break;

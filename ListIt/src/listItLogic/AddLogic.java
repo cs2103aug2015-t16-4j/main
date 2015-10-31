@@ -41,7 +41,7 @@ public class AddLogic {
 
 		if (isValidDate(deadline)) {
 			Task newTask;
-			if(containsTime(deadline)) {
+			if (containsTime(deadline)) {
 				newTask = new Task(eventTitle, deadline, true);
 			} else {
 				newTask = new Task(eventTitle, deadline);
@@ -51,7 +51,7 @@ public class AddLogic {
 			addEventDefault(command);
 		}
 	}
-	
+
 	public static void addEventWithDeadlineUsingOn(String command) {
 		String eventTitle = null;
 		String deadline = null;
@@ -65,7 +65,7 @@ public class AddLogic {
 
 		if (isValidDate(deadline)) {
 			Task newTask;
-			if(containsTime(deadline)) {
+			if (containsTime(deadline)) {
 				newTask = new Task(eventTitle, deadline, true);
 			} else {
 				newTask = new Task(eventTitle, deadline);
@@ -79,7 +79,7 @@ public class AddLogic {
 	private static String getEventDeadline(String command) {
 		return command.substring(command.lastIndexOf(COMMAND_BY) + 3);
 	}
-	
+
 	private static String getEventDeadlineWithOn(String command) {
 		return command.substring(command.lastIndexOf(COMMAND_ON) + 3);
 	}
@@ -87,7 +87,7 @@ public class AddLogic {
 	private static String getEventTitleDeadline(String command) {
 		return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
 	}
-	
+
 	private static String getEventTitleDeadlineWithOn(String command) {
 		return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
 	}
@@ -106,11 +106,11 @@ public class AddLogic {
 		} catch (ParseException e) {
 			isValid = false;
 		}
-		
-		if(isValid == false) {
+
+		if (isValid == false) {
 			try {
-			Date date = dateTimeFormat.parse(newDate);
-			isValid = true;
+				Date date = dateTimeFormat.parse(newDate);
+				isValid = true;
 			} catch (ParseException e) {
 				isValid = false;
 			}
@@ -122,7 +122,7 @@ public class AddLogic {
 	public static void addEventDefault(String command) {
 		String eventTitle = null;
 		eventTitle = getEventTitleDefault(command);
-		if(eventTitle == null) {
+		if (eventTitle == null) {
 			FeedbackPane.displayInvalidTitle();
 		} else {
 			Task newTask = new Task(eventTitle);
@@ -133,16 +133,16 @@ public class AddLogic {
 	private static String getEventTitleDefault(String command) {
 		if (command.length() > 3) {
 			return command.substring(4);
-		} else  {
+		} else {
 			addDefaultMessage = MESSAGE_ADD_TITLE;
 			return null;
 		}
 	}
-	
+
 	public static String getMessage() {
 		return addDefaultMessage;
 	}
-	
+
 	public static void addEventWithImportance(String command) {
 		String eventTitle = new String();
 		if (isEventWithDeadline(command)) {
@@ -159,7 +159,7 @@ public class AddLogic {
 				int rank = convertStringToInt(command);
 				if (isValidDate(deadline)) {
 					Task newTask;
-					if(containsTime(deadline)) {
+					if (containsTime(deadline)) {
 						newTask = new Task(eventTitle, deadline, rank, true);
 					} else {
 						newTask = new Task(eventTitle, deadline, rank);
@@ -222,7 +222,7 @@ public class AddLogic {
 					int rank = convertStringToInt(command);
 					endDate = getEndDateImportance(command);
 					Task newTask;
-					if(containsTime(endDate)) {
+					if (containsTime(endDate)) {
 						newTask = new Task(eventTitle, startDate, endDate, rank, true);
 					} else {
 						newTask = new Task(eventTitle, startDate, endDate, rank);
@@ -231,7 +231,7 @@ public class AddLogic {
 				} catch (Exception e) {
 					endDate = getEndDateTimeline(command);
 					Task newTask;
-					if(containsTime(endDate)) {
+					if (containsTime(endDate)) {
 						newTask = new Task(eventTitle, startDate, endDate, true);
 					} else {
 						newTask = new Task(eventTitle, startDate, endDate);
@@ -242,7 +242,7 @@ public class AddLogic {
 			} else {
 				endDate = getEndDateTimeline(command);
 				Task newTask;
-				if(containsTime(endDate)) {
+				if (containsTime(endDate)) {
 					newTask = new Task(eventTitle, startDate, endDate, true);
 				} else {
 					newTask = new Task(eventTitle, startDate, endDate);
@@ -260,7 +260,8 @@ public class AddLogic {
 	}
 
 	private static String getStartDate(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5, command.lastIndexOf(COMMAND_END_TIME) - 1);
+		return command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
+				command.lastIndexOf(COMMAND_END_TIME) - 1);
 	}
 
 	private static String getEventTitleTimeline(String command) {
@@ -278,23 +279,28 @@ public class AddLogic {
 	private static boolean isEventWithImportance(String command) {
 		return command.contains(COMMAND_RANK);
 	}
-	
+
 	public static void addRecursiveEventDeadline(String command) {
 		String deadline = null;
 		String repeatType = null;
 		int repeatCycle = 0;
 		String eventTitle = command.substring(4, command.lastIndexOf(COMMAND_REPEAT) - 1);
-		String repeatCommand = command.substring(command.lastIndexOf(COMMAND_REPEAT) + 7, command.lastIndexOf(COMMAND_ON) - 1);
-		if(isCorrectRepeatCycle(repeatCommand)) {
+		String repeatCommand = command.substring(command.lastIndexOf(COMMAND_REPEAT) + 7,
+				command.lastIndexOf(COMMAND_ON) - 1);
+		if (isCorrectRepeatCycle(repeatCommand)) {
 			repeatType = parseRepeatType(repeatCommand);
 			repeatCycle = parseRepeatAmount(repeatCommand);
 			deadline = command.substring(command.lastIndexOf(COMMAND_ON) + 3);
-			if(containsTime(deadline)) {
-				Task newTask = new Task(eventTitle, repeatType, repeatCycle, deadline, true, true);
-				modifier.addTask(newTask);
+			if (isValidDate(deadline)) {
+				if (containsTime(deadline)) {
+					Task newTask = new Task(eventTitle, repeatType, repeatCycle, deadline, true, true);
+					modifier.addTask(newTask);
+				} else {
+					Task newTask = new Task(eventTitle, repeatType, repeatCycle, deadline, true);
+					modifier.addTask(newTask);
+				}
 			} else {
-				Task newTask = new Task(eventTitle, repeatType, repeatCycle, deadline, true);
-				modifier.addTask(newTask);
+				addEventDefault(command);
 			}
 		} else {
 			addEventWithDeadline(command);
@@ -312,39 +318,69 @@ public class AddLogic {
 
 	private static boolean isCorrectRepeatCycle(String repeatCycle) {
 		boolean result = false;
-		
-		if(repeatCycle.contains(REPEAT_DAILY) || repeatCycle.contains(REPEAT_MONTHLY) || repeatCycle.contains(REPEAT_YEARLY) ||
-				repeatCycle.contains(REPEAT_WEEKLY)) {
+
+		if (repeatCycle.contains(REPEAT_DAILY) || repeatCycle.contains(REPEAT_MONTHLY)
+				|| repeatCycle.contains(REPEAT_YEARLY) || repeatCycle.contains(REPEAT_WEEKLY)) {
 			result = true;
-			
+
 		}
 		return result;
 	}
 
-	public static void addBlockEvent(String command){
+	public static void addRecursiveEventTimeline(String command) {
+		String startDate = null;
+		String endDate = null;
+		String repeatType = null;
+		int repeatCycle = 0;
+		String eventTitle = command.substring(4, command.lastIndexOf(COMMAND_REPEAT) - 1);
+		String repeatCommand = command.substring(command.lastIndexOf(COMMAND_REPEAT) + 7,
+				command.lastIndexOf(COMMAND_START_TIME) - 1);
+		if (isCorrectRepeatCycle(repeatCommand)) {
+			repeatType = parseRepeatType(repeatCommand);
+			repeatCycle = parseRepeatAmount(repeatCommand);
+			startDate = command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
+					command.lastIndexOf(COMMAND_END_TIME) - 1);
+			endDate = command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
+			if (isValidDate(startDate)) {
+				if (containsTime(startDate)) {
+					Task newTask = new Task(eventTitle, repeatType, repeatCycle, startDate, endDate, true, true);
+					modifier.addTask(newTask);
+				} else {
+					Task newTask = new Task(eventTitle, repeatType, repeatCycle, startDate, endDate, true);
+					modifier.addTask(newTask);
+				}
+			} else {
+				addEventDefault(command);
+			}
+		} else {
+			addEventWithTimeline(command);
+			return;
+		}
+	}
+
+	public static void addBlockEvent(String command) {
 		String eventTitle = getEventTitleBlockDate(command);
 		String end = getEndTime(command);
 		String start = getBlockEventStartDate(command);
-		Task newTask = new Task(eventTitle,start,end); 
-		modifier.addTask(newTask); 
+		Task newTask = new Task(eventTitle, start, end);
+		modifier.addTask(newTask);
 	}
 
 	private static String getBlockEventStartDate(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_BLOCK) + 5, command.lastIndexOf(COMMAND_END_TIME) - 1);	
+		return command.substring(command.lastIndexOf(COMMAND_BLOCK) + 5, command.lastIndexOf(COMMAND_END_TIME) - 1);
 
 	}
+
 	private static String getEventTitleBlockDate(String command) {
 		return command.substring(4, command.lastIndexOf(COMMAND_BLOCK) - 1);
 
 	}
-	
+
 	public static boolean containsTime(String date) {
-		if(date.contains(WHITESPACE)) {
+		if (date.contains(WHITESPACE)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-
-
 }
