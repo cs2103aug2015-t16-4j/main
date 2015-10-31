@@ -26,6 +26,7 @@ public class ExecuteCommand {
 	private static final String TYPE_BLOCK = "block";
 	private static final String CHANGE_DIRECTORY_COMMAND = "cd";
 	private static final String WITH_DEADLINE_TYPE2 = "on";
+	private static final Object COMPLETE_COMMAND = "complete";
 
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	private static FileModifier modifier = FileModifier.getInstance();
@@ -80,7 +81,9 @@ public class ExecuteCommand {
 			DisplayLogic.determineDisplayMode(command);
 		} else if (commandType.equals(CHANGE_DIRECTORY_COMMAND)) {
 			ChangeDirectoryLogic.changeDirectory(command);
-		} else {
+		} else if(commandType.equals(COMPLETE_COMMAND)){
+			CompleteLogic.completeEvent(command); 
+		}else {
 			FeedbackPane.displayInvalidInput();
 		}
 	}
