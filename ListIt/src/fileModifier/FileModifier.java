@@ -255,4 +255,9 @@ public class FileModifier {
 			}
 		}
 	}
+
+	public void completeTask(int i) {
+		// TODO Auto-generated method stub
+		
+	}
 }
