@@ -105,7 +105,7 @@ public class ExecuteCommand {
 				modifier.saveFile(previousTaskList);
 				modifier.display(previousTaskList);
 			}
-		} else if (command.equals(REDO_COMMAND)) { // Shrestha Goswami :)
+		} else if (command.equals(REDO_COMMAND)) { 
 			if (undoRedo.isRedoEmpty()) {
 				FeedbackPane.displayInvalidRedo();
 			} else {
