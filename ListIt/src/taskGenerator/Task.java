@@ -13,6 +13,7 @@ public class Task implements Serializable {
 	private boolean hasTime = false;
 	private boolean isRepeat = false;
 	private boolean isOverDate = false;
+	private boolean isComplete = false;
 	private Integer importance;
 	private Integer index;
 	private SimpleDateFormat dateTimeInputFormatter = new SimpleDateFormat("ddMMyyyy HHmm");
@@ -237,6 +238,10 @@ public class Task implements Serializable {
 	public boolean isOverDate() {
 		return this.isOverDate;
 	}
+	
+	public boolean isComplete() {
+		return this.isComplete;
+	}
 
 	// SETTERS
 	public void setEventTitle(String eventTitle) {
@@ -301,5 +306,9 @@ public class Task implements Serializable {
 	
 	public void setOverDate() {
 		this.isOverDate = true;
+	}
+	
+	public void setComplete() {
+		this.isComplete = true;
 	}
 }

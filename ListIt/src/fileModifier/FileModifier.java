@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
+import listItLogic.TaskCheckLogic;
 import listItUI.OutputScreenPane;
 import taskGenerator.Task;
 import taskGenerator.TaskComparatorAlpha;
@@ -174,23 +175,31 @@ public class FileModifier {
 	private void updateFile(ArrayList<Task> newList) {
 		modifier.sort(newList);
 		modifier.updateIndex(newList);
-		if (isViewModeComplete()) {
-			modifier.saveCompleteFile(newList);
-		} else {
-			modifier.saveFile(newList);
-		}
+		modifier.saveFile(newList);
+		TaskCheckLogic.overDateCheck();
 		modifier.display(newList);
+	}
+
+	private void updateCompleteListFile(ArrayList<Task> newList) {
+		modifier.updateIndex(newList);
+		modifier.saveCompleteFile(newList);
+		if(isViewModeComplete()) {
+			modifier.display(newList);
+		}
 	}
 
 	public void removeTask(int index) {
 		ArrayList<Task> taskList;
 		if (isViewModeComplete()) {
 			taskList = modifier.getCompleteContentList();
+			taskList.remove(index);
+			updateCompleteListFile(taskList);
 		} else {
 			taskList = modifier.getContentList();
+			taskList.remove(index);
+			updateFile(taskList);
 		}
-		taskList.remove(index);
-		updateFile(taskList);
+
 	}
 
 	public void display(ArrayList<Task> taskList) {
@@ -227,12 +236,13 @@ public class FileModifier {
 		ArrayList<Task> taskList;
 		if (isViewModeComplete()) {
 			taskList = modifier.getCompleteContentList();
+			taskList.clear();
+			updateCompleteListFile(taskList);
 		} else {
 			taskList = modifier.getContentList();
+			taskList.clear();
+			updateFile(taskList);
 		}
-		taskList.clear();
-
-		updateFile(taskList);
 	}
 
 	public ArrayList<Task> searchKeyword(String keyword) {
@@ -351,16 +361,17 @@ public class FileModifier {
 
 		Task completedTask = taskList.get(index);
 		if (completedTask.getRepeat() == false) {
+			completedTask.setComplete();
 			completedList.add(0, completedTask);
 			taskList.remove(index);
-			saveCompleteFile(completedList);
 			updateFile(taskList);
+			updateCompleteListFile(completedList);
 		} else {
 			if (completedTask.getStartDate() == null) {
 				Date currentDeadline = completedTask.getEndDateInDateType();
 				int repeatCycle = completedTask.getRepeatCycle();
 				String repeatType = completedTask.getRepeatType();
-				calendar.setTime(currentDeadline);	
+				calendar.setTime(currentDeadline);
 				Date nextDeadline = getNextDeadline(calendar, repeatCycle, repeatType);
 				completedTask.setEndDateInDate(nextDeadline);
 				taskList.set(index, completedTask);
@@ -379,7 +390,7 @@ public class FileModifier {
 		} else if (repeatType.equals("yearly")) {
 			calendar.add(Calendar.YEAR, repeatCycle);
 		}
-		
+
 		Date nextDeadline = calendar.getTime();
 		return nextDeadline;
 	}
