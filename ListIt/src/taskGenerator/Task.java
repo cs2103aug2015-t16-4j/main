@@ -11,7 +11,7 @@ public class Task implements Serializable {
 	private Date startDate;
 	private Date endDate;
 	private boolean hasTime = false;
-	private boolean isRepeat;
+	private boolean isRepeat = false;
 	private Integer importance;
 	private Integer index;
 	private SimpleDateFormat dateTimeInputFormatter = new SimpleDateFormat("ddMMyyyy HHmm");
@@ -165,6 +165,10 @@ public class Task implements Serializable {
 		return this.isRepeat;
 	}
 	
+	public boolean getHasTime() {
+		return this.hasTime;
+	}
+	
 	public int getRepeatCycle() {
 		return this.repeatCycle;
 	}
@@ -224,6 +228,10 @@ public class Task implements Serializable {
 	public Integer getIndex() {
 		return index;
 	}
+	
+	public Date getEndDateInDateType() {
+		return this.endDate;
+	}
 
 	// SETTERS
 	public void setEventTitle(String eventTitle) {
@@ -280,5 +288,9 @@ public class Task implements Serializable {
 	
 	public void setRepeatType(String type) {
 		this.repeatType = type;
+	}
+
+	public void setEndDateInDate(Date nextDeadline) {
+		this.endDate = nextDeadline;
 	}
 }

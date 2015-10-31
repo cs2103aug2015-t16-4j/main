@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 
 import listItUI.OutputScreenPane;
 import taskGenerator.Task;
@@ -80,7 +82,7 @@ public class FileModifier {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void saveCompleteFile(ArrayList<Task> completeTaskStorage) {
 		try {
 			FileOutputStream fos = new FileOutputStream(completeDataFile, false);
@@ -119,7 +121,7 @@ public class FileModifier {
 
 		return list;
 	}
-	
+
 	public ArrayList<Task> getCompleteContentList() {
 		ArrayList<Task> list = new ArrayList<Task>();
 
@@ -172,7 +174,7 @@ public class FileModifier {
 	private void updateFile(ArrayList<Task> newList) {
 		modifier.sort(newList);
 		modifier.updateIndex(newList);
-		if(isViewModeComplete()) {
+		if (isViewModeComplete()) {
 			modifier.saveCompleteFile(newList);
 		} else {
 			modifier.saveFile(newList);
@@ -182,7 +184,7 @@ public class FileModifier {
 
 	public void removeTask(int index) {
 		ArrayList<Task> taskList;
-		if(isViewModeComplete()) {
+		if (isViewModeComplete()) {
 			taskList = modifier.getCompleteContentList();
 		} else {
 			taskList = modifier.getContentList();
@@ -223,7 +225,7 @@ public class FileModifier {
 
 	public void clearAll() {
 		ArrayList<Task> taskList;
-		if(isViewModeComplete()) {
+		if (isViewModeComplete()) {
 			taskList = modifier.getCompleteContentList();
 		} else {
 			taskList = modifier.getContentList();
@@ -343,14 +345,42 @@ public class FileModifier {
 	}
 
 	public void completeTask(int index) {
-		ArrayList<Task> completedList = new ArrayList<Task>();
+		ArrayList<Task> completedList = modifier.getCompleteContentList();
 		ArrayList<Task> taskList = modifier.getContentList();
+		Calendar calendar = Calendar.getInstance();
 
 		Task completedTask = taskList.get(index);
-		completedList.add(0, completedTask);
-		taskList.remove(index);
-		saveCompleteFile(completedList);
-		updateFile(taskList);
+		if (completedTask.getRepeat() == false) {
+			completedList.add(0, completedTask);
+			taskList.remove(index);
+			saveCompleteFile(completedList);
+			updateFile(taskList);
+		} else {
+			if (completedTask.getStartDate() == null) {
+				Date currentDeadline = completedTask.getEndDateInDateType();
+				int repeatCycle = completedTask.getRepeatCycle();
+				String repeatType = completedTask.getRepeatType();
+				calendar.setTime(currentDeadline);	
+				Date nextDeadline = getNextDeadline(calendar, repeatCycle, repeatType);
+				completedTask.setEndDateInDate(nextDeadline);
+				taskList.set(index, completedTask);
+				updateFile(taskList);
+			}
+		}
+	}
+
+	private Date getNextDeadline(Calendar calendar, int repeatCycle, String repeatType) {
+		if (repeatType.equals("daily")) {
+			calendar.add(Calendar.DATE, repeatCycle);
+		} else if (repeatType.equals("weekly")) {
+			calendar.add(Calendar.WEEK_OF_YEAR, repeatCycle);
+		} else if (repeatType.equals("monthly")) {
+			calendar.add(Calendar.MONTH, repeatCycle);
+		} else if (repeatType.equals("yearly")) {
+			calendar.add(Calendar.YEAR, repeatCycle);
+		}
 		
+		Date nextDeadline = calendar.getTime();
+		return nextDeadline;
 	}
 }
