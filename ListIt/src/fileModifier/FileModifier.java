@@ -167,6 +167,18 @@ public class FileModifier {
 		}
 		return isEmpty;
 	}
+	
+	public File getDataFile() {
+		return this.dataFile;
+	}
+	
+	public File getCompleteDataFile() {
+		return this.completeDataFile;
+	}
+	
+	public File getPathFile() {
+		return this.pathStorage;
+	}
 
 	public void addTask(Task newtask) {
 		ArrayList<Task> newList = modifier.getContentList();
