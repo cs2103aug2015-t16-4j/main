@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import org.junit.Test;
 
 import fileModifier.FileModifier;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import listItLogic.AddLogic;
 import listItLogic.DeleteLogic;
 import listItLogic.EditLogic;
 import listItLogic.SearchLogic;
+import listItUI.UIMain;
 import taskGenerator.Task;
 
 public class UnitTest {
@@ -27,7 +30,7 @@ public class UnitTest {
 		String deleteMessage = null;
 		String addDeadlineMessage = null;
 		String addRankMessage = null;
-		String searchMessage = null; 
+		String searchMessage = null;
 
 		DeleteLogic.clearFile();
 		testDeleteLogicClear(expected, "test clear"); 
