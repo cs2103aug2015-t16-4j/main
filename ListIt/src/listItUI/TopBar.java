@@ -33,7 +33,6 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 		iconView.setFitWidth(40);
 		closeButton.setMaxSize(40, 40);
 		closeButton.setGraphic(iconView);
-		closeButton.setStyle("-fx-focus-color: transparent;");
 		
 		setConstraints(listItLabel, 1, 0);
 		setConstraints(closeButton, 2, 0);

@@ -64,5 +64,9 @@ public class InputTextPane extends GridPane implements EventHandler<ActionEvent>
 			inputField.setText("");
 		}
 	}
+	
+	public TextField getTextField() {
+		return inputField;
+	}
 
 }
