@@ -20,7 +20,7 @@ public class FeedbackPane extends GridPane{
 		label.setStyle("-fx-fill: linear-gradient(#0033CC 30%, #0029A3 60%, #001A66 90%);");
 		
 		feedbackScreen = new TextArea();
-		feedbackScreen.setPrefSize(150, 450);
+		feedbackScreen.setPrefSize(620, 80);
 		feedbackScreen.setEditable(false);
 		
 		setConstraints(label, 0, 0);

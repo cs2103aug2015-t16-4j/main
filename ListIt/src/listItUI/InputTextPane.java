@@ -27,7 +27,7 @@ public class InputTextPane extends GridPane implements EventHandler<ActionEvent>
 		inputLabel = new Text("command:  ");
 		inputField = new TextField();
 
-		inputField.setPrefSize(500, 20);
+		inputField.setPrefSize(540, 20);
 		inputLabel.setStyle("-fx-fill: linear-gradient(#0033CC 30%, #0029A3 60%, #001A66 90%);");
 
 		inputField.setOnAction(this);
