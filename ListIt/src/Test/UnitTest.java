@@ -20,9 +20,12 @@ public class UnitTest {
 	@Test
 	public void test() {
 		ArrayList<Task> expected = new ArrayList<Task>();
+		ArrayList<Task> expectedSearchList = new ArrayList<Task>();
+		ArrayList<Task> actualSearchList = new ArrayList<Task>();
 		String addMessage = null;
 		String deleteMessage = null;
 		String addDeadlineMessage = null;
+		String addRankMessage = null;
 		
 		DeleteLogic.clearFile();
 		testDeleteLogicClear(expected, "test clear");
@@ -72,8 +75,25 @@ public class UnitTest {
 		testAddDeadlineLogic("testing adding with deadline with wrong date format", expected,
 				             addDeadlineMessage, "enter a valid date");
 		
+		AddLogic.addEventWithImportance("add watch movie rank 0");
+		addRankMessage = AddLogic.getRankMessage();
+		testAddRankLogic("test adding with wrong rank range", expected, addRankMessage, "invalid rank input");
+		
+		AddLogic.addEventWithImportance("add go for manicure rank 4");
+		addRankMessage = AddLogic.getRankMessage();
+		testAddRankLogic("test adding with wrong rank range", expected, addRankMessage,
+				         "invalid rank input");
+		
+		AddLogic.addEventWithImportance("add do groceries rank 3");
+		addRankMessage = AddLogic.getRankMessage();
+		Task task4 = new Task("do groceries", 3);
+		expected.add(task4);
+		testAddRankLogic("test adding with right rank range", expected, addRankMessage,
+				         "invalid rank input");
+		
 		SearchLogic.searchKeyWord("search date 03112015");
-		testSearchLogicDate("test search by date" , expected); 
+		actualSearchList = SearchLogic.getTaskList();
+		testSearchLogicDate("test search by date" , expectedSearchList, actualSearchList); 
 		
 		//testing a date not present 
 		SearchLogic.searchKeyWord("search data 05112015"); 
@@ -91,6 +111,16 @@ public class UnitTest {
 		testSort(expected,modifier.getContentList() ); 
 	}
 	
+	private void testAddRankLogic(String description, ArrayList<Task> expected, String actualMessage,
+			                      String expectedMessage) {
+		if(actualMessage != null) {
+			assertEquals(description, expectedMessage, actualMessage);
+		} else {
+			ArrayList<Task> actual = modifier.getContentList();
+			assertEquals(description, expected, actual);
+		}
+	}
+	
 	private void testAddDeadlineLogic(String description, ArrayList<Task> expected, String actualMessage,
 			                          String expectedMessage) {
 		if(actualMessage != null) {
@@ -106,8 +136,8 @@ public class UnitTest {
 		assertEquals(description , expected , actual); 		
 	}
 
-	private void testSearchLogicDate(String description, ArrayList<Task> expected ) {
-		 // i need to get the searchList . 	
+	private void testSearchLogicDate(String description, ArrayList<Task> expectedSearch, ArrayList<Task> actualSearch) {
+		 assertEquals(description, expectedSearch, actualSearch);
 	}
 
 	private void testAddDefaultLogic(String description, ArrayList<Task> expected, String expectedMessage, String actualMessage) {

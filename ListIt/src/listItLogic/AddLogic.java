@@ -13,10 +13,12 @@ public class AddLogic {
 	private static FileModifier modifier = FileModifier.getInstance();
 	private static String addDefaultMessage = null;
 	private static String addDeadlineMessage = null;
+	private static String addRankMessage = null;
 	private static final String MESSAGE_ADD_TITLE = "Please enter an event title";
 	private static final String MESSAGE_ADD_VALID_DATE1 = "Please enter a valid date! Days of the week are not accepted";
 	private static final String MESSAGE_ADD_VALID_DATE2 = "add valid date";
 	private static final String MESSAGE_ADD_VALID_DATE3 = "enter a vaild date";
+	private static final String MESSAGE_INVALID_RANK = "invalid rank input";
 	private static final String COMMAND_BY = "by";
 	private static final String FORMAT_DATE = "ddMMyyyy";
 	private static final String FORMAT_DATETIME = "ddMMyyyy HHmm";
@@ -54,12 +56,14 @@ public class AddLogic {
 		} else if (!isValidDate(deadline) && isStringObject(deadline)) {
 			if(isDayOfWeek(deadline)) {
 				addDeadlineMessage = MESSAGE_ADD_VALID_DATE1;
+				FeedbackPane.displayInvalidInput();
 			} else {
 				addDeadlineMessage = MESSAGE_ADD_VALID_DATE2;
 				addEventDefault(deadline);
 			} 
 		} else if (!isValidDate(deadline) && !isStringObject(deadline)) {
 			addDeadlineMessage = MESSAGE_ADD_VALID_DATE3;
+			FeedbackPane.displayInvalidInput();
 		}
 	}
 	
@@ -149,6 +153,7 @@ public class AddLogic {
 			return command.substring(4);
 		} else {
 			addDefaultMessage = MESSAGE_ADD_TITLE;
+			FeedbackPane.displayInvalidInput();
 			return null;
 		}
 	}
@@ -171,18 +176,23 @@ public class AddLogic {
 
 			try {
 				int rank = convertStringToInt(command);
-				if (isValidDate(deadline)) {
-					Task newTask;
-					if (containsTime(deadline)) {
-						newTask = new Task(eventTitle, deadline, rank, true);
+				if (rank >= 1 && rank <= 3) {
+					if (isValidDate(deadline)) {
+						Task newTask;
+						if (containsTime(deadline)) {
+							newTask = new Task(eventTitle, deadline, rank, true);
+						} else {
+							newTask = new Task(eventTitle, deadline, rank);
+						}
+						modifier.addTask(newTask);
 					} else {
-						newTask = new Task(eventTitle, deadline, rank);
+						eventTitle = getEventTitleImportance(command);
+						Task newTask = new Task(eventTitle, rank);
+						modifier.addTask(newTask);
 					}
-					modifier.addTask(newTask);
 				} else {
-					eventTitle = getEventTitleImportance(command);
-					Task newTask = new Task(eventTitle, rank);
-					modifier.addTask(newTask);
+					addRankMessage = MESSAGE_INVALID_RANK;
+					FeedbackPane.displayInvalidInput();
 				}
 			} catch (Exception e) {
 				addEventWithDeadline(command);
@@ -192,13 +202,22 @@ public class AddLogic {
 			try {
 				eventTitle = getEventTitleImportance(command);
 				int rank = convertStringToInt(command);
-				Task newTask = new Task(eventTitle, rank);
-				modifier.addTask(newTask);
+				if (rank >= 1 && rank <= 3) {
+					Task newTask = new Task(eventTitle, rank);
+					modifier.addTask(newTask);
+				} else {
+					addRankMessage = MESSAGE_INVALID_RANK;
+					FeedbackPane.displayInvalidInput();
+				}
 			} catch (Exception e) {
 				addEventDefault(command);
 				return;
 			}
 		}
+	}
+	
+	public static String getRankMessage() {
+		return addRankMessage;
 	}
 
 	private static int convertStringToInt(String command) {

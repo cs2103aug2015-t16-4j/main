@@ -9,10 +9,10 @@ public class SearchLogic {
 	private static final String SEARCH_DEFAULT = "default";
 	private static final String SEARCH_IMPT = "impt";
 	private static final String SEARCH_ALPHA = "alpha";
+	private static ArrayList<Task> taskList = new ArrayList<Task>();
 	
 	public static void searchKeyWord(String command) {
 		FileModifier modifier = FileModifier.getInstance();
-		ArrayList<Task> taskList = new ArrayList<Task>();
 		
 		String keyword = command.substring(7);
 		
@@ -49,5 +49,9 @@ public class SearchLogic {
 
 	private static int convertStringImptLevelToInt(String keyword) {
 		return Integer.parseInt(keyword);
+	}
+	
+	public static ArrayList<Task> getTaskList() {
+		return taskList;
 	}
 }
