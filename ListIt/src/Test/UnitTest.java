@@ -22,7 +22,7 @@ public class UnitTest {
 
 	@Test
 	public void test() {
-		
+
 		ArrayList<Task> expected = new ArrayList<Task>();
 		ArrayList<Task> expectedSearchList = new ArrayList<Task>();
 		ArrayList<Task> actualSearchList = new ArrayList<Task>();
@@ -40,21 +40,99 @@ public class UnitTest {
 		expected.add(task1); 
 		expected.add(task2); 
 
-		// this tests the different types of add 
-		testAddDefault(addMessage , expected); 
-		testAddWithDeadline(addDeadlineMessage , expected); 
-		testAddWithImpt(expected , addRankMessage); 
+		testAdd(addMessage , addDeadlineMessage ,addRankMessage, expected); 
+
 
 		testDelete(deleteMessage ,expected); 
 		testSearch(searchMessage ,expectedSearchList , actualSearchList); 
 
-		// the different edit types 
-		//testEdit(expected); 
+
+		testEdit(expected); 
 
 
 		testSort(expected,modifier.getContentList()); 
-		//testComplete(); 
+		testComplete(); 
 	}
+	private void testAdd(String addMessage, String addDeadlineMessage, String addRankMessage,
+			ArrayList<Task> expected) {
+		testAddDefault(addMessage , expected); 
+		testAddWithDeadline(addDeadlineMessage , expected); 
+		testAddWithImpt(expected , addRankMessage); 
+
+	}
+
+	private void testComplete() {
+
+	}
+
+	private void testEdit(ArrayList<Task> expected) {
+		testEditTitle(expected); 
+		testEditImportance(expected); 
+		testEditDate(expected); 
+	}
+
+	private void testEditDate(ArrayList<Task> expected) {
+		String description ="test if edit by date works"; 
+		ArrayList<Task> actual = new ArrayList<Task>(); 
+		expected = getExpectedforEditDate(expected);
+
+		addToList(); 
+
+
+		EditLogic.editEvent("edit 2 by date 08112015"); 
+		actual = modifier.getContentList(); 
+
+		assertEquals (description , expected , actual);
+	}
+
+	private ArrayList<Task> getExpectedforEditDate(ArrayList<Task> expected) {
+		expected.remove(1); 
+		Task task3 = new Task("OP2 presentation", "08112015","3"); 
+		expected.add(task3); 	
+		return expected; 
+	}
+
+	private void testEditImportance(ArrayList<Task> expected) {
+		String description ="test if edit by impt works"; 
+		ArrayList<Task> actual = new ArrayList<Task>(); 
+		expected = getExpectedforEditImpt(expected);
+
+		addToList(); 
+		EditLogic.editEvent("edit 2 by impt 2"); 
+		actual = modifier.getContentList(); 
+
+		assertEquals (description , expected , actual);
+
+	}
+
+	private ArrayList<Task> getExpectedforEditImpt(ArrayList<Task> expected) {
+		expected.remove(1); 
+		Task task3 = new Task("OP2 presentation", "06112015","2"); 
+		expected.add(task3); 	
+		return expected; 
+	}
+
+	private void testEditTitle(ArrayList<Task> expected) {
+		String description = "test if edit by title works"; 
+		ArrayList<Task> actual = new ArrayList<Task>(); 
+		expected = getExpectedforEditTitle(expected);
+
+		addToList(); 
+		EditLogic.editEvent("edit 2 by title Oral presentation 2 "); 
+		actual = modifier.getContentList(); 
+
+		assertEquals (description , expected , actual); 	
+
+	}
+
+	private ArrayList<Task> getExpectedforEditTitle(ArrayList<Task> expected) {
+		//remove the first second title and edit the title. 
+		expected.remove(1); 
+		Task task3 = new Task("Oral presentation 2", "06112015","3"); 
+		expected.add(task3); 	
+		return expected; 
+	}
+
 
 	private void testSearch(String searchMessage, ArrayList<Task> expectedSearchList,ArrayList<Task> actualSearchList) {
 		testSearchDate(actualSearchList,expectedSearchList , searchMessage); 
@@ -64,6 +142,7 @@ public class UnitTest {
 
 	private void testSearchTitle(ArrayList<Task> actualSearchList, ArrayList<Task> expectedSearchList,
 			String searchMessage) {
+		addToList(); 
 		//test key word present and not present . 
 		SearchLogic.searchKeyWord("search Oral Presentation 2");
 		actualSearchList = SearchLogic.getTaskList();
@@ -78,6 +157,7 @@ public class UnitTest {
 	private void testSearchImpt(ArrayList<Task> actualSearchList, ArrayList<Task> expectedSearchList,
 			String searchMessage) {
 		//test for importance ( 1 & 4) 
+		addToList(); 
 		SearchLogic.searchKeyWord("search impt 3");
 		actualSearchList = SearchLogic.getTaskList();
 		Task task2 = new Task("OP2 presentation", "06112015","3");		
@@ -91,6 +171,7 @@ public class UnitTest {
 
 	}
 	private void testSearchDate(ArrayList<Task> actualSearchList, ArrayList<Task> expectedSearchList , String searchMessage) {
+		addToList(); 
 		SearchLogic.searchKeyWord("search date 03112015");
 		actualSearchList = SearchLogic.getTaskList();
 		Task task = new Task ("EE2020 Oscilloscope project", "03112015","1"); 
@@ -127,8 +208,7 @@ public class UnitTest {
 	}
 	private void testDelete(String deleteMessage, ArrayList<Task> expected) {
 
-		AddLogic.addEventWithDeadline("add Complete EE2020 oscilloscope project by 03112015 rank 1");
-		AddLogic.addEventWithDeadline(" add OP2 presentation by 06112015 rank 3");
+		addToList(); 
 
 		DeleteLogic.deleteEvent("delete 3");
 		deleteMessage = DeleteLogic.getMessage();
@@ -187,8 +267,7 @@ public class UnitTest {
 
 	private void testAddWithDeadline(String addMessage , ArrayList<Task> expected){
 		ArrayList<Task> actual = new ArrayList<Task>(); 
-		AddLogic.addEventWithDeadline("add Complete EE2020 oscilloscope project by 03112015 rank 1");
-		AddLogic.addEventWithDeadline("OP2 presentation by 06112015 rank 3");
+		addToList(); 
 		actual = modifier.getContentList(); 
 		testAddWithDeadlineLogic(actual, expected, "test add with deadline logic");
 	}
@@ -214,5 +293,9 @@ public class UnitTest {
 	private void testDeleteLogicClear(ArrayList<Task> expected, String description) {
 		ArrayList<Task> actual = modifier.getContentList();
 		assertEquals(description, expected.size(), actual.size());
+	}
+	private void addToList() {
+		AddLogic.addEventDefault("add Complete EE2020 oscilloscope project by 03112015 rank 1");
+		AddLogic.addEventDefault("add OP2 presentation by 06112015 rank 3");
 	}
 } 
