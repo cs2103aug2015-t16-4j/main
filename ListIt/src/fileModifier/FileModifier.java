@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Date;
 
 import listItLogic.TaskCheckLogic;
+import listItUI.FeedbackPane;
 import listItUI.OutputScreenPane;
 import taskGenerator.Task;
 import taskGenerator.TaskComparatorAlpha;
@@ -181,9 +182,13 @@ public class FileModifier {
 	}
 
 	public void addTask(Task newtask) {
-		ArrayList<Task> newList = modifier.getContentList();
-		newList.add(newtask);
-		updateFile(newList);
+		if(TaskCheckLogic.blockedDateCheck(newtask)) {
+			ArrayList<Task> newList = modifier.getContentList();
+			newList.add(newtask);
+			updateFile(newList);
+		} else {
+			FeedbackPane.displayInvalidAddBlocked();
+		}
 	}
 
 	private void updateFile(ArrayList<Task> newList) {
@@ -438,5 +443,13 @@ public class FileModifier {
 
 		Date nextDeadline = calendar.getTime();
 		return nextDeadline;
+	}
+
+	public void editBlock(int index) {
+		ArrayList<Task> taskList = modifier.getContentList();
+		Task tempTask = taskList.get(index);
+		tempTask.setBlocking(false);
+		taskList.set(index, tempTask);
+		updateFile(taskList);
 	}
 }

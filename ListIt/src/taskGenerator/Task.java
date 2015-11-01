@@ -14,6 +14,7 @@ public class Task implements Serializable {
 	private boolean isRepeat = false;
 	private boolean isOverDate = false;
 	private boolean isComplete = false;
+	private boolean blocking = false;
 	private Integer importance;
 	private Integer index;
 	private SimpleDateFormat dateTimeInputFormatter = new SimpleDateFormat("ddMMyyyy HHmm");
@@ -23,6 +24,7 @@ public class Task implements Serializable {
 	private String repeatType;
 	private int repeatCycle;
 	private String exception;
+	
 
 	// CONSTRUCTORS
 	public Task() {
@@ -280,6 +282,10 @@ public class Task implements Serializable {
 	public boolean isComplete() {
 		return this.isComplete;
 	}
+	
+	public boolean isBlocking() {
+		return blocking;
+	}
 
 	// SETTERS
 	public void setEventTitle(String eventTitle) {
@@ -356,5 +362,9 @@ public class Task implements Serializable {
 
 	public void setComplete() {
 		this.isComplete = true;
+	}
+
+	public void setBlocking(boolean set) {
+		this.blocking = set;
 	}
 }

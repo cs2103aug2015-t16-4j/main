@@ -33,4 +33,23 @@ public class TaskCheckLogic {
 		
 		modifier.saveFile(taskList);
 	}
+	
+	public static boolean blockedDateCheck(Task taskForCheck) {
+		boolean result = true;
+		if(taskForCheck.getEndDate() != null && taskForCheck.getStartDate() != null) {
+			ArrayList<Task> taskList = modifier.getContentList();
+			Task tempTask = new Task();
+			for(int i = 0; i < taskList.size(); i++) {
+				tempTask = taskList.get(i);
+				if(tempTask.isBlocking()) {
+					if(taskForCheck.getEndDateInDateType().compareTo(tempTask.getEndDateInDateType()) <= 0 &&
+							taskForCheck.getEndDateInDateType().compareTo(tempTask.getStartDateInDateType()) >= 0) {
+						result = false;
+						break;
+					}
+				}
+			}
+		}
+		return result;
+	}
 }

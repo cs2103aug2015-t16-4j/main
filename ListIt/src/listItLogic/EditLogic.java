@@ -13,6 +13,7 @@ public class EditLogic {
 	private static final String COMMAND_TO = "to";
 	private static final String COMMAND_FROM = "from";
 	private static final String COMMAND_REPEAT = "by repeat";
+	private static final String COMMAND_BLOCK = "cancel block";
 
 	public static void editEvent(String command) {
 		int IndexToBeEdit = convertStringIndexToInt(command);
@@ -46,6 +47,8 @@ public class EditLogic {
 				FeedbackPane.displayInvalidEdit();
 			}
 
+		} else if (isEditByBlock(command)) {
+			modifier.editBlock(IndexToBeEdit - 1);
 		}
 	}
 
@@ -87,6 +90,10 @@ public class EditLogic {
 
 	private static boolean isEditByRepeat(String command) {
 		return command.contains(COMMAND_REPEAT);
+	}
+	
+	private static boolean isEditByBlock(String command) {
+		return command.contains(COMMAND_BLOCK);
 	}
 
 	private static int convertStringIndexToInt(String command) {

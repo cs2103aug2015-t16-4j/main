@@ -126,6 +126,7 @@ public class OutputScreenPane extends GridPane {
 		GridPane taskDetail = new GridPane();
 		boolean showDates = false;
 		boolean showRepeat = false;
+		boolean showBlock = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
@@ -133,6 +134,7 @@ public class OutputScreenPane extends GridPane {
 		Text endDate = null;
 		Text rank;
 		Text repeatCycle = null;
+		Text blocker = null;
 
 		index.setFont(Font.font(18));
 
@@ -142,6 +144,11 @@ public class OutputScreenPane extends GridPane {
 			showDates = true;
 		} else {
 			endDate = new Text("End Date: " + tempTask.getEndDate());
+		}
+
+		if (tempTask.isBlocking()) {
+			blocker = new Text("     (Block Set)");
+			showBlock = true;
 		}
 
 		rank = new Text(getRankingText(tempTask.getImportance()));
@@ -160,6 +167,13 @@ public class OutputScreenPane extends GridPane {
 			setConstraints(rank, 1, 4);
 			setConstraints(emptyLine, 0, 5);
 			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, repeatCycle, rank, emptyLine);
+		} else if (showDates && showBlock) {
+			setConstraints(startDate, 1, 1);
+			setConstraints(blocker, 2, 0);
+			setConstraints(endDate, 1, 2);
+			setConstraints(rank, 1, 3);
+			setConstraints(emptyLine, 0, 4);
+			taskDetail.getChildren().addAll(index, eventTitle, blocker, startDate, endDate, rank, emptyLine);
 		} else if (showDates) {
 			setConstraints(startDate, 1, 1);
 			setConstraints(endDate, 1, 2);
@@ -251,6 +265,7 @@ public class OutputScreenPane extends GridPane {
 		GridPane taskDetail = new GridPane();
 		boolean showDates = false;
 		boolean showRepeat = false;
+		boolean showBlock = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
@@ -258,6 +273,7 @@ public class OutputScreenPane extends GridPane {
 		Text endDate = null;
 		Text repeatCycle = null;
 		Text rank;
+		Text blocker = null;
 
 		index.setFont(Font.font(18));
 
@@ -265,6 +281,11 @@ public class OutputScreenPane extends GridPane {
 			startDate = new Text("Start Date: " + tempTask.getStartDate());
 			endDate = new Text("End Date: " + tempTask.getEndDate());
 			showDates = true;
+		}
+
+		if (tempTask.isBlocking()) {
+			blocker = new Text("     (Block Set)");
+			showBlock = true;
 		}
 
 		if (showDates == false) {
@@ -289,6 +310,13 @@ public class OutputScreenPane extends GridPane {
 			setConstraints(rank, 1, 4);
 			setConstraints(emptyLine, 0, 5);
 			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, repeatCycle, rank, emptyLine);
+		} else if (showDates && showBlock) {
+			setConstraints(startDate, 1, 1);
+			setConstraints(blocker, 2, 0);
+			setConstraints(endDate, 1, 2);
+			setConstraints(rank, 1, 3);
+			setConstraints(emptyLine, 0, 4);
+			taskDetail.getChildren().addAll(index, eventTitle, blocker, startDate, endDate, rank, emptyLine);
 		} else if (showDates) {
 			setConstraints(startDate, 1, 1);
 			setConstraints(endDate, 1, 2);
@@ -375,12 +403,14 @@ public class OutputScreenPane extends GridPane {
 		GridPane taskDetail = new GridPane();
 		boolean showDates = false;
 		boolean showRepeat = false;
+		boolean showBlock = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 		Text startDate = null;
 		Text endDate = null;
 		Text repeatCycle = null;
+		Text blocker = null;
 
 		index.setFont(Font.font(18));
 
@@ -392,6 +422,11 @@ public class OutputScreenPane extends GridPane {
 
 		if (showDates == false) {
 			endDate = new Text("End Date: " + tempTask.getEndDate());
+		}
+
+		if (tempTask.isBlocking()) {
+			blocker = new Text("     (Block Set)");
+			showBlock = true;
 		}
 
 		if (tempTask.getRepeat()) {
@@ -407,6 +442,12 @@ public class OutputScreenPane extends GridPane {
 			setConstraints(repeatCycle, 1, 3);
 			setConstraints(emptyLine, 0, 4);
 			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, repeatCycle, emptyLine);
+		} else if (showDates && showBlock) {
+			setConstraints(startDate, 1, 1);
+			setConstraints(blocker, 2, 0);
+			setConstraints(endDate, 1, 2);
+			setConstraints(emptyLine, 0, 3);
+			taskDetail.getChildren().addAll(index, eventTitle, blocker, startDate, endDate, emptyLine);
 		} else if (showDates) {
 			setConstraints(startDate, 1, 1);
 			setConstraints(endDate, 1, 2);

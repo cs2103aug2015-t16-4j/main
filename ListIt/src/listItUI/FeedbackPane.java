@@ -85,4 +85,8 @@ public class FeedbackPane extends GridPane{
 	public static void displayInvalidIndexToSearch() {
 		feedbackScreen.appendText("Index is out of bounds!\n");
 	}
+
+	public static void displayInvalidAddBlocked() {
+		feedbackScreen.appendText("The current event timeline is blocked, cannot be added");
+	}
 }

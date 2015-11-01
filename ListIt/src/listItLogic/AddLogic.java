@@ -392,15 +392,25 @@ public class AddLogic {
 	}
 
 	public static void addBlockEvent(String command) {
+		Task newTask = new Task();
 		String eventTitle = getEventTitleBlockDate(command);
 		String end = getEndTime(command);
 		String start = getBlockEventStartDate(command);
-		Task newTask = new Task(eventTitle, start, end);
-		modifier.addTask(newTask);
+		if(isValidDate(end) && isValidDate(start)) {
+			if(containsTime(end)) {
+				newTask = new Task(eventTitle, start, end, true);
+			} else {
+				newTask = new Task(eventTitle, start, end);
+			}
+			newTask.setBlocking(true);
+			modifier.addTask(newTask);
+		} else {
+			FeedbackPane.displayInvalidAdd();
+		}
 	}
 
 	private static String getBlockEventStartDate(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_BLOCK) + 5, command.lastIndexOf(COMMAND_END_TIME) - 1);
+		return command.substring(command.lastIndexOf(COMMAND_BLOCK) + 6, command.lastIndexOf(COMMAND_END_TIME) - 1);
 
 	}
 
