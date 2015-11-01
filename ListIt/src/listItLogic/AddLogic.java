@@ -12,7 +12,11 @@ public class AddLogic {
 
 	private static FileModifier modifier = FileModifier.getInstance();
 	private static String addDefaultMessage = null;
+	private static String addDeadlineMessage = null;
 	private static final String MESSAGE_ADD_TITLE = "Please enter an event title";
+	private static final String MESSAGE_ADD_VALID_DATE1 = "Please enter a valid date! Days of the week are not accepted";
+	private static final String MESSAGE_ADD_VALID_DATE2 = "add valid date";
+	private static final String MESSAGE_ADD_VALID_DATE3 = "enter a vaild date";
 	private static final String COMMAND_BY = "by";
 	private static final String FORMAT_DATE = "ddMMyyyy";
 	private static final String FORMAT_DATETIME = "ddMMyyyy HHmm";
@@ -47,49 +51,59 @@ public class AddLogic {
 				newTask = new Task(eventTitle, deadline);
 			}
 			modifier.addTask(newTask);
-		} else {
-			addEventDefault(command);
+		} else if (!isValidDate(deadline) && isStringObject(deadline)) {
+			if(isDayOfWeek(deadline)) {
+				addDeadlineMessage = MESSAGE_ADD_VALID_DATE1;
+			} else {
+				addDeadlineMessage = MESSAGE_ADD_VALID_DATE2;
+				addEventDefault(deadline);
+			} 
+		} else if (!isValidDate(deadline) && !isStringObject(deadline)) {
+			addDeadlineMessage = MESSAGE_ADD_VALID_DATE3;
 		}
 	}
-
-	public static void addEventWithDeadlineUsingOn(String command) {
-		String eventTitle = null;
-		String deadline = null;
-
-		try {
-			eventTitle = getEventTitleDeadlineWithOn(command);
-			deadline = getEventDeadlineWithOn(command);
-		} catch (Exception e) {
-			addEventDefault(command);
-		}
-
-		if (isValidDate(deadline)) {
-			Task newTask;
-			if (containsTime(deadline)) {
-				newTask = new Task(eventTitle, deadline, true);
-			} else {
-				newTask = new Task(eventTitle, deadline);
-			}
-			modifier.addTask(newTask);
+	
+	public static boolean isDayOfWeek(String deadline) {
+		if(deadline.contains("monday") || deadline.contains("tuesday") 
+		   || deadline.contains("wednesday") || deadline.contains("thursday") 
+		   || deadline.contains("friday") || deadline.contains("saturday")
+		   || deadline.contains("sunday") || deadline.contains("tomorrow")
+		   || deadline.contains("week")) {
+			return true;
 		} else {
-			addEventDefault(command);
+			return false;
 		}
+	}
+	
+	public static boolean isStringObject(String deadline) {
+		boolean isString = false;
+		int date;
+		try {
+			date = Integer.parseInt(deadline);
+		} catch (NumberFormatException e) {
+			isString = true;
+		}
+		return isString;
+	}
+	
+	public static String getDeadlineMessage() {
+		return addDeadlineMessage;
 	}
 
 	private static String getEventDeadline(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_BY) + 3);
-	}
-
-	private static String getEventDeadlineWithOn(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_ON) + 3);
+		if(command.contains(COMMAND_BY)) {
+			return command.substring(command.lastIndexOf(COMMAND_BY) + 3);
+		} else {
+			return command.substring(command.lastIndexOf(COMMAND_ON) + 3);
+		}
 	}
 
 	private static String getEventTitleDeadline(String command) {
-		return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
-	}
-
-	private static String getEventTitleDeadlineWithOn(String command) {
-		return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
+		if(command.contains(COMMAND_BY)) {
+			return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
+		} else {
+			return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
+		}
 	}
 
 	static boolean isValidDate(String newDate) {

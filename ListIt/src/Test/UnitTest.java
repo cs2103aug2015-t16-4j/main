@@ -22,11 +22,11 @@ public class UnitTest {
 		ArrayList<Task> expected = new ArrayList<Task>();
 		String addMessage = null;
 		String deleteMessage = null;
+		String addDeadlineMessage = null;
 		
 		DeleteLogic.clearFile();
 		testDeleteLogicClear(expected, "test clear");
 		
-		//creates a task object and adds it to the expected output 
 		Task task1 = new Task("EE2020 Oscilloscope project", "03112015");
 		expected.add(task1);
 		AddLogic.addEventWithDeadline("add Complete EE2020 oscilloscope project by 03112015");
@@ -55,6 +55,23 @@ public class UnitTest {
 		addMessage = AddLogic.getMessage();
 		testAddDefaultLogic("test default add", expected, "Please enter an event title", addMessage);
 		
+		AddLogic.addEventWithDeadline("add complete EE2020 lab report by next Friday");
+		addDeadlineMessage = AddLogic.getDeadlineMessage();
+		testAddDeadlineLogic("test adding with deadline in wrong format", expected, 
+				             addDeadlineMessage, "Please enter a valid date! Days of the week are not accepted");
+		
+		AddLogic.addEventWithDeadline("add go for light and sound show at the Gardens by the Bay");
+		Task task3 = new Task("go for light and sound show a the Gardens by the Bay");
+		expected.add(task3);
+		addDeadlineMessage = AddLogic.getDeadlineMessage();
+		testAddDeadlineLogic("testing adding floating task with the word by", expected, 
+				             addDeadlineMessage, null);
+		
+		AddLogic.addEventWithDeadline("add attend meeting by 152015");
+		addDeadlineMessage = AddLogic.getDeadlineMessage();
+		testAddDeadlineLogic("testing adding with deadline with wrong date format", expected,
+				             addDeadlineMessage, "enter a valid date");
+		
 		SearchLogic.searchKeyWord("search date 03112015");
 		testSearchLogicDate("test search by date" , expected); 
 		
@@ -72,6 +89,16 @@ public class UnitTest {
 		
 		SearchLogic.searchKeyWord("search tutorial work"); 
 		testSort(expected,modifier.getContentList() ); 
+	}
+	
+	private void testAddDeadlineLogic(String description, ArrayList<Task> expected, String actualMessage,
+			                          String expectedMessage) {
+		if(actualMessage != null) {
+			assertEquals(description, expectedMessage, actualMessage);
+		} else {
+			ArrayList<Task> actual = modifier.getContentList();
+			assertEquals(description, expected, actual);
+		}
 	}
 
 	private void testSort(ArrayList<Task> expected ,ArrayList<Task> actual ) {

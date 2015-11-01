@@ -56,14 +56,12 @@ public class ExecuteCommand {
 				AddLogic.addEventWithTimeline(command);
 			} else if (command.contains(WITH_IMPT)) {
 				AddLogic.addEventWithImportance(command);
-			} else if (command.contains(WITH_DEADLINE)) {
+			} else if (command.contains(WITH_DEADLINE) || command.contains(WITH_DEADLINE_TYPE2)) {
 				AddLogic.addEventWithDeadline(command);
 			} else if(command.contains(TYPE_BLOCK)){
 				AddLogic.addBlockEvent(command);
 			} else if (command.contains(TYPE_RECURSIVE) && (command.contains(WITH_DEADLINE_TYPE2))) {
 				AddLogic.addRecursiveEventDeadline(command);
-			} else if (command.contains(WITH_DEADLINE_TYPE2)) {
-				AddLogic.addEventWithDeadlineUsingOn(command);
 			} else {
 				AddLogic.addEventDefault(command);
 			}
