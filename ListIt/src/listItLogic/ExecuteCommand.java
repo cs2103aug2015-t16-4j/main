@@ -52,6 +52,8 @@ public class ExecuteCommand {
 			if (command.contains(TYPE_RECURSIVE) && command.contains(WITH_TIMELINE_CONDITION1) 
 					&& command.contains(WITH_TIMELINE_CONDITION2)) {
 				AddLogic.addRecursiveEventTimeline(command);
+			} else if (command.contains(TYPE_RECURSIVE) && (command.contains(WITH_DEADLINE_TYPE2))) {
+				AddLogic.addRecursiveEventDeadline(command);
 			} else if (command.contains(WITH_TIMELINE_CONDITION1) && command.contains(WITH_TIMELINE_CONDITION2)) {
 				AddLogic.addEventWithTimeline(command);
 			} else if (command.contains(WITH_IMPT)) {
@@ -60,8 +62,6 @@ public class ExecuteCommand {
 				AddLogic.addEventWithDeadline(command);
 			} else if(command.contains(TYPE_BLOCK)){
 				AddLogic.addBlockEvent(command);
-			} else if (command.contains(TYPE_RECURSIVE) && (command.contains(WITH_DEADLINE_TYPE2))) {
-				AddLogic.addRecursiveEventDeadline(command);
 			} else {
 				AddLogic.addEventDefault(command);
 			}

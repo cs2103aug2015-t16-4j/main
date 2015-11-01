@@ -20,7 +20,7 @@ import taskGenerator.Task;
 public class UnitTest {
 	
 	@BeforeClass
-	public static void setUpClass() throws InterruptedException {
+	public static void setUpApplication() throws InterruptedException {
 	    // Initialize Java FX
 
 	    System.out.printf("About to launch FX App ListIt\n");

@@ -12,6 +12,7 @@ public class EditLogic {
 	private static final String COMMAND_TIMELINE = "by time";
 	private static final String COMMAND_TO = "to";
 	private static final String COMMAND_FROM = "from";
+	private static final String COMMAND_REPEAT = "by repeat";
 
 	public static void editEvent(String command) {
 		int IndexToBeEdit = convertStringIndexToInt(command);
@@ -19,7 +20,7 @@ public class EditLogic {
 		if (isEditByDate(command)) {
 			String newDate = getNewDate(command);
 			if (AddLogic.isValidDate(newDate)) {
-				modifier.editEndDate(IndexToBeEdit-1, newDate);
+				modifier.editEndDate(IndexToBeEdit - 1, newDate);
 			} else {
 				FeedbackPane.displayInvalidDate();
 			}
@@ -33,7 +34,19 @@ public class EditLogic {
 			String newStartDate = getNewStartDate(command);
 			String newEndDate = getNewEndDate(command);
 			modifier.editTimeline(IndexToBeEdit - 1, newStartDate, newEndDate);
-		} 
+		} else if (isEditByRepeat(command)) {
+			String repeatCommand = command.substring(command.indexOf(COMMAND_REPEAT) + 10);
+			if (AddLogic.isCorrectRepeatCycle(repeatCommand)) {
+				int newPeriod = 0;
+				String repeatType = null;
+				newPeriod = Integer.parseInt(repeatCommand.substring(0, repeatCommand.indexOf(" ")));
+				repeatType = repeatCommand.substring(repeatCommand.indexOf(" ") + 1);
+				modifier.editRepeat(IndexToBeEdit - 1, newPeriod, repeatType);
+			} else {
+				FeedbackPane.displayInvalidEdit();
+			}
+
+		}
 	}
 
 	private static String getNewEndDate(String command) {
@@ -70,6 +83,10 @@ public class EditLogic {
 
 	private static boolean isEditByDate(String command) {
 		return command.contains(COMMAND_DEADLINE);
+	}
+
+	private static boolean isEditByRepeat(String command) {
+		return command.contains(COMMAND_REPEAT);
 	}
 
 	private static int convertStringIndexToInt(String command) {

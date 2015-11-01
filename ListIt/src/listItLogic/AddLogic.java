@@ -349,7 +349,7 @@ public class AddLogic {
 		return repeatCycle.substring(repeatCycle.indexOf(WHITESPACE) + 1);
 	}
 
-	private static boolean isCorrectRepeatCycle(String repeatCycle) {
+	public static boolean isCorrectRepeatCycle(String repeatCycle) {
 		boolean result = false;
 
 		if (repeatCycle.contains(REPEAT_DAILY) || repeatCycle.contains(REPEAT_MONTHLY)

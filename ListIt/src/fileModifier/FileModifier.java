@@ -415,6 +415,15 @@ public class FileModifier {
 			}
 		}
 	}
+	
+	public void editRepeat(int index, int newPeriod, String repeatType) {
+		ArrayList<Task> taskList = modifier.getContentList();
+		Task tempTask = taskList.get(index);
+		tempTask.setRepeatCycle(newPeriod);
+		tempTask.setRepeatType(repeatType);
+		taskList.set(index, tempTask);
+		updateFile(taskList);
+	}
 
 	private Date getNextDeadline(Calendar calendar, int repeatCycle, String repeatType) {
 		if (repeatType.equals("daily")) {
