@@ -11,10 +11,10 @@ import javafx.stage.StageStyle;
 
 public class UIMain extends Application {
 	
-	InputTextPane inputBox;
-	OutputScreenPane screenBox;
-	FeedbackPane FeedbackBox;
-	TopBar topBar;
+	InputTextPane inputBox = new InputTextPane();
+	OutputScreenPane screenBox = new OutputScreenPane();
+	FeedbackPane FeedbackBox = new FeedbackPane();
+	TopBar topBar = new TopBar();
 	private double xOffset = 0;
     private double yOffset = 0;
 	static FileModifier modifier = FileModifier.getInstance();
@@ -28,12 +28,6 @@ public class UIMain extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("ListIt");
 		primaryStage.initStyle(StageStyle.UNDECORATED);
-		
-		inputBox = new InputTextPane();
-		screenBox = new OutputScreenPane();
-		FeedbackBox = new FeedbackPane();
-		topBar = new TopBar();
-		
 		
 		BorderPane layout = new BorderPane();
 		

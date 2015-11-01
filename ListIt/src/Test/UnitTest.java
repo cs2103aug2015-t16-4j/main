@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import fileModifier.FileModifier;
@@ -13,10 +14,26 @@ import listItLogic.AddLogic;
 import listItLogic.DeleteLogic;
 import listItLogic.EditLogic;
 import listItLogic.SearchLogic;
-import listItUI.UIMain;
+import listItUI.*;
 import taskGenerator.Task;
 
 public class UnitTest {
+	
+	@BeforeClass
+	public static void setUpClass() throws InterruptedException {
+	    // Initialize Java FX
+
+	    System.out.printf("About to launch FX App ListIt\n");
+	    Thread t = new Thread("JavaFX Init Thread") {
+	        public void run() {
+	            Application.launch(UIMain.class, new String[0]);
+	        }
+	    };
+	    t.setDaemon(true);
+	    t.start();
+	    System.out.printf("FX App ListIt thread started\n");
+	    Thread.sleep(500);
+	}
 
 	FileModifier modifier = FileModifier.getInstance();
 
@@ -35,8 +52,8 @@ public class UnitTest {
 		DeleteLogic.clearFile();
 		testDeleteLogicClear(expected, "test clear"); 
 
-		Task task1 = new Task("EE2020 Oscilloscope project", "03112015","1");
-		Task task2 = new Task("OP2 presentation", "06112015","3");
+		Task task1 = new Task("EE2020 Oscilloscope project", "03112015", 1);
+		Task task2 = new Task("OP2 presentation", "06112015", 3);
 		expected.add(task1); 
 		expected.add(task2); 
 
