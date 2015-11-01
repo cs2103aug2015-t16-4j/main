@@ -44,11 +44,11 @@ public class UnitTest {
 		ArrayList<Task> expected = new ArrayList<Task>();
 		ArrayList<Task> expectedSearchList = new ArrayList<Task>();
 		ArrayList<Task> actualSearchList = new ArrayList<Task>();
-		String addMessage = null;
-		String deleteMessage = null;
-		String addDeadlineMessage = null;
-		String addRankMessage = null;
-		String searchMessage = null;
+		String addMessage = "null";
+		String deleteMessage = "null";
+		String addDeadlineMessage = "null";
+		String addRankMessage = "null";
+		String searchMessage = "null";
 
 		DeleteLogic.clearFile();
 		testDeleteLogicClear(expected, "test clear"); 
@@ -59,30 +59,27 @@ public class UnitTest {
 		expected.add(task2); 
 
 		testAdd(addMessage , addDeadlineMessage ,addRankMessage, expected); 
-
-
 		testDelete(deleteMessage ,expected); 
 		testSearch(searchMessage ,expectedSearchList , actualSearchList); 
-
-
 		testEdit(expected); 
-
-
 		testSort(expected,modifier.getContentList()); 
 		testComplete(); 
 	}
+	
+	@Test
 	private void testAdd(String addMessage, String addDeadlineMessage, String addRankMessage,
 			ArrayList<Task> expected) {
 		testAddDefault(addMessage , expected); 
 		testAddWithDeadline(addDeadlineMessage , expected); 
 		testAddWithImpt(expected , addRankMessage); 
-
 	}
-
+    
+	@Test
 	private void testComplete() {
 
 	}
-
+	
+	@Test
 	private void testEdit(ArrayList<Task> expected) {
 		testEditTitle(expected); 
 		testEditImportance(expected); 
@@ -151,7 +148,7 @@ public class UnitTest {
 		return expected; 
 	}
 
-
+    @Test
 	private void testSearch(String searchMessage, ArrayList<Task> expectedSearchList,ArrayList<Task> actualSearchList) {
 		testSearchDate(actualSearchList,expectedSearchList , searchMessage); 
 		testSearchImpt(actualSearchList,expectedSearchList , searchMessage); 
@@ -219,11 +216,13 @@ public class UnitTest {
 		assertEquals(description, expectedSearch, actualSearch);
 	}
 
-
+    @Test
 	private void testSort(ArrayList<Task> expected ,ArrayList<Task> actual ) {
 		String description = "test if sort works"; 		
 		assertEquals(description , expected , actual); 		
 	}
+    
+    @Test
 	private void testDelete(String deleteMessage, ArrayList<Task> expected) {
 
 		addToList(); 
@@ -244,7 +243,7 @@ public class UnitTest {
 
 	private void testDeleteLogicDeleteEvent(String expectedMessage, String actualMessage,  
 			ArrayList<Task> expected, String description) {
-		if(actualMessage != null) {
+		if(!actualMessage.equals("null")) {
 			assertEquals(description, expectedMessage, actualMessage);
 		} else {
 			ArrayList<Task> actual = modifier.getContentList();
@@ -274,8 +273,8 @@ public class UnitTest {
 	}
 
 	private void testAddRankLogic(String description, ArrayList<Task> expected, String actualMessage,
-			String expectedMessage) {
-		if(actualMessage != null) {
+			                      String expectedMessage) {
+		if(!actualMessage.equals("null")) {
 			assertEquals(description, expectedMessage, actualMessage);
 		} else {
 			ArrayList<Task> actual = modifier.getContentList();
@@ -300,8 +299,10 @@ public class UnitTest {
 		addMessage = AddLogic.getMessage();
 		testAddDefaultLogic("test default add", expected, "Please enter an event title", addMessage);	
 	}
-	private void testAddDefaultLogic(String description, ArrayList<Task> expected, String expectedMessage, String actualMessage) {
-		if(actualMessage == null) {
+	
+	private void testAddDefaultLogic(String description, ArrayList<Task> expected, 
+			                         String expectedMessage, String actualMessage) {
+		if(actualMessage.equals("null")) {
 			ArrayList<Task> actual = modifier.getContentList();
 			assertEquals(description, expected, actual);
 		} else {

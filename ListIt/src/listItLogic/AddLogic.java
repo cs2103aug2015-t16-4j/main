@@ -11,9 +11,9 @@ import taskGenerator.Task;
 public class AddLogic {
 
 	private static FileModifier modifier = FileModifier.getInstance();
-	private static String addDefaultMessage = null;
-	private static String addDeadlineMessage = null;
-	private static String addRankMessage = null;
+	private static String addDefaultMessage = "null";
+	private static String addDeadlineMessage = "null";
+	private static String addRankMessage = "null";
 	private static final String MESSAGE_ADD_TITLE = "Please enter an event title";
 	private static final String MESSAGE_ADD_VALID_DATE1 = "Please enter a valid date! Days of the week are not accepted";
 	private static final String MESSAGE_ADD_VALID_DATE2 = "add valid date";
@@ -250,13 +250,13 @@ public class AddLogic {
 		}
 
 		if (isValidDate(startDate)) {
-			if (isEventWithImportance(command)) {
+			if (isEventWithImportance(command) && isValidRank(command)) {
 				try {
 					int rank = convertStringToInt(command);
 					endDate = getEndDateImportance(command);
 					Task newTask;
 					if (containsTime(endDate)) {
-						newTask = new Task(eventTitle, startDate, endDate, rank, true);
+					newTask = new Task(eventTitle, startDate, endDate, rank, true);
 					} else {
 						newTask = new Task(eventTitle, startDate, endDate, rank);
 					}
@@ -286,6 +286,21 @@ public class AddLogic {
 			addEventWithImportance(command);
 			return;
 		}
+	}
+	
+	private static boolean isValidRank(String command) {
+		boolean isValid = false;
+		try {
+			int rank = convertStringToInt(command);
+			if (rank >= 1 && rank <= 3) {
+				isValid = true;
+			} else {
+				isValid = false;
+			}
+		} catch (NumberFormatException e) {
+			addRankMessage = "Not an integer value";
+		}
+		return isValid;
 	}
 
 	private static String getEndDateTimeline(String command) {
