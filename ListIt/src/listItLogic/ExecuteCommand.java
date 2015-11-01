@@ -27,6 +27,8 @@ public class ExecuteCommand {
 	private static final String CHANGE_DIRECTORY_COMMAND = "cd";
 	private static final String WITH_DEADLINE_TYPE2 = "on";
 	private static final Object COMPLETE_COMMAND = "complete";
+	private static final String EXIT_COMMAND = "exit";
+
 
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	private static FileModifier modifier = FileModifier.getInstance();
@@ -93,7 +95,9 @@ public class ExecuteCommand {
 			EditLogic.editEvent(command);
 		} else if (commandType.equals(SEARCH_COMMAND)) {
 			SearchLogic.searchKeyWord(command);
-		} else if (commandType.equals(DISPLAY_COMMAND)) {
+		} else if(commandType.equals(EXIT_COMMAND)){
+			System.exit(0);
+		}else if (commandType.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.determineDisplayMode(command);
 		} else if (commandType.equals(CHANGE_DIRECTORY_COMMAND)) {
 			ChangeDirectoryLogic.changeDirectory(command);
