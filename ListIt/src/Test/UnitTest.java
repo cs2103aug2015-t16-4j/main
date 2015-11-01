@@ -18,6 +18,7 @@ import listItUI.*;
 import taskGenerator.Task;
 
 public class UnitTest {
+	FileModifier modifier = FileModifier.getInstance();
 	
 	@BeforeClass
 	public static void setUpApplication() throws InterruptedException {
@@ -32,10 +33,10 @@ public class UnitTest {
 	    t.setDaemon(true);
 	    t.start();
 	    System.out.printf("FX App ListIt thread started\n");
-	    Thread.sleep(500);
+	    Thread.sleep(600);
 	}
 
-	FileModifier modifier = FileModifier.getInstance();
+	
 
 	@Test
 	public void test() {
