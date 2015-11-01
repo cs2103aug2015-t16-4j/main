@@ -193,6 +193,7 @@ public class AddLogic {
 				} else {
 					addRankMessage = MESSAGE_INVALID_RANK;
 					FeedbackPane.displayInvalidInput();
+					addEventWithDeadline(command);
 				}
 			} catch (Exception e) {
 				addEventWithDeadline(command);
@@ -208,6 +209,7 @@ public class AddLogic {
 				} else {
 					addRankMessage = MESSAGE_INVALID_RANK;
 					FeedbackPane.displayInvalidInput();
+					addEventDefault(command);
 				}
 			} catch (Exception e) {
 				addEventDefault(command);
