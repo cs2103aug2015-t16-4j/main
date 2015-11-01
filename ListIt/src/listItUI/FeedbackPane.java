@@ -81,4 +81,8 @@ public class FeedbackPane extends GridPane{
 	public static void displayInvalidFileMove() {
 		feedbackScreen.appendText("File move failed, please check if datafiles are safe");
 	}
+
+	public static void displayInvalidIndexToSearch() {
+		feedbackScreen.appendText("Index is out of bounds!\n");
+	}
 }

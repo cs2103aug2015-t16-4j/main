@@ -19,6 +19,7 @@ public class UnitTest {
 
 	@Test
 	public void test() {
+		
 		ArrayList<Task> expected = new ArrayList<Task>();
 		ArrayList<Task> expectedSearchList = new ArrayList<Task>();
 		ArrayList<Task> actualSearchList = new ArrayList<Task>();
@@ -42,9 +43,80 @@ public class UnitTest {
 		testAddWithImpt(expected , addRankMessage); 
 
 		testDelete(deleteMessage ,expected); 
-		//testSearch(searchMessage ,expectedSearchList , actualSearchList); 
-		testSort(expected,modifier.getContentList() ); 
+		testSearch(searchMessage ,expectedSearchList , actualSearchList); 
+
+		// the different edit types 
+		//testEdit(expected); 
+
+
+		testSort(expected,modifier.getContentList()); 
+		//testComplete(); 
 	}
+
+	private void testSearch(String searchMessage, ArrayList<Task> expectedSearchList,ArrayList<Task> actualSearchList) {
+		testSearchDate(actualSearchList,expectedSearchList , searchMessage); 
+		testSearchImpt(actualSearchList,expectedSearchList , searchMessage); 
+		testSearchTitle(actualSearchList,expectedSearchList , searchMessage); 
+	}
+
+	private void testSearchTitle(ArrayList<Task> actualSearchList, ArrayList<Task> expectedSearchList,
+			String searchMessage) {
+		//test key word present and not present . 
+		SearchLogic.searchKeyWord("search Oral Presentation 2");
+		actualSearchList = SearchLogic.getTaskList();
+		testSearchLogicValid("test search by title" , expectedSearchList, actualSearchList); 
+
+		SearchLogic.searchKeyWord("search tutorial work"); 
+		//searchMessage=""; 
+		String expectedMessage = "No content to display"; 
+		testSearchLogicInvalid("test search by title , invalid input" , expectedMessage , searchMessage);
+	}
+
+	private void testSearchImpt(ArrayList<Task> actualSearchList, ArrayList<Task> expectedSearchList,
+			String searchMessage) {
+		//test for importance ( 1 & 4) 
+		SearchLogic.searchKeyWord("search impt 3");
+		actualSearchList = SearchLogic.getTaskList();
+		Task task2 = new Task("OP2 presentation", "06112015","3");		
+		expectedSearchList.add(task2); 
+		testSearchLogicValid("test search by impt" , expectedSearchList, actualSearchList); 
+
+		SearchLogic.searchKeyWord("search impt 4");
+		//searchMessage=""; 
+		String  expectedMessage = "Index is out of bounds!\n"; 
+		testSearchLogicInvalid("test search by impt, ranking 4 which is not present" , expectedMessage, searchMessage);
+
+	}
+	private void testSearchDate(ArrayList<Task> actualSearchList, ArrayList<Task> expectedSearchList , String searchMessage) {
+		SearchLogic.searchKeyWord("search date 03112015");
+		actualSearchList = SearchLogic.getTaskList();
+		Task task = new Task ("EE2020 Oscilloscope project", "03112015","1"); 
+		expectedSearchList.add(task); 
+		testSearchLogicValid("test search by date" , expectedSearchList, actualSearchList); 
+		// the expected search list should be cleared to test another search type . 
+		expectedSearchList = clearExpectedSearchList(expectedSearchList); 
+
+		//testing a date not present 
+		SearchLogic.searchKeyWord("search data 05112015"); 
+		//searchMessage=""; 
+		String expectedMessage = "No content to display"; 
+		testSearchLogicInvalid("test search by impt" , expectedMessage, searchMessage); 
+
+	}
+
+	private ArrayList<Task> clearExpectedSearchList(ArrayList<Task> expectedSearchList) {
+		expectedSearchList.clear(); 
+		return expectedSearchList; 
+	}
+
+	private void testSearchLogicInvalid(String description, String expectedMessage, String searchMessage) {
+		assertEquals(description , expectedMessage , searchMessage); 
+	}
+
+	private void testSearchLogicValid(String description, ArrayList<Task> expectedSearch, ArrayList<Task> actualSearch) {
+		assertEquals(description, expectedSearch, actualSearch);
+	}
+
 
 	private void testSort(ArrayList<Task> expected ,ArrayList<Task> actual ) {
 		String description = "test if sort works"; 		
@@ -53,7 +125,7 @@ public class UnitTest {
 	private void testDelete(String deleteMessage, ArrayList<Task> expected) {
 
 		AddLogic.addEventWithDeadline("add Complete EE2020 oscilloscope project by 03112015 rank 1");
-		AddLogic.addEventWithDeadline("OP2 presentation by 06112015 rank 3");
+		AddLogic.addEventWithDeadline(" add OP2 presentation by 06112015 rank 3");
 
 		DeleteLogic.deleteEvent("delete 3");
 		deleteMessage = DeleteLogic.getMessage();
@@ -122,7 +194,6 @@ public class UnitTest {
 			String description) {
 		assertEquals(description, expected, actual);	
 	}
-
 
 	private void testAddDefault(String addMessage , ArrayList<Task> expected){
 		AddLogic.addEventDefault("add "); 
