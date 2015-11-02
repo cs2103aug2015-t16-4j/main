@@ -95,8 +95,6 @@ public class ExecuteCommand {
 			EditLogic.editEvent(command);
 		} else if (commandType.equals(SEARCH_COMMAND)) {
 			SearchLogic.searchKeyWord(command);
-		} else if(commandType.equals(EXIT_COMMAND)){
-			System.exit(0);
 		}else if (commandType.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.determineDisplayMode(command);
 		} else if (commandType.equals(CHANGE_DIRECTORY_COMMAND)) {
@@ -124,8 +122,10 @@ public class ExecuteCommand {
 
 	public static void processCommandWithoutSpace(String command) {
 		
-		if (command.contains(DISPLAY_COMMAND)) {
+		if (command.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.defaultDisplay();
+		} else if(command.equals(EXIT_COMMAND)){
+			System.exit(0);
 		} else if (command.equals(CLEAR_COMMAND)) {
 			if (!undoRedo.isRedoEmpty()) {
 				undoRedo.clearRedo();
