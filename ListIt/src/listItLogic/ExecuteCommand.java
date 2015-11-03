@@ -28,7 +28,7 @@ public class ExecuteCommand {
 	private static final String WITH_DEADLINE_TYPE2 = "on";
 	private static final Object COMPLETE_COMMAND = "complete";
 	private static final String EXIT_COMMAND = "exit";
-
+	private static final String HELP_COMMAND = "help";
 
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	private static FileModifier modifier = FileModifier.getInstance();
@@ -126,6 +126,8 @@ public class ExecuteCommand {
 			DisplayLogic.defaultDisplay();
 		} else if(command.equals(EXIT_COMMAND)){
 			System.exit(0);
+		} else if(command.equals(HELP_COMMAND)) {
+			HelpLogic.displayHelp();
 		} else if (command.equals(CLEAR_COMMAND)) {
 			if (!undoRedo.isRedoEmpty()) {
 				undoRedo.clearRedo();
