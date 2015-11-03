@@ -54,31 +54,29 @@ public class AddLogic {
 			}
 			modifier.addTask(newTask);
 		} else if (!isValidDate(deadline) && isStringObject(deadline)) {
-			if(isDayOfWeek(deadline)) {
+			if (isDayOfWeek(deadline)) {
 				addDeadlineMessage = MESSAGE_ADD_VALID_DATE1;
 				FeedbackPane.displayInvalidInput();
 			} else {
 				addDeadlineMessage = MESSAGE_ADD_VALID_DATE2;
-				addEventDefault(deadline);
-			} 
+				addEventDefault(command);
+			}
 		} else if (!isValidDate(deadline) && !isStringObject(deadline)) {
 			addDeadlineMessage = MESSAGE_ADD_VALID_DATE3;
 			FeedbackPane.displayInvalidInput();
 		}
 	}
-	
+
 	public static boolean isDayOfWeek(String deadline) {
-		if(deadline.contains("monday") || deadline.contains("tuesday") 
-		   || deadline.contains("wednesday") || deadline.contains("thursday") 
-		   || deadline.contains("friday") || deadline.contains("saturday")
-		   || deadline.contains("sunday") || deadline.contains("tomorrow")
-		   || deadline.contains("week")) {
+		if (deadline.contains("monday") || deadline.contains("tuesday") || deadline.contains("wednesday")
+				|| deadline.contains("thursday") || deadline.contains("friday") || deadline.contains("saturday")
+				|| deadline.contains("sunday") || deadline.contains("tomorrow") || deadline.contains("week")) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	public static boolean isStringObject(String deadline) {
 		boolean isString = false;
 		int date;
@@ -89,24 +87,39 @@ public class AddLogic {
 		}
 		return isString;
 	}
-	
+
 	public static String getDeadlineMessage() {
 		return addDeadlineMessage;
 	}
 
 	private static String getEventDeadline(String command) {
-		if(command.contains(COMMAND_BY)) {
-			return command.substring(command.lastIndexOf(COMMAND_BY) + 3);
-		} else {
-			return command.substring(command.lastIndexOf(COMMAND_ON) + 3);
+		String deadline = " ";
+		if (command.contains(COMMAND_BY)) {
+			deadline = command.substring(command.lastIndexOf(COMMAND_BY) + 3);
+			if (isValidDate(deadline)) {
+				return deadline;
+			}
 		}
+		if (command.contains(COMMAND_ON)) {
+			deadline = command.substring(command.lastIndexOf(COMMAND_ON) + 3);
+			if (isValidDate(deadline)) {
+				return deadline;
+			}
+		}
+		return deadline;
 	}
 
 	private static String getEventTitleDeadline(String command) {
-		if(command.contains(COMMAND_BY)) {
-			return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
+		if (command.contains(COMMAND_BY) && command.contains(COMMAND_ON)) {
+			if (command.lastIndexOf(COMMAND_BY) > command.lastIndexOf(COMMAND_ON)) {
+				return command.substring(4, command.lastIndexOf(COMMAND_BY));
+			} else {
+				return command.substring(4, command.lastIndexOf(COMMAND_ON));
+			}
+		} else if (command.contains(COMMAND_BY)) {
+			return command.substring(4, command.lastIndexOf(COMMAND_BY));
 		} else {
-			return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
+			return command.substring(4, command.lastIndexOf(COMMAND_ON));
 		}
 	}
 
@@ -215,7 +228,7 @@ public class AddLogic {
 			}
 		}
 	}
-	
+
 	public static String getRankMessage() {
 		return addRankMessage;
 	}
@@ -256,7 +269,7 @@ public class AddLogic {
 					endDate = getEndDateImportance(command);
 					Task newTask;
 					if (containsTime(endDate)) {
-					newTask = new Task(eventTitle, startDate, endDate, rank, true);
+						newTask = new Task(eventTitle, startDate, endDate, rank, true);
 					} else {
 						newTask = new Task(eventTitle, startDate, endDate, rank);
 					}
@@ -287,7 +300,7 @@ public class AddLogic {
 			return;
 		}
 	}
-	
+
 	private static boolean isValidRank(String command) {
 		boolean isValid = false;
 		try {
@@ -411,8 +424,8 @@ public class AddLogic {
 		String eventTitle = getEventTitleBlockDate(command);
 		String end = getEndTime(command);
 		String start = getBlockEventStartDate(command);
-		if(isValidDate(end) && isValidDate(start)) {
-			if(containsTime(end)) {
+		if (isValidDate(end) && isValidDate(start)) {
+			if (containsTime(end)) {
 				newTask = new Task(eventTitle, start, end, true);
 			} else {
 				newTask = new Task(eventTitle, start, end);
