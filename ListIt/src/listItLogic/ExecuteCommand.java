@@ -122,8 +122,10 @@ public class ExecuteCommand {
 
 	public static void processCommandWithoutSpace(String command) {
 		
-		if (command.contains(DISPLAY_COMMAND)) {
+		if (command.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.defaultDisplay();
+		} else if(command.equals(EXIT_COMMAND)){
+			System.exit(0);
 		} else if (command.equals(CLEAR_COMMAND)) {
 			if (!undoRedo.isRedoEmpty()) {
 				undoRedo.clearRedo();
