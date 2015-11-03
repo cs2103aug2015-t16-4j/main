@@ -95,8 +95,6 @@ public class ExecuteCommand {
 			EditLogic.editEvent(command);
 		} else if (commandType.equals(SEARCH_COMMAND)) {
 			SearchLogic.searchKeyWord(command);
-		} else if(commandType.equals(EXIT_COMMAND)){
-			System.exit(0);
 		}else if (commandType.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.determineDisplayMode(command);
 		} else if (commandType.equals(CHANGE_DIRECTORY_COMMAND)) {
@@ -161,7 +159,10 @@ public class ExecuteCommand {
 				modifier.saveCompleteFile(lastCompleteTaskList);
 				modifier.display();
 			}
-		} else {
+		}else if(command.equals(EXIT_COMMAND)){
+			System.exit(0);
+		}
+		else {
 			FeedbackPane.displayInvalidInput();
 		}
 	}
