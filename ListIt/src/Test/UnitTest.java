@@ -14,10 +14,14 @@ import listItLogic.AddLogic;
 import listItLogic.DeleteLogic;
 import listItLogic.EditLogic;
 import listItLogic.SearchLogic;
+import listItLogic.UndoAndRedoLogic;
 import listItUI.*;
 import taskGenerator.Task;
+import static org.hamcrest.CoreMatchers.*;
 
 public class UnitTest {
+	
+	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	FileModifier modifier = FileModifier.getInstance();
 
 	@BeforeClass
@@ -167,8 +171,53 @@ public class UnitTest {
 		EditLogic.editEvent("edit 2 by title Oral presentation 2 "); 
 		actual = modifier.getContentList(); 
 		testEditLogic("test if edit by title works",expected , actual);
+		
+		//Test empty undo and redo method
+		actual = modifier.getContentList();
+		AddLogic.addEventDefault("test empty undo string");
+		expected = undoRedo.getListFromUndo();
+		testEmptyUndo("test if empty undo works", expected, actual);
+		
+		actual = modifier.getContentList();
+		AddLogic.addEventDefault("test empty redo string");
+		expected = undoRedo.getListFromRedo();
+		testEmptyRedo("test if empty redo works", expected, actual);
+		
+		//Test undo and redo method with strings
+		actual = modifier.getContentList();
+		undoRedo.storeListToUndo(modifier.getContentList());
+		AddLogic.addEventDefault("test undo String");
+		expected = undoRedo.getListFromUndo();
+		testUndo("test if undo works", expected, actual);
+		
+		actual = modifier.getContentList();
+		undoRedo.storeListToRedo(modifier.getContentList());
+		AddLogic.addEventDefault("test undo String");
+		expected = undoRedo.getListFromRedo();
+		testRedo("test if redo works", expected, actual);
+		
+	}
+	
+	private void testRedo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
+		assertThat(description, actual, not(expected));
 	}
 
+	private void testUndo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
+		assertThat(description, actual, not(expected));
+	}
+
+
+
+	private void testEmptyRedo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
+		
+		assertEquals(description, actual, expected);
+	}
+	
+	private void testEmptyUndo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
+		
+		assertEquals(description, actual, expected);
+	}
+	
 	private ArrayList<Task> getExpectedforEditTitle(ArrayList<Task> expected) {
 		//remove the first second title and edit the title. 
 		expected.remove(1); 
