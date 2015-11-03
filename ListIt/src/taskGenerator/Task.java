@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Task implements Serializable {
 
@@ -17,10 +18,10 @@ public class Task implements Serializable {
 	private boolean blocking = false;
 	private Integer importance;
 	private Integer index;
-	private SimpleDateFormat dateTimeInputFormatter = new SimpleDateFormat("ddMMyyyy HHmm");
-	private SimpleDateFormat dateInputFormatter = new SimpleDateFormat("ddMMyyyy");
-	private SimpleDateFormat dateTimeOutputFormatter = new SimpleDateFormat("dd-MMMMM-yyyy HH:mm");
-	private SimpleDateFormat dateOutputFormatter = new SimpleDateFormat("dd-MMMM-yyyy");
+	private SimpleDateFormat dateTimeInputFormatter = new SimpleDateFormat("ddMMyyyy HHmm", Locale.US);
+	private SimpleDateFormat dateInputFormatter = new SimpleDateFormat("ddMMyyyy", Locale.US);
+	private SimpleDateFormat dateTimeOutputFormatter = new SimpleDateFormat("dd-MMMMM-yyyy HH:mm", Locale.US);
+	private SimpleDateFormat dateOutputFormatter = new SimpleDateFormat("dd-MMMM-yyyy", Locale.US);
 	private String repeatType;
 	private int repeatCycle;
 	private String exception;
