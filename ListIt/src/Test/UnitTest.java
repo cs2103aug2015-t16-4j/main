@@ -117,7 +117,7 @@ public class UnitTest {
 		testSearchLogicValid("test search by title" , expectedSearchList, actualSearchList); 
 
 		SearchLogic.searchKeyWord("search tutorial work"); 
-		//searchMessage=""; 
+		searchMessage=SearchLogic.getMessage(); 
 		String expectedMessage = "No content to display"; 
 		testSearchLogicInvalid("test search by title , invalid input" , expectedMessage , searchMessage);
 
@@ -128,8 +128,8 @@ public class UnitTest {
 		testSearchLogicValid("test search by impt" , expectedSearchList, actualSearchList); 
 
 		SearchLogic.searchKeyWord("search impt 4");
-		//searchMessage=""; 
-		expectedMessage = "Index is out of bounds!\n"; 
+		searchMessage=SearchLogic.getMessage();; 
+		expectedMessage = "Invalid Importance level , there are only 3 types : 1 ,2 3.\n"; 
 		testSearchLogicInvalid("test search by impt, ranking 4 which is not present" , expectedMessage, searchMessage);
 
 
@@ -143,7 +143,7 @@ public class UnitTest {
 
 		//testing a date not present 
 		SearchLogic.searchKeyWord("search data 05112015"); 
-		//searchMessage=""; 
+		searchMessage=SearchLogic.getMessage(); 
 		expectedMessage = "No content to display"; 
 		testSearchLogicInvalid("test search by impt" , expectedMessage, searchMessage); 
 
