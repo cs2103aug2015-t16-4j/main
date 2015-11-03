@@ -112,14 +112,14 @@ public class AddLogic {
 	private static String getEventTitleDeadline(String command) {
 		if (command.contains(COMMAND_BY) && command.contains(COMMAND_ON)) {
 			if (command.lastIndexOf(COMMAND_BY) > command.lastIndexOf(COMMAND_ON)) {
-				return command.substring(4, command.lastIndexOf(COMMAND_BY));
+				return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
 			} else {
-				return command.substring(4, command.lastIndexOf(COMMAND_ON));
+				return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
 			}
 		} else if (command.contains(COMMAND_BY)) {
-			return command.substring(4, command.lastIndexOf(COMMAND_BY));
+			return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
 		} else {
-			return command.substring(4, command.lastIndexOf(COMMAND_ON));
+			return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
 		}
 	}
 
