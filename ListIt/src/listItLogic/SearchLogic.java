@@ -2,6 +2,7 @@ package listItLogic;
 
 import java.util.ArrayList;
 import fileModifier.FileModifier;
+import listItUI.FeedbackPane;
 import taskGenerator.Task;
 
 public class SearchLogic {
@@ -26,11 +27,15 @@ public class SearchLogic {
 		} else if (keyword.indexOf(SEARCH_IMPT) == 0) {
 			keyword = getKeyword(keyword);
 			int imptLevel = convertStringImptLevelToInt(keyword);
-			taskList = modifier.searchByImportance(imptLevel);
 			
-			modifier.setViewMode(SEARCH_IMPT);
-			sortAndDisplaySearchList(modifier, taskList);
-		} else {
+			if(imptLevel == 1 || imptLevel == 2 || imptLevel==3){
+				taskList = modifier.searchByImportance(imptLevel);
+				modifier.setViewMode(SEARCH_IMPT);
+				sortAndDisplaySearchList(modifier, taskList);
+			}else { 
+				FeedbackPane.displayInvalidIndexToSearch();
+			}
+		}else {
 			taskList = modifier.searchKeyword(keyword);
 			
 			modifier.setViewMode(SEARCH_ALPHA);
