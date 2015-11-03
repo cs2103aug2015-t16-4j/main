@@ -15,7 +15,7 @@ public class ChangeDirectoryLogic {
 		BufferedWriter textFileWriter;
 		
 		try {
-			textFileWriter = new BufferedWriter(new FileWriter(modifier.getPathFile()));
+			textFileWriter = new BufferedWriter(new FileWriter(modifier.getPathFile(), false));
 			textFileWriter.write(newPath);
 			textFileWriter.close();
 		} catch (IOException e) {
