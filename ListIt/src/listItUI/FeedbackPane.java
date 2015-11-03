@@ -83,7 +83,7 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayInvalidIndexToSearch() {
-		feedbackScreen.appendText("Index is out of bounds!\n");
+		feedbackScreen.appendText("Invalid Importance level , there are only 3 types : 1 ,2 3.\n");
 	}
 
 	public static void displayInvalidAddBlocked() {
