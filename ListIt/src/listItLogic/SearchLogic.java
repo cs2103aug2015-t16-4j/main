@@ -12,7 +12,6 @@ public class SearchLogic {
 	private static final String SEARCH_ALPHA = "alpha";
 	private static final String invalidImpt ="Invalid Importance level , there are only 3 types : 1 ,2 3.\n"; 
 	private static final String NO_SEARCH ="No content to display"; 
-
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
 	private static String message = "null"; 
 
@@ -24,7 +23,7 @@ public class SearchLogic {
 		if (keyword.indexOf(SEARCH_DATE) == 0) {
 			keyword = getKeyword(keyword);
 			taskList = modifier.searchByDate(keyword);
-			if(taskList.isEmpty()){
+			if(isTaskListEmpty(taskList)){
 				message=NO_SEARCH; 
 			}
 			modifier.setViewMode(SEARCH_DEFAULT);
@@ -44,12 +43,19 @@ public class SearchLogic {
 			}
 		}else {
 			taskList = modifier.searchKeyword(keyword);
-			if(taskList.isEmpty()){
+			if(isTaskListEmpty(taskList)){
 				message=NO_SEARCH; 
 			}
 			modifier.setViewMode(SEARCH_ALPHA);
 			sortAndDisplaySearchList(modifier, taskList);
 		}
+	}
+
+	private static boolean isTaskListEmpty(ArrayList<Task> taskList2) {
+		if(taskList.isEmpty()) {
+			return true; 
+		}
+		return false; 
 	}
 
 	private static void sortAndDisplaySearchList(FileModifier modifier, ArrayList<Task> taskList) {
