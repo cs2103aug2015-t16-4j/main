@@ -10,7 +10,7 @@ public class SearchLogic {
 	private static final String SEARCH_DEFAULT = "default";
 	private static final String SEARCH_IMPT = "impt";
 	private static final String SEARCH_ALPHA = "alpha";
-	private static final String invalidImpt ="Invalid Importance level , there are only 3 types : 1 ,2 3.\n"; 
+	private static final String invalidImpt ="Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n"; 
 	private static final String NO_SEARCH ="No content to display"; 
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
 	private static String message = "null"; 

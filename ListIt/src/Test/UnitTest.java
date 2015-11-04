@@ -32,6 +32,8 @@ public class UnitTest {
 	String addRankMessage = "null";
 	String searchMessage = "null";
 	String addTimelineMessage = "null";
+	String actualEditMessage = "null"; 
+	String expectedEditMessage = "null"; 
 
 	@BeforeClass
 	public static void setUpApplication() throws InterruptedException {
@@ -187,6 +189,11 @@ public class UnitTest {
 		ArrayList<Task> actual = new ArrayList<Task>();
 		actual = modifier.getContentList(); 
 		testEditLogic("test if edit by date works",expected , actual);
+		
+		EditLogic.editEvent("edit 2 by date 11142015");
+		actualEditMessage = EditLogic.getMessage(); 
+		expectedEditMessage = "Invalid date is inputed\n"; 
+		testEditLogicInvalid("test if invalid date for edit works",expectedEditMessage , actualEditMessage); 		
 
 		// edit impt 
 		expected = getExpectedforEditImpt(expected);
@@ -194,7 +201,13 @@ public class UnitTest {
 		actual = modifier.getContentList(); 
 		testEditLogic("test if edit by date works",expected , actual); 
 		expected = getExpectedforEditTitle(expected);
+		
+		EditLogic.editEvent("edit 2 by impt 5"); 
+		actualEditMessage = EditLogic.getMessage(); 
+		expectedEditMessage = "Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n"; 
+		testEditLogicInvalid("test if invalid importance level for edit works",expectedEditMessage , actualEditMessage); 
 
+        //edit title
 		EditLogic.editEvent("edit 2 by title Oral presentation 2 "); 
 		actual = modifier.getContentList(); 
 		testEditLogic("test if edit by title works",expected , actual);
@@ -268,6 +281,12 @@ public class UnitTest {
 	private void testEditLogic(String description , ArrayList<Task >expected ,ArrayList<Task > actual){
 		assertEquals (description , expected , actual);
 	}
+	
+	private void testEditLogicInvalid(String description, String expectedEditMessage, String actualEditMessage) {
+		assertEquals(description , expectedEditMessage , actualEditMessage); 
+	}
+
+
 	
 	private ArrayList<Task> clearExpectedSearchList(ArrayList<Task> expectedSearchList) {
 		expectedSearchList.clear(); 

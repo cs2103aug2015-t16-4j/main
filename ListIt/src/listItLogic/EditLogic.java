@@ -15,7 +15,7 @@ public class EditLogic {
 	private static final String COMMAND_REPEAT = "by repeat";
 	private static final String COMMAND_BLOCK = "cancel block";
 	private static String  message =null; 
-	private static final String  editImptanceInvalid = "Invalid Importance level , there are only 3 types : 1 ,2 3.\n"; 
+	private static final String  editImptanceInvalid = "Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n"; 
     private static final String  editDateInvalid = "Invalid date is inputed\n"; 
 	
     public static void editEvent(String command) {
@@ -35,10 +35,9 @@ public class EditLogic {
 		} else if (isEditByImportance(command)) {
 			String newImportance = getNewImportanceLevel(command);
 			
-			if(newImportance.equals(1) || newImportance.equals(2) || newImportance.equals(3)){
-			modifier.editImportance(IndexToBeEdit - 1, newImportance);
-			}
-			else{
+			if(newImportance.equals("1") || newImportance.equals("2") || newImportance.equals("3")){
+			modifier.editImportance(IndexToBeEdit - 1, newImportance); 
+			}else{
 				FeedbackPane.displayInvalidIndexImptLevel(); 
 				message = editImptanceInvalid; 
 			}
