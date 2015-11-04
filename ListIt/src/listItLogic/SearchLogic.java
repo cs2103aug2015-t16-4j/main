@@ -38,7 +38,7 @@ public class SearchLogic {
 				modifier.setViewMode(SEARCH_IMPT);
 				sortAndDisplaySearchList(modifier, taskList);
 			}else { 
-				FeedbackPane.displayInvalidIndexToSearch();
+				FeedbackPane.displayInvalidIndexImptLevel();
 				message = invalidImpt; 
 			}
 		}else {

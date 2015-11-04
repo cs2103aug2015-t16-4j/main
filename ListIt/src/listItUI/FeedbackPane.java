@@ -82,8 +82,8 @@ public class FeedbackPane extends GridPane{
 		feedbackScreen.appendText("File move failed, please check if datafiles are safe");
 	}
 
-	public static void displayInvalidIndexToSearch() {
-		feedbackScreen.appendText("Invalid Importance level , there are only 3 types : 1 ,2 3.\n");
+	public static void displayInvalidIndexImptLevel() {
+		feedbackScreen.appendText("Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n");
 	}
 
 	public static void displayInvalidAddBlocked() {
