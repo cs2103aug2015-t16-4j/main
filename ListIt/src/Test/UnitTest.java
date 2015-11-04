@@ -23,6 +23,9 @@ public class UnitTest {
 	
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	FileModifier modifier = FileModifier.getInstance();
+	ArrayList<Task> expected = new ArrayList<Task>();
+	ArrayList<Task> expectedSearchList = new ArrayList<Task>();
+	ArrayList<Task> actualSearchList = new ArrayList<Task>();
 
 	@BeforeClass
 	public static void setUpApplication() throws InterruptedException {
@@ -44,25 +47,31 @@ public class UnitTest {
 
 	@Test
 	public void test() {
+		String addMessage = "null";
+		String deleteMessage = "null";
+		String addDeadlineMessage = "null";
+		String addRankMessage = "null";
+		String searchMessage = "null";
+		String addTimelineMessage = "null";
 
-		ArrayList<Task> expected = new ArrayList<Task>();
-		ArrayList<Task> expectedSearchList = new ArrayList<Task>();
-		ArrayList<Task> actualSearchList = new ArrayList<Task>();
-		String addMessage = null;
-		String deleteMessage = null;
-		String addDeadlineMessage = null;
-		String addRankMessage = null;
-		String searchMessage = null;
-
+		testDelete(addMessage, deleteMessage, addDeadlineMessage, addRankMessage, searchMessage);
+		testAdd(addMessage, deleteMessage, addDeadlineMessage, addRankMessage, searchMessage, addTimelineMessage);
+        testSearch(addMessage, deleteMessage, addDeadlineMessage, addRankMessage, searchMessage);
+		testSort(expected,modifier.getContentList() ); 
+        testEdit(addMessage, deleteMessage, addDeadlineMessage, addRankMessage, searchMessage);
+        testUndoRedo();
+	}
+	
+	@Test
+	public void testDelete(String addMessage, String deleteMessage, String addDeadlineMessage, 
+			               String addRankMessage, String searchMessage) {
 		DeleteLogic.clearFile();
 		testDeleteLogicClear(expected, "test clear"); 
 
 		Task task1 = new Task("EE2020 Oscilloscope project", "03112015", 1);
-		AddLogic.addEventWithDeadline("add EE2020 Oscilloscope project by 03112015 rank 1");
-		expected.add(task1); 
+		addEvent(task1, "add EE2020 Oscilloscope project by 03112015 rank 1"); 
 		Task task2 = new Task("OP2 presentation", "06112015", 3);
-		AddLogic.addEventWithDeadline("add 0P2 presentation by 06112015 rank 3");
-		expected.add(task2); 
+		addEvent(task2, "add 0P2 presentation by 06112015 rank 3"); 
 
 		DeleteLogic.deleteEvent("delete 3");
 		deleteMessage = DeleteLogic.getMessage();
@@ -76,45 +85,67 @@ public class UnitTest {
 		DeleteLogic.deleteEvent("delete 2");
 		deleteMessage = DeleteLogic.getMessage();
 		testDeleteLogicDeleteEvent("null", deleteMessage, expected, "test delete 2");
+	}
 
-
+	private void addEvent(Task task1, String command) {
+		AddLogic.addEventWithDeadline(command);
+		expected.add(task1);
+	}
+	
+	@Test
+	public void testAdd(String addMessage, String deleteMessage, String addDeadlineMessage, 
+                        String addRankMessage, String searchMessage, String addTimelineMessage) {
 		AddLogic.addEventDefault("add "); 
 		addMessage = AddLogic.getMessage();
-		testAddDefaultLogic("test default add", expected, "Please enter an event title", addMessage);
+		testAddLogic("test default add", expected, "Please enter an event title", addMessage);
 
 		AddLogic.addEventWithDeadline("add complete EE2020 lab report by next Friday");
 		addDeadlineMessage = AddLogic.getDeadlineMessage();
-		testAddDeadlineLogic("test adding with deadline in wrong format", expected, 
-				addDeadlineMessage, "Please enter a valid date! Days of the week are not accepted");
+		testAddLogic("test adding with deadline in wrong format", expected, 
+				addDeadlineMessage, "enter valid date");
 
-		AddLogic.addEventWithDeadline("add go for light and sound show at the Gardens by the Bay");
-		Task task3 = new Task("go for light and sound show a the Gardens by the Bay");
-		expected.add(task3);
+		Task task3 = new Task("go for light and sound show at the Gardens by the Bay");
+		addEvent(task3, "add go for light and sound show at the Gardens by the Bay");
 		addDeadlineMessage = AddLogic.getDeadlineMessage();
-		testAddDeadlineLogic("testing adding floating task with the word by", expected, 
-				addDeadlineMessage, null);
+		testAddLogic("testing adding floating task with the word by", expected, 
+				addDeadlineMessage, "null");
 
 		AddLogic.addEventWithDeadline("add attend meeting by 152015");
 		addDeadlineMessage = AddLogic.getDeadlineMessage();
-		testAddDeadlineLogic("testing adding with deadline with wrong date format", expected,
+		testAddLogic("testing adding with deadline with wrong date format", expected,
 				addDeadlineMessage, "enter a valid date");
 
 		AddLogic.addEventWithImportance("add watch movie rank 0");
 		addRankMessage = AddLogic.getRankMessage();
-		testAddRankLogic("test adding with wrong rank range", expected, addRankMessage, "invalid rank input");
+		testAddLogic("test adding with wrong rank range", expected, addRankMessage, "invalid rank input");
 
 		AddLogic.addEventWithImportance("add go for manicure rank 4");
 		addRankMessage = AddLogic.getRankMessage();
-		testAddRankLogic("test adding with wrong rank range", expected, addRankMessage,
+		testAddLogic("test adding with wrong rank range", expected, addRankMessage,
 				"invalid rank input");
 
 		AddLogic.addEventWithImportance("add do groceries rank 3");
 		addRankMessage = AddLogic.getRankMessage();
 		Task task4 = new Task("do groceries", 3);
 		expected.add(task4);
-		testAddRankLogic("test adding with right rank range", expected, addRankMessage,
-				"invalid rank input");
-
+		testAddLogic("test adding with right rank range", expected, addRankMessage,
+				"null");
+		
+		AddLogic.addEventWithImportance("add rank all staff based on capabilities");
+		Task task5 = new Task("rank all staff based on capabilities");
+		expected.add(task5);
+		addRankMessage = AddLogic.getRankMessage();
+		testAddLogic("testing input with the rank not as a command word", expected, addRankMessage, "null");
+		
+		AddLogic.addEventWithTimeline("add attend project meeting on 05112015 from 1400 to 1200 rank 1");
+		addTimelineMessage = AddLogic.getTimelineMessage();
+		testAddLogic("testing adding with wrong timeline input", expected, addTimelineMessage, 
+				     "invalid timeline range");
+	}
+	
+	@Test
+	public void testSearch(String addMessage, String deleteMessage, String addDeadlineMessage, 
+                           String addRankMessage, String searchMessage) {
 		//test key word present and not present . 
 		SearchLogic.searchKeyWord("search Oral Presentation 2");
 		actualSearchList = SearchLogic.getTaskList();
@@ -127,7 +158,8 @@ public class UnitTest {
 
 		//test for importance ( 1 & 4)  
 		SearchLogic.searchKeyWord("search impt 3");
-		actualSearchList = SearchLogic.getTaskList();	
+		actualSearchList = SearchLogic.getTaskList();
+		Task task2 = new Task("OP2 presentation", "06112015", 3);
 		expectedSearchList.add(task2); 
 		testSearchLogicValid("test search by impt" , expectedSearchList, actualSearchList); 
 
@@ -147,13 +179,13 @@ public class UnitTest {
 
 		//testing a date not present 
 		SearchLogic.searchKeyWord("search data 05112015"); 
-		searchMessage=SearchLogic.getMessage(); 
+		searchMessage = SearchLogic.getMessage(); 
 		expectedMessage = "No content to display"; 
-		testSearchLogicInvalid("test search by impt" , expectedMessage, searchMessage); 
-
-
-		testSort(expected,modifier.getContentList() ); 
-
+		testSearchLogicInvalid("test search by impt", expectedMessage, searchMessage); 
+	}
+	
+	public void testEdit(String addMessage, String deleteMessage, String addDeadlineMessage, 
+                         String addRankMessage, String searchMessage) {
 		//edit by date
 		expected = getExpectedforEditDate(expected);
 		EditLogic.editEvent("edit 2 by date 08112015"); 
@@ -171,9 +203,12 @@ public class UnitTest {
 		EditLogic.editEvent("edit 2 by title Oral presentation 2 "); 
 		actual = modifier.getContentList(); 
 		testEditLogic("test if edit by title works",expected , actual);
-		
+	}
+	
+	@Test
+	public void testUndoRedo() {
 		//Test empty undo and redo method
-		actual = modifier.getContentList();
+        ArrayList<Task> actual = modifier.getContentList();
 		AddLogic.addEventDefault("test empty undo string");
 		expected = undoRedo.getListFromUndo();
 		testEmptyUndo("test if empty undo works", expected, actual);
@@ -195,7 +230,6 @@ public class UnitTest {
 		AddLogic.addEventDefault("test undo String");
 		expected = undoRedo.getListFromRedo();
 		testRedo("test if redo works", expected, actual);
-		
 	}
 	
 	private void testRedo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
@@ -209,12 +243,10 @@ public class UnitTest {
 
 
 	private void testEmptyRedo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
-		
 		assertEquals(description, actual, expected);
 	}
 	
 	private void testEmptyUndo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
-		
 		assertEquals(description, actual, expected);
 	}
 	
@@ -225,6 +257,7 @@ public class UnitTest {
 		expected.add(task3); 	
 		return expected; 
 	}
+	
 	private ArrayList<Task> getExpectedforEditImpt(ArrayList<Task> expected) {
 		expected.remove(1); 
 		Task task3 = new Task("OP2 presentation", "06112015","2"); 
@@ -238,13 +271,16 @@ public class UnitTest {
 		expected.add(task3); 	
 		return expected; 
 	}
+	
 	private void testEditLogic(String description , ArrayList<Task >expected ,ArrayList<Task > actual){
 		assertEquals (description , expected , actual);
 	}
+	
 	private ArrayList<Task> clearExpectedSearchList(ArrayList<Task> expectedSearchList) {
 		expectedSearchList.clear(); 
 		return expectedSearchList; 
 	}
+	
 	private void testSearchLogicInvalid(String description, String expectedMessage, String searchMessage) {
 		assertEquals(description , expectedMessage , searchMessage); 
 	}
@@ -253,17 +289,7 @@ public class UnitTest {
 		assertEquals(description, expectedSearch, actualSearch);
 	}
 
-	private void testAddRankLogic(String description, ArrayList<Task> expected, String actualMessage,
-			String expectedMessage) {
-		if(actualMessage != null) {
-			assertEquals(description, expectedMessage, actualMessage);
-		} else {
-			ArrayList<Task> actual = modifier.getContentList();
-			assertEquals(description, expected, actual);
-		}
-	}
-
-	private void testAddDeadlineLogic(String description, ArrayList<Task> expected, String actualMessage,
+	private void testAddLogic(String description, ArrayList<Task> expected, String actualMessage,
 			String expectedMessage) {
 		if(actualMessage != null) {
 			assertEquals(description, expectedMessage, actualMessage);
@@ -276,15 +302,6 @@ public class UnitTest {
 	private void testSort(ArrayList<Task> expected ,ArrayList<Task> actual ) {
 		String description = "test if sort works"; 		
 		assertEquals(description , expected , actual); 		
-	}
-
-	private void testAddDefaultLogic(String description, ArrayList<Task> expected, String expectedMessage, String actualMessage) {
-		if(actualMessage == null) {
-			ArrayList<Task> actual = modifier.getContentList();
-			assertEquals(description, expected, actual);
-		} else {
-			assertEquals(description, expectedMessage, actualMessage);
-		}
 	}
 
 	private void testDeleteLogicClear(ArrayList<Task> expected, String description) {
@@ -302,11 +319,6 @@ public class UnitTest {
 			expected.remove(indexToDelete-1);
 			assertEquals(description, expected, actual);
 		}
-	}
-
-	private void testAddWithDeadlineLogic(ArrayList<Task> actual, ArrayList<Task> expected, 
-			String description) {
-		assertEquals(description, expected, actual);	
 	}
 }
 

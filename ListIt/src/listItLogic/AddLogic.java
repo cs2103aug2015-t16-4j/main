@@ -14,10 +14,10 @@ public class AddLogic {
 	private static String addDefaultMessage = "null";
 	private static String addDeadlineMessage = "null";
 	private static String addRankMessage = "null";
+	private static String addBlockMessage = "null";
+	private static final String MESSAGE_INVALID_INPUT = "invalid input";
 	private static final String MESSAGE_ADD_TITLE = "Please enter an event title";
-	private static final String MESSAGE_ADD_VALID_DATE1 = "Please enter a valid date! Days of the week are not accepted";
-	private static final String MESSAGE_ADD_VALID_DATE2 = "add valid date";
-	private static final String MESSAGE_ADD_VALID_DATE3 = "enter a vaild date";
+	private static final String MESSAGE_ADD_VALID_DATE = "enter a vaild date";
 	private static final String MESSAGE_INVALID_RANK = "invalid rank input";
 	private static final String COMMAND_BY = "by";
 	private static final String FORMAT_DATE = "ddMMyyyy";
@@ -53,21 +53,28 @@ public class AddLogic {
 				newTask = new Task(eventTitle, deadline);
 			}
 			modifier.addTask(newTask);
-		} else if (!isValidDate(deadline) && isStringObject(deadline)) {
-			if (isDayOfWeek(deadline)) {
-				addDeadlineMessage = MESSAGE_ADD_VALID_DATE1;
-				FeedbackPane.displayInvalidInput();
-			} else {
-				addDeadlineMessage = MESSAGE_ADD_VALID_DATE2;
-				addEventDefault(command);
-			}
-		} else if (!isValidDate(deadline) && !isStringObject(deadline)) {
-			addDeadlineMessage = MESSAGE_ADD_VALID_DATE3;
+		} else if (isDayOfWeek(deadline)){
+			addDeadlineMessage = MESSAGE_ADD_VALID_DATE;
+			FeedbackPane.displayInvalidInput();		
+		} else if (isWord(deadline)){
+			addEventDefault(command);
+		} else {
+			addDeadlineMessage = MESSAGE_ADD_VALID_DATE;
 			FeedbackPane.displayInvalidInput();
+		}
+	}
+	
+	public static boolean isWord(String word) {
+		try {
+			int date = Integer.parseInt(word);
+			return false;
+		} catch(NumberFormatException e) {
+			return true;
 		}
 	}
 
 	public static boolean isDayOfWeek(String deadline) {
+		deadline = deadline.toLowerCase();
 		if (deadline.contains("monday") || deadline.contains("tuesday") || deadline.contains("wednesday")
 				|| deadline.contains("thursday") || deadline.contains("friday") || deadline.contains("saturday")
 				|| deadline.contains("sunday") || deadline.contains("tomorrow") || deadline.contains("week")) {
@@ -75,17 +82,6 @@ public class AddLogic {
 		} else {
 			return false;
 		}
-	}
-
-	public static boolean isStringObject(String deadline) {
-		boolean isString = false;
-		int date;
-		try {
-			date = Integer.parseInt(deadline);
-		} catch (NumberFormatException e) {
-			isString = true;
-		}
-		return isString;
 	}
 
 	public static String getDeadlineMessage() {
@@ -162,7 +158,7 @@ public class AddLogic {
 	}
 
 	private static String getEventTitleDefault(String command) {
-		if (command.length() > 3) {
+		if (command.length() > 4) {
 			return command.substring(4);
 		} else {
 			addDefaultMessage = MESSAGE_ADD_TITLE;
@@ -263,8 +259,8 @@ public class AddLogic {
 		}
 
 		if (isValidDate(startDate)) {
-			if (isEventWithImportance(command) && isValidRank(command)) {
-				try {
+			if (isEventWithImportance(command)) {
+				if(isValidRank(command)) {
 					int rank = convertStringToInt(command);
 					endDate = getEndDateImportance(command);
 					Task newTask;
@@ -274,7 +270,7 @@ public class AddLogic {
 						newTask = new Task(eventTitle, startDate, endDate, rank);
 					}
 					modifier.addTask(newTask);
-				} catch (Exception e) {
+				} else if (isRankNonCommand(command)) {
 					endDate = getEndDateTimeline(command);
 					Task newTask;
 					if (containsTime(endDate)) {
@@ -283,8 +279,10 @@ public class AddLogic {
 						newTask = new Task(eventTitle, startDate, endDate);
 					}
 					modifier.addTask(newTask);
+				} else {
+					addRankMessage = MESSAGE_INVALID_RANK;
+					FeedbackPane.displayInvalidInput();
 				}
-
 			} else {
 				endDate = getEndDateTimeline(command);
 				Task newTask;
@@ -298,6 +296,15 @@ public class AddLogic {
 		} else {
 			addEventWithImportance(command);
 			return;
+		}
+	}
+	
+	private static boolean isRankNonCommand(String command) {
+		try {
+			int rank = Integer.parseInt(command.substring(command.lastIndexOf(COMMAND_RANK) + 5));
+			return false;
+		} catch (NumberFormatException e) {
+			return true;
 		}
 	}
 
@@ -433,6 +440,7 @@ public class AddLogic {
 			newTask.setBlocking(true);
 			modifier.addTask(newTask);
 		} else {
+			addBlockMessage = MESSAGE_INVALID_INPUT;
 			FeedbackPane.displayInvalidAdd();
 		}
 	}

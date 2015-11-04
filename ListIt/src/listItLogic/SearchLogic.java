@@ -14,7 +14,7 @@ public class SearchLogic {
 	private static final String NO_SEARCH ="No content to display"; 
 
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
-	private static String message = null; 
+	private static String message = "null"; 
 
 	public static void searchKeyWord(String command) {
 		FileModifier modifier = FileModifier.getInstance();
