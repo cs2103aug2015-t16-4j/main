@@ -7,10 +7,15 @@ public class HelpLogic {
 	private static ArrayList<String> commandList = new ArrayList<String>();
 	private static ArrayList<String> inputCommand = new ArrayList<String>();
 	
+	/**
+	 * This method creates the help list by creating 2 arrays, commandList and inputCommand
+	 * 
+	 */
 	public static void createHelpList() {
 		
 		commandList.add("add event with deadline");
 		commandList.add("add event with timeline");
+		commandList.add("add event with timeline, single day");
 		commandList.add("add event with no deadline");
 		commandList.add("add event with rank");
 		commandList.add("add recurring tasks");
@@ -23,6 +28,9 @@ public class HelpLogic {
 		commandList.add("undo");
 		commandList.add("redo");
 		commandList.add("display default");
+		commandList.add("display by date");
+		commandList.add("display by importance");
+		commandList.add("display alphabetically");
 		commandList.add("search by title");
 		commandList.add("search by date");
 		commandList.add("search by importance");
@@ -31,11 +39,11 @@ public class HelpLogic {
 		commandList.add("clear file");
 		
 		inputCommand.add("add <description> by <deadline>");
-		inputCommand.add("add <description> from <start time> to <end time>");
-		inputCommand.add("add <description>");
+		inputCommand.add("add <description> from <start date time> to <end date time> ");
+		inputCommand.add("add <description> on <date> from <start time> to <end time>");
 		inputCommand.add("add <description>");
 		inputCommand.add("add <description> by <deadline> rank <number>");
-		inputCommand.add("add <description> repeat <monthly/yearly/daily>");
+		inputCommand.add("add <description> repeat <monthly/yearly/daily> <repeatcycle>");
 		inputCommand.add("add <description> block <start date> to <end date>");
 		inputCommand.add("edit <task index> by date <new date>");
 		inputCommand.add("edit <task index> by title <updated title>");
@@ -45,6 +53,9 @@ public class HelpLogic {
 		inputCommand.add("undo");
 		inputCommand.add("redo");
 		inputCommand.add("display");
+		inputCommand.add("display date");
+		inputCommand.add("display rank");
+		inputCommand.add("display alpha");
 		inputCommand.add("search <title>");
 		inputCommand.add("search date <date>");
 		inputCommand.add("search impt <rank>");
@@ -54,7 +65,9 @@ public class HelpLogic {
 		
 		
 	}
-
+	/**
+	 * This method displays the help array into the display panel
+	 */
 	public static void displayHelp() {
 		createHelpList();
 	}
