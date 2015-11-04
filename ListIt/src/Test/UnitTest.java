@@ -34,6 +34,8 @@ public class UnitTest {
 	String addTimelineMessage = "null";
 	String actualEditMessage = "null"; 
 	String expectedEditMessage = "null"; 
+	String addBlockMessage = "null";
+	String addRecurMessage = "null";
 
 	@BeforeClass
 	public static void setUpApplication() throws InterruptedException {
@@ -135,6 +137,32 @@ public class UnitTest {
 		expected.add(task5);
 		addRankMessage = AddLogic.getRankMessage();
 		testAddLogic("testing input with the rank not as a command word", expected, addRankMessage, "null");
+		
+		AddLogic.addBlockEvent("add attend regional youth conference block from 14112015 to 17112015");
+		Task task6 = new Task("attend regional youth conference", "14112015", "17112015");
+		expected.add(task6);
+		addBlockMessage = AddLogic.getBlockMessage();
+		testBlockLogic("test normal blocking", expected, addBlockMessage, "null");
+		
+		AddLogic.addBlockEvent("add attend Navratri festival block from 19112015 to 10112015");
+		addBlockMessage = AddLogic.getBlockMessage();
+		testBlockLogic("test blocking with reversed dates", expected, addBlockMessage, "start date should be earlier than end date");
+		
+		AddLogic.addBlockEvent("add attend sports event block from 112015 to 122015");
+		addBlockMessage = AddLogic.getBlockMessage();
+		testBlockLogic("test blocking with wrong date format", expected, addBlockMessage, "invalid input");
+		
+		AddLogic.addRecursiveEventDeadline("add Jade's Birthday repeat yearly on 03102015");
+		addRecurMessage = AddLogic.getRecurMessage();
+		testAddRecur("test add recurring event with no repeat cycle", expected, addRecurMessage, "please enter a recur cycle");
+		
+		AddLogic.addRecursiveEventDeadline("add go to India repeat 1 yearly");
+		addRecurMessage = AddLogic.getRecurMessage();
+		testAddRecur("test add recurring event with no deadline", expected, addRecurMessage, "please enter a start date");
+		
+		AddLogic.addRecursiveEventTimeline("add go to India repeat 1 yearly");
+		addRecurMessage = AddLogic.getRecurMessage();
+		testAddRecur("test add recurring event with no timeline", expected, addRecurMessage, "please enter a start date");
 		
 		AddLogic.addEventWithTimeline("add attend project meeting on 05112015 from 1400 to 1200 rank 1");
 		addTimelineMessage = AddLogic.getTimelineMessage();
@@ -303,7 +331,25 @@ public class UnitTest {
 
 	private void testAddLogic(String description, ArrayList<Task> expected, String actualMessage,
 			String expectedMessage) {
-		if(actualMessage != null) {
+		if(!actualMessage.equals("null")) {
+			assertEquals(description, expectedMessage, actualMessage);
+		} else {
+			ArrayList<Task> actual = modifier.getContentList();
+			assertEquals(description, expected, actual);
+		}
+	}
+	
+	private void testAddRecur(String description, ArrayList<Task> expected, String actualMessage, String expectedMessage) {
+		if(actualMessage.equals("null")) {
+			ArrayList<Task> actual = modifier.getContentList();
+			assertEquals(description, expected, actual);
+		} else {
+			assertEquals(description, expectedMessage, actualMessage);
+		}
+	}
+	
+	private void testBlockLogic(String description, ArrayList<Task> expected, String actualMessage, String expectedMessage) {
+		if(actualMessage.equals("null")) {
 			assertEquals(description, expectedMessage, actualMessage);
 		} else {
 			ArrayList<Task> actual = modifier.getContentList();

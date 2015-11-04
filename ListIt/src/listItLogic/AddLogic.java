@@ -1,5 +1,6 @@
 package listItLogic;
 
+import java.io.EOFException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,10 +16,15 @@ public class AddLogic {
 	private static String addDeadlineMessage = "null";
 	private static String addRankMessage = "null";
 	private static String addBlockMessage = "null";
+	private static String addRecurMessage = "null";
 	private static final String MESSAGE_INVALID_INPUT = "invalid input";
 	private static final String MESSAGE_ADD_TITLE = "Please enter an event title";
 	private static final String MESSAGE_ADD_VALID_DATE = "enter a vaild date";
 	private static final String MESSAGE_INVALID_RANK = "invalid rank input";
+	private static final String MESSAGE_RECUR_START = "please enter a start date";
+	private static final String MESSAGE_RECUR_END = "please enter an end date";
+	private static final String MESSAGE_RECUR_CYCLE = "please enter a recur cycle";
+	private static final String MESSAGE_INVALID_RANGE = "start date should be earlier than end date";
 	private static final String COMMAND_BY = "by";
 	private static final String FORMAT_DATE = "ddMMyyyy";
 	private static final String FORMAT_DATETIME = "ddMMyyyy HHmm";
@@ -341,14 +347,15 @@ public class AddLogic {
 
 	private static String getSingleDateEndDate(String command) {
 		return command.substring(command.lastIndexOf(COMMAND_ON) + 3, 
-		        command.lastIndexOf(COMMAND_START_TIME) -1) + command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
+		        command.lastIndexOf(COMMAND_START_TIME) -1) 
+				+ command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
 	}
 
 	private static String getSingleDateStartTime(String command) {
 		return command.substring(command.lastIndexOf(COMMAND_ON) + 3, 
 				                      command.lastIndexOf(COMMAND_START_TIME) -1)
-				     + command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5, 
-				    		             command.lastIndexOf(COMMAND_END_TIME) -1);
+				     + command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
+								command.lastIndexOf(COMMAND_END_TIME) - 1);
 	}
 	
 	private static boolean isRankNonCommand(String command) {
@@ -410,8 +417,12 @@ public class AddLogic {
 		if (isCorrectRepeatCycle(repeatCommand)) {
 			repeatType = parseRepeatType(repeatCommand);
 			repeatCycle = parseRepeatAmount(repeatCommand);
-			deadline = command.substring(command.lastIndexOf(COMMAND_ON) + 3);
-			if (isValidDate(deadline)) {
+			try {
+				deadline = command.substring(command.lastIndexOf(COMMAND_ON) + 3);
+			} catch (Exception e) {
+				deadline = "";
+			}
+			if (isValidDate(deadline) && repeatCycle != 0) {
 				if (containsTime(deadline)) {
 					Task newTask = new Task(eventTitle, repeatType, repeatCycle, deadline, true, true);
 					modifier.addTask(newTask);
@@ -419,6 +430,12 @@ public class AddLogic {
 					Task newTask = new Task(eventTitle, repeatType, repeatCycle, deadline, true);
 					modifier.addTask(newTask);
 				}
+			} else if (repeatCycle == 0) {
+				addRecurMessage = MESSAGE_RECUR_CYCLE;
+				FeedbackPane.displayInvalidInput();
+			} else if (deadline.equals("")) {
+				addRecurMessage = MESSAGE_RECUR_START;
+				FeedbackPane.displayInvalidInput();
 			} else {
 				addEventDefault(command);
 			}
@@ -427,9 +444,18 @@ public class AddLogic {
 			return;
 		}
 	}
+	
+	public static String getRecurMessage() {
+		return addRecurMessage;
+	}
 
 	private static int parseRepeatAmount(String repeatCycle) {
-		return Integer.parseInt(repeatCycle.substring(0, repeatCycle.indexOf(" ")));
+		try {
+			int cycle = Integer.parseInt(repeatCycle.substring(0, repeatCycle.indexOf(" ")));
+			return cycle;
+		} catch (StringIndexOutOfBoundsException e) {
+			return 0;
+		}
 	}
 
 	private static String parseRepeatType(String repeatCycle) {
@@ -458,10 +484,15 @@ public class AddLogic {
 		if (isCorrectRepeatCycle(repeatCommand)) {
 			repeatType = parseRepeatType(repeatCommand);
 			repeatCycle = parseRepeatAmount(repeatCommand);
-			startDate = command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
-					command.lastIndexOf(COMMAND_END_TIME) - 1);
-			endDate = command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
-			if (isValidDate(startDate)) {
+			try {
+				startDate = command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
+						command.lastIndexOf(COMMAND_END_TIME) - 1);
+				endDate = command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
+			} catch (Exception e) {
+				startDate = "";
+				endDate = "";
+			}
+			if (isValidDate(startDate) && repeatCycle != 0) {
 				if (containsTime(startDate)) {
 					Task newTask = new Task(eventTitle, repeatType, repeatCycle, startDate, endDate, true, true);
 					modifier.addTask(newTask);
@@ -469,12 +500,20 @@ public class AddLogic {
 					Task newTask = new Task(eventTitle, repeatType, repeatCycle, startDate, endDate, true);
 					modifier.addTask(newTask);
 				}
+			} else if (startDate.equals("")) {
+				addRecurMessage = MESSAGE_RECUR_START;
+				FeedbackPane.displayInvalidInput();
+			} else if (endDate.equals("")) {
+				addRecurMessage = MESSAGE_RECUR_END;
+				FeedbackPane.displayInvalidInput();
+			} else if (repeatCycle == 0) {
+				addRecurMessage = MESSAGE_RECUR_CYCLE;
+				FeedbackPane.displayInvalidInput();
 			} else {
 				addEventDefault(command);
 			}
 		} else {
 			addEventWithTimeline(command);
-			return;
 		}
 	}
 
@@ -484,17 +523,36 @@ public class AddLogic {
 		String end = getEndTime(command);
 		String start = getBlockEventStartDate(command);
 		if (isValidDate(end) && isValidDate(start)) {
-			if (containsTime(end)) {
-				newTask = new Task(eventTitle, start, end, true);
+			if(isCorrectRange(start, end)) {
+				if (containsTime(end)) {
+					newTask = new Task(eventTitle, start, end, true);
+				} else {
+					newTask = new Task(eventTitle, start, end);
+				}
+				newTask.setBlocking(true);
+				modifier.addTask(newTask);
 			} else {
-				newTask = new Task(eventTitle, start, end);
+				addBlockMessage = MESSAGE_INVALID_RANGE;
+				FeedbackPane.displayInvalidInput();
 			}
-			newTask.setBlocking(true);
-			modifier.addTask(newTask);
 		} else {
 			addBlockMessage = MESSAGE_INVALID_INPUT;
 			FeedbackPane.displayInvalidAdd();
 		}
+	}
+	
+	private static boolean isCorrectRange(String start, String end) {
+		int startDate = Integer.parseInt(start);
+		int endDate = Integer.parseInt(end);
+		if(startDate >= endDate) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	public static String getBlockMessage() {
+		return addBlockMessage;
 	}
 
 	private static String getBlockEventStartDate(String command) {
