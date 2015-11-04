@@ -110,12 +110,12 @@ public class AddLogic {
 			if (command.lastIndexOf(COMMAND_BY) > command.lastIndexOf(COMMAND_ON)) {
 				return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
 			} else {
-				return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
+				return getSingleDateTitleForTimeline(command);
 			}
 		} else if (command.contains(COMMAND_BY)) {
 			return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
 		} else {
-			return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
+			return getSingleDateTitleForTimeline(command);
 		}
 	}
 
@@ -249,54 +249,106 @@ public class AddLogic {
 		String eventTitle = new String();
 		String startDate = new String();
 		String endDate = new String();
-
-		try {
-			eventTitle = getEventTitleTimeline(command);
-			startDate = getStartDate(command);
-		} catch (Exception e) {
-			addEventWithImportance(command);
-			return;
-		}
-
-		if (isValidDate(startDate)) {
-			if (isEventWithImportance(command)) {
-				if(isValidRank(command)) {
-					int rank = convertStringToInt(command);
-					endDate = getEndDateImportance(command);
-					Task newTask;
-					if (containsTime(endDate)) {
-						newTask = new Task(eventTitle, startDate, endDate, rank, true);
+		
+		if(command.contains(COMMAND_ON) || command.contains(COMMAND_BY)) {
+			try {
+				eventTitle = getSingleDateTitleForTimeline(command);
+				startDate = getSingleDateStartTime(command);
+				endDate = getSingleDateEndDate(command);
+			} catch (Exception e) {
+				addEventWithImportance(command);
+				return;
+			}
+			
+			if (isValidDate(startDate)) {
+				if (isEventWithImportance(command)) {
+					if(isValidRank(command)) {
+						addTaskWithTimelineAndRank(command, eventTitle, startDate);
+					} else if (isRankNonCommand(command)) {
+						addTaskWithTimelineAndNoRank(command, eventTitle, startDate);
 					} else {
-						newTask = new Task(eventTitle, startDate, endDate, rank);
+						addRankMessage = MESSAGE_INVALID_RANK;
+						FeedbackPane.displayInvalidInput();
 					}
-					modifier.addTask(newTask);
-				} else if (isRankNonCommand(command)) {
-					endDate = getEndDateTimeline(command);
-					Task newTask;
-					if (containsTime(endDate)) {
-						newTask = new Task(eventTitle, startDate, endDate, true);
-					} else {
-						newTask = new Task(eventTitle, startDate, endDate);
-					}
-					modifier.addTask(newTask);
 				} else {
-					addRankMessage = MESSAGE_INVALID_RANK;
-					FeedbackPane.displayInvalidInput();
+					addTaskWithTimelineAndNoRank(command, eventTitle, startDate);
 				}
 			} else {
-				endDate = getEndDateTimeline(command);
-				Task newTask;
-				if (containsTime(endDate)) {
-					newTask = new Task(eventTitle, startDate, endDate, true);
-				} else {
-					newTask = new Task(eventTitle, startDate, endDate);
-				}
-				modifier.addTask(newTask);
+				addEventWithImportance(command);
+				return;
 			}
 		} else {
-			addEventWithImportance(command);
-			return;
+			try {
+				eventTitle = getEventTitleTimeline(command);
+				startDate = getStartDate(command);
+			} catch (Exception e) {
+				addEventWithImportance(command);
+				return;
+			}	
+
+			if (isValidDate(startDate)) {
+				if (isEventWithImportance(command)) {
+					if(isValidRank(command)) {
+						addTaskWithTimelineAndRank(command, eventTitle, startDate);
+					} else if (isRankNonCommand(command)) {
+						addTaskWithTimelineAndNoRank(command, eventTitle, startDate);
+					} else {
+						addRankMessage = MESSAGE_INVALID_RANK;
+						FeedbackPane.displayInvalidInput();
+					}
+				} else {
+					addTaskWithTimelineAndNoRank(command, eventTitle, startDate);
+				}
+			} else {
+				addEventWithImportance(command);
+				return;
+			}
 		}
+	}
+
+	private static String getSingleDateTitleForTimeline(String command) {
+		if(command.contains(COMMAND_ON)) {
+			return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
+		} else {
+			return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
+		}
+	}
+
+	private static void addTaskWithTimelineAndNoRank(String command, String eventTitle, String startDate) {
+		String endDate;
+		endDate = getEndDateTimeline(command);
+		Task newTask;
+		if (containsTime(endDate)) {
+			newTask = new Task(eventTitle, startDate, endDate, true);
+		} else {
+			newTask = new Task(eventTitle, startDate, endDate);
+		}
+		modifier.addTask(newTask);
+	}
+
+	private static void addTaskWithTimelineAndRank(String command, String eventTitle, String startDate) {
+		String endDate;
+		int rank = convertStringToInt(command);
+		endDate = getEndDateImportance(command);
+		Task newTask;
+		if (containsTime(endDate)) {
+			newTask = new Task(eventTitle, startDate, endDate, rank, true);
+		} else {
+			newTask = new Task(eventTitle, startDate, endDate, rank);
+		}
+		modifier.addTask(newTask);
+	}
+
+	private static String getSingleDateEndDate(String command) {
+		return command.substring(command.lastIndexOf(COMMAND_ON) + 3, 
+		        command.lastIndexOf(COMMAND_START_TIME) -1) + command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
+	}
+
+	private static String getSingleDateStartTime(String command) {
+		return command.substring(command.lastIndexOf(COMMAND_ON) + 3, 
+				                      command.lastIndexOf(COMMAND_START_TIME) -1)
+				     + command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5, 
+				    		             command.lastIndexOf(COMMAND_END_TIME) -1);
 	}
 	
 	private static boolean isRankNonCommand(String command) {
