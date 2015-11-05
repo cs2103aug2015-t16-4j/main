@@ -17,7 +17,6 @@ public class EditLogic {
 	private static final String COMMAND_FROM = "from";
 	private static final String COMMAND_REPEAT = "by repeat";
 	private static final String COMMAND_BLOCK = "cancel block";
-<<<<<<< HEAD
 	private static String  message =null; 
 	private static final String  editImptanceInvalid = "Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n"; 
     private static final String  editDateInvalid = "Invalid date is inputed\n"; 
@@ -28,17 +27,7 @@ public class EditLogic {
 	
     public static void editEvent(String command) {
 		int indexToBeEdit = convertStringIndexToInt(command)-1;
-=======
-	private static String message = null;
-	private static final String editImptanceInvalid = "Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n";
-	private static final String editDateInvalid = "Invalid date is inputed\n";
-	private static final int importanceLevel1 = 1;
-	private static final int importanceLevel2 = 2;
-	private static final int importanceLevel3 = 3;
-
-	public static void editEvent(String command) {
-		int indexToBeEdit = convertStringIndexToInt(command) - 1;
->>>>>>> origin/master
+		
 		ArrayList<Task> taskList = modifier.getContentList();
 
 		if (indexToBeEdit >= taskList.size()) {
