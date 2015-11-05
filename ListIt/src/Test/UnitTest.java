@@ -113,7 +113,8 @@ public class UnitTest {
 		DeleteLogic.clearFile();
 		expected.clear();
 		Task task3 = new Task("go for light and sound show at the Gardens by the Bay");
-		addEvent(task3, "add go for light and sound show at the Gardens by the Bay");
+		expected.add(task3);
+		AddLogic.addEventWithDeadline("add go for light and sound show at the Gardens by the Bay");
 		actual  = modifier.getContentList();
 		compareResults("testing adding floating task with the word by", expected, 
 				      actual);
