@@ -36,7 +36,7 @@ public class EditLogic {
 			String newImportance = getNewImportanceLevel(command);
 			
 			if(newImportance.equals("1") || newImportance.equals("2") || newImportance.equals("3")){
-			modifier.editImportance(IndexToBeEdit - 1, newImportance); 
+				modifier.editImportance(IndexToBeEdit - 1, newImportance); 
 			}else{
 				FeedbackPane.displayInvalidIndexImptLevel(); 
 				message = editImptanceInvalid; 

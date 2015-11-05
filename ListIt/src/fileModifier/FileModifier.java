@@ -279,7 +279,7 @@ public class FileModifier {
 
 		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);
-			if (task.getTitle().toLowerCase().contains(keyword)) {
+			if (task.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
 				searchList.add(task);
 			}
 		}
