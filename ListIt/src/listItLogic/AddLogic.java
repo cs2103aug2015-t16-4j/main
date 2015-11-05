@@ -255,6 +255,7 @@ public class AddLogic {
 		String startDate = new String();
 		String endDate = new String();
 		boolean invalidOnCommand = false;
+		
 
 		if (command.contains(COMMAND_ON)) {
 			try {
@@ -273,13 +274,14 @@ public class AddLogic {
 					addRankMessage = MESSAGE_INVALID_RANK;
 					FeedbackPane.displayInvalidInput();
 				}
-			}
+		}
 		}
 
 		if (!command.contains(COMMAND_ON) || invalidOnCommand) {
 			eventTitle = getEventTitleTimeline(command);
 			startDate = getStartDate(command);
 			if (isValidDate(startDate)) {
+				if(isCorrectRange(startDate , endDate)){
 				if (isEventWithImportance(command)) {
 					if (isValidRank(command)) {
 						endDate = getEndDateImportance(command);
@@ -299,7 +301,10 @@ public class AddLogic {
 				addEventWithImportance(command);
 				return;
 			}
+		}else{
+			FeedbackPane.displayInvalidDate();
 		}
+	  }
 	}
 
 	private static String getSingleDateTitleForTimeline(String command) {

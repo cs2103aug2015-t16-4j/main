@@ -23,6 +23,7 @@ public class EditLogic {
     private static final int importanceLevel1 = 1; 
     private static final int importanceLevel2 = 2; 
     private static final int importanceLevel3 = 3; 
+    private static String messsage = "null"; 
 	
     public static void editEvent(String command) {
 		int indexToBeEdit = convertStringIndexToInt(command)-1;
@@ -30,6 +31,7 @@ public class EditLogic {
 		
 		if(indexToBeEdit >= taskList.size()) {
 			FeedbackPane.displayInvalidInput();
+			message = "Invalid input!\n"; 
 		} else {
 		if (isEditByDate(command)) {
 			String newDate = getNewDate(command);
