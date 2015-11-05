@@ -164,10 +164,10 @@ public class UnitTest {
 		addRecurMessage = AddLogic.getRecurMessage();
 		testAddRecur("test add recurring event with no timeline", expected, addRecurMessage, "please enter a start date");
 		
-		AddLogic.addEventWithTimeline("add attend project meeting on 05112015 from 1400 to 1200 rank 1");
+		/*AddLogic.addEventWithTimeline("add attend project meeting on 05112015 from 1400 to 1200 rank 1");
 		addTimelineMessage = AddLogic.getTimelineMessage();
 		testAddLogic("testing adding with wrong timeline input", expected, addTimelineMessage, 
-				     "invalid timeline range");
+				     "invalid timeline range");*/
 	}
 	
 	@Test
