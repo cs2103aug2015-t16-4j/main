@@ -50,7 +50,7 @@ public class UnitTest {
 		t.setDaemon(true);
 		t.start();
 		System.out.printf("FX App ListIt thread started\n");
-		Thread.sleep(600);
+		Thread.sleep(500);
 	}
 
 
