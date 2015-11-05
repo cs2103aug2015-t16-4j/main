@@ -154,7 +154,7 @@ public class AddLogic {
 	public static void addEventDefault(String command) {
 		String eventTitle = null;
 		eventTitle = getEventTitleDefault(command);
-		if (eventTitle == null) {
+		if (eventTitle.equals("null")) {
 			FeedbackPane.displayInvalidTitle();
 		} else {
 			Task newTask = new Task(eventTitle);
@@ -168,7 +168,7 @@ public class AddLogic {
 		} else {
 			addDefaultMessage = MESSAGE_ADD_TITLE;
 			FeedbackPane.displayInvalidInput();
-			return null;
+			return "null";
 		}
 	}
 
@@ -445,14 +445,14 @@ public class AddLogic {
 	}
 
 	public static boolean isCorrectRepeatCycle(String repeatCycle) {
-		boolean result = false;
+		boolean isCorrect = false;
 
 		if (repeatCycle.contains(REPEAT_DAILY) || repeatCycle.contains(REPEAT_MONTHLY)
 				|| repeatCycle.contains(REPEAT_YEARLY) || repeatCycle.contains(REPEAT_WEEKLY)) {
-			result = true;
+			isCorrect = true;
 
 		}
-		return result;
+		return isCorrect;
 	}
 
 	public static void addRecursiveEventTimeline(String command) {

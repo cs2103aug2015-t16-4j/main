@@ -50,6 +50,21 @@ public class UnitTest {
 		t.start();
 		System.out.printf("FX App ListIt thread started\n");
 		Thread.sleep(500);
+<<<<<<< HEAD
+=======
+	}
+
+
+
+	@Test
+	public void test() {
+		testDelete();
+		testAdd();
+        testSearch();
+		testSort(); 
+        testEdit();
+        testUndoRedo();
+>>>>>>> origin/master
 	}
 	
 	@Test
