@@ -18,7 +18,7 @@ public class AddLogic {
 	private static String addRecurMessage = "null";
 	private static final String MESSAGE_INVALID_INPUT = "invalid input";
 	private static final String MESSAGE_ADD_TITLE = "Please enter an event title";
-	private static final String MESSAGE_ADD_VALID_DATE = "enter a vaild date";
+	private static final String MESSAGE_ADD_VALID_DATE = "enter a valid date";
 	private static final String MESSAGE_INVALID_RANK = "invalid rank input";
 	private static final String MESSAGE_RECUR_START = "please enter a start date";
 	private static final String MESSAGE_RECUR_END = "please enter an end date";
