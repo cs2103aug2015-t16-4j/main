@@ -206,7 +206,8 @@ public class UnitTest {
 
 	@Test
 	public void testSearch1() {
-		//test key word present and not present . 
+		Task task2 = new Task("OP2 presentation", "06112015");
+		addEvent(task2 , "add OP2 persentation by 06112015"); 
 		SearchLogic.searchKeyWord("search Oral Presentation 2");
 		actualSearchList = SearchLogic.getTaskList();
 		compareResults("test search by title" , expectedSearchList, actualSearchList); 
@@ -214,6 +215,7 @@ public class UnitTest {
 
 	@Test
 	public void testSearch2() {
+		expectedSearchList = clearExpectedList(expectedSearchList); 
 		SearchLogic.searchKeyWord("search tutorial work"); 
 		actualSearchList = SearchLogic.getTaskList();
 		compareResults("test seearching for a title tht does not exist", expectedSearchList, actualSearchList);
@@ -221,7 +223,7 @@ public class UnitTest {
 
 	@Test
 	public void testSearch3() {
-		//test for importance ( 1 & 4)  
+		AddLogic.addEventWithDeadline("add OP2 presentation by 06112015 rank 3");
 		SearchLogic.searchKeyWord("search impt 3");
 		actualSearchList = SearchLogic.getTaskList();
 		Task task2 = new Task("OP2 presentation", "06112015", 3);
@@ -231,6 +233,7 @@ public class UnitTest {
 
 	@Test
 	public void testSearch4() {
+		expectedSearchList = clearExpectedList(expectedSearchList); 
 		SearchLogic.searchKeyWord("search impt 4");
 		actualSearchList = SearchLogic.getTaskList();
 		compareResults("test search by impt, ranking 4 which is not present" , expectedSearchList, actualSearchList);
@@ -238,59 +241,83 @@ public class UnitTest {
 
     @Test
     public void testSearch5() {
+    	AddLogic.addEventWithDeadline("add EE2020 Oscilloscope project by 03112015 rank 1");
 		SearchLogic.searchKeyWord("search date 03112015");
 		actualSearchList = SearchLogic.getTaskList();
 		Task task = new Task ("EE2020 Oscilloscope project", "03112015","1"); 
 		expectedSearchList.add(task); 
 		compareResults("test search by date" , expectedSearchList, actualSearchList); 
 		// the expected search list should be cleared to test another search type . 
-		expectedSearchList = clearExpectedSearchList(expectedSearchList); 
     }
 
     @Test
     public void testSearch6() {
-		//testing a date not present 
+		expectedSearchList = clearExpectedList(expectedSearchList); 		
 		SearchLogic.searchKeyWord("search data 05112015"); 
 		actualSearchList = SearchLogic.getTaskList(); 
 		compareResults("test search by impt", expectedSearchList, actualSearchList); 
 	}
 	
+    //need to fix this 
 	public void testEdit1() {
-		expected = getExpectedforEditDate(expected);
-		EditLogic.editEvent("edit 2 by date 08112015"); 
+		expected = clearExpectedList(expected);
+		AddLogic.addEventWithDeadline("add OP2 presentation by 08112015 rank 3");
+		EditLogic.editEvent("edit 1 by date 08112015"); 
 		actual = modifier.getContentList(); 
+		expected = getExpectedforEditDate(expected);
 		compareResults("test if edit by date works", expected, actual);
 	}
 	
 	@Test
 	public void testEdit2() {
-		EditLogic.editEvent("edit 2 by date 11142015");
+		expected = clearExpectedList(expected);
+    	Task task1 = new Task("EE2020 Oscilloscope project", "03112015");
+		addEvent(task1, "add EE2020 Oscilloscope project by 03112015"); 
+		EditLogic.editEvent("edit 1 by date 11142015");
+		actual = modifier.getContentList(); 
 		compareResults("test if invalid date for edit works", expected, actual);
 	}
 	
 	@Test
+	//edit importance testing with correct input  
 	public void testEdit3() {
-		// edit impt 
-		EditLogic.editEvent("edit 2 by impt 2"); 
+		expected = clearExpectedList(expected);
+		AddLogic.addEventWithImportance("add go for manicure rank and pedicure rank 3");
+		EditLogic.editEvent("edit 1 by impt 2");
 		actual = modifier.getContentList(); 
 		expected = getExpectedforEditImpt(expected);
-		compareResults("test if edit by date works", expected, actual);
+
+		compareResults("test if edit by impt works", expected, actual);
 	}
-	
+
 	@Test
+	//edit importance with wrong input 
 	public void testEdit4() {
+		expected = clearExpectedList(expected);
 		EditLogic.editEvent("edit 2 by impt 5"); 
 		actual = modifier.getContentList();
 		compareResults("test if invalid importance level for edit works", expected, actual);
 	}
 
 	@Test
+	//edit title correct input
 	public void testEdit5() {
-        //edit title
+		expected = clearExpectedList(expected);
 		expected = getExpectedforEditTitle(expected);
-		EditLogic.editEvent("edit 2 by title Oral presentation 2 "); 
+		AddLogic.addEventWithDeadline("add 0P2 presentation by 12112015");
+		EditLogic.editEvent("edit 1 by title Oral presentation 2 "); 
 		actual = modifier.getContentList(); 
 		compareResults("test if edit by title works",expected , actual);
+	}
+	
+	@Test
+	//edit title with wrong input 
+	public void testEdit6(){
+		expected = clearExpectedList(expected);
+		AddLogic.addEventWithDeadline("add 0P2 presentation by 12112015");
+		EditLogic.editEvent("edit 2 by title Oral presentation 2 "); 
+		actual = modifier.getContentList(); 
+		compareResults("test if edit invalid number works",expected , actual);	
 	}
 	
 	@Test
@@ -330,30 +357,27 @@ public class UnitTest {
 	}
 	
 	private ArrayList<Task> getExpectedforEditTitle(ArrayList<Task> expected) {
-		//remove the first second title and edit the title. 
-		expected.remove(1); 
 		Task task3 = new Task("Oral presentation 2", "06112015","3"); 
 		expected.add(task3); 	
 		return expected; 
 	}
 	
-	private ArrayList<Task> getExpectedforEditImpt(ArrayList<Task> expected) {
-		expected.remove(1); 
-		Task task3 = new Task("OP2 presentation", "06112015","2"); 
-		expected.add(task3); 	
+	private ArrayList<Task> getExpectedforEditImpt(ArrayList<Task> expected2) {
+		Task task1 = new Task("go for manicure and pedicure",3); 
+		expected.add(task1); 	
 		return expected; 
 	}
-
+	
 	private ArrayList<Task> getExpectedforEditDate(ArrayList<Task> expected) {
-		expected.remove(1); 
 		Task task3 = new Task("OP2 presentation", "08112015","3"); 
 		expected.add(task3); 	
 		return expected; 
 	}
 	
-	private ArrayList<Task> clearExpectedSearchList(ArrayList<Task> expectedSearchList) {
-		expectedSearchList.clear(); 
-		return expectedSearchList; 
+	private ArrayList<Task> clearExpectedList(ArrayList<Task> expected) {
+		DeleteLogic.clearFile();
+		expected.clear();
+		return expected; 
 	}
 	
 	private void compareResults(String description, ArrayList<Task> expected, 
