@@ -55,6 +55,8 @@ public class UnitTest {
 	
 	@Test
 	public void testDelete1() {
+		DeleteLogic.clearFile();
+		expected.clear();
 		Task task1 = new Task("EE2020 Oscilloscope project", "03112015");
 		addEvent(task1, "add EE2020 Oscilloscope project by 03112015"); 
 		Task task2 = new Task("OP2 presentation", "06112015");
@@ -88,6 +90,8 @@ public class UnitTest {
 	
 	@Test
 	public void testAdd1() {
+		DeleteLogic.clearFile();
+		expected.clear();
 		AddLogic.addEventDefault("add "); 
 		actual = modifier.getContentList();
 		compareResults("test default add", expected, actual);
@@ -95,6 +99,8 @@ public class UnitTest {
 	
 	@Test
     public void testAdd2() {
+		DeleteLogic.clearFile();
+		expected.clear();
 		AddLogic.addEventWithDeadline("add complete EE2020 lab report by next "
 				                       + "Friday");
 		actual = modifier.getContentList();
@@ -104,6 +110,8 @@ public class UnitTest {
 
 	@Test
 	public void testAdd3() {
+		DeleteLogic.clearFile();
+		expected.clear();
 		Task task3 = new Task("go for light and sound show at the Gardens by the Bay");
 		addEvent(task3, "add go for light and sound show at the Gardens by the Bay");
 		actual  = modifier.getContentList();
@@ -113,6 +121,8 @@ public class UnitTest {
 
 	@Test
 	public void testAdd4() {
+		DeleteLogic.clearFile();
+		expected.clear();
 		AddLogic.addEventWithDeadline("add attend meeting by 152015");
 		actual = modifier.getContentList();
 		compareResults("testing adding with deadline with wrong date format", expected,
@@ -121,6 +131,8 @@ public class UnitTest {
     
 	@Test
 	public void testAdd5() {
+		DeleteLogic.clearFile();
+		expected.clear();
 		AddLogic.addEventWithImportance("add watch movie rank 0");
 		actual = modifier.getContentList();
 		compareResults("test adding with wrong rank range", expected, 
@@ -129,6 +141,8 @@ public class UnitTest {
 	
     @Test
     public void testAdd6() {
+    	DeleteLogic.clearFile();
+		expected.clear();
 		AddLogic.addEventWithImportance("add go for manicure rank 4");
 		actual = modifier.getContentList();
 		compareResults("test adding with wrong rank range", expected, actual);
@@ -136,6 +150,8 @@ public class UnitTest {
 
     @Test
     public void testAdd7() {
+    	DeleteLogic.clearFile();
+		expected.clear();
 		AddLogic.addEventWithImportance("add do groceries rank 3");
 		actual = modifier.getContentList();
 		Task task4 = new Task("do groceries", 3);
@@ -145,6 +161,8 @@ public class UnitTest {
 	
     @Test
     public void testAdd8() {
+    	DeleteLogic.clearFile();
+		expected.clear();
 		AddLogic.addEventWithImportance("add rank all staff based on capabilities");
 		Task task5 = new Task("rank all staff based on capabilities");
 		expected.add(task5);
@@ -153,7 +171,9 @@ public class UnitTest {
     }
     
     @Test
-    public void testAdd9() {	
+    public void testAdd9() {
+    	DeleteLogic.clearFile();
+		expected.clear();
 		AddLogic.addBlockEvent("add attend regional youth conference block from 14112015 to 17112015");
 		Task task6 = new Task("attend regional youth conference", "14112015", "17112015");
 		expected.add(task6);
@@ -163,6 +183,8 @@ public class UnitTest {
     
 	@Test
 	public void testAdd10() {
+		DeleteLogic.clearFile();
+		expected.clear();
 		AddLogic.addBlockEvent("add attend Navratri festival block from 19112015 to 10112015");
 		actual = modifier.getContentList();
 		compareResults("test blocking with reversed dates", expected, actual);
@@ -170,6 +192,8 @@ public class UnitTest {
 	
 	@Test
 	public void testAdd11() {
+		DeleteLogic.clearFile();
+		expected.clear();
 		AddLogic.addBlockEvent("add attend sports event block from 112015 to 122015");
 		actual = modifier.getContentList();
 		compareResults("test blocking with wrong date format", expected, actual);
