@@ -256,7 +256,6 @@ public class UnitTest {
 	}
 	
 	public void testEdit1() {
-		//edit by date
 		expected = getExpectedforEditDate(expected);
 		EditLogic.editEvent("edit 2 by date 08112015"); 
 		actual = modifier.getContentList(); 
@@ -362,10 +361,21 @@ public class UnitTest {
 		assertEquals(description, expected, actual);
 	}
 	
+	@Test
 	private void testSort() {
-		ArrayList<Task> actual = modifier.getContentList();
-		String description = "test if sort works"; 		
-		assertEquals(description , expected , actual); 		
+		ArrayList<Task> expectedSortedList = new ArrayList<Task>(); 
+		Task task1 = new Task("EE2020 Oscilloscope project", "03112015");	
+		/*AddLogic.addEventWithDeadline("add EE2020 Oscilloscope project on 03112015");
+		expectedSortedList.add(task1);*/
+		addEvent(task1, "add EE2020 Oscilloscope project on 03112015"); 
+		Task task2 = new Task("OP2 presentation", "06112015");
+		/*AddLogic.addEventWithDeadline("add 0P2 presentation by 06112015");
+		expected.add(task2);	*/
+		addEvent(task2, "add 0P2 presentation by 06112015"); 
+
+		
+		ArrayList<Task> actualSortedList = modifier.getContentList();	
+		compareResults("test if sort works", expectedSortedList , actualSortedList); 
 	}
 
 }
