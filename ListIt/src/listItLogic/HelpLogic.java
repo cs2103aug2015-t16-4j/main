@@ -2,17 +2,30 @@ package listItLogic;
 
 import java.util.ArrayList;
 
+import listItUI.UIMain;
+
 public class HelpLogic {
 	
 	private static ArrayList<String> commandList = new ArrayList<String>();
 	private static ArrayList<String> inputCommand = new ArrayList<String>();
+	private static HelpLogic help;
+	
+	public HelpLogic () {
+		createHelpList();
+	}
+	
+	public static HelpLogic getInstance() {
+		if(help == null) {
+			help = new HelpLogic();
+		}
+		return help;
+	}
 	
 	/**
 	 * This method creates the help list by creating 2 arrays, commandList and inputCommand
 	 * 
 	 */
-	public static void createHelpList() {
-		
+	public void createHelpList() {	
 		commandList.add("add event with deadline");
 		commandList.add("add event with timeline");
 		commandList.add("add event with timeline, single day");
@@ -62,14 +75,13 @@ public class HelpLogic {
 		inputCommand.add("cd <new directory>");
 		inputCommand.add("complete <task index>");
 		inputCommand.add("clear");
-		
-		
 	}
 	/**
 	 * This method displays the help array into the display panel
 	 */
 	public static void displayHelp() {
-		createHelpList();
+		help = getInstance();
+		UIMain.popUpHelp(commandList, inputCommand);
+		
 	}
-
 }

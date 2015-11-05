@@ -1,12 +1,16 @@
 package listItUI;
 
+import java.util.ArrayList;
+
 import fileModifier.FileModifier;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -65,5 +69,37 @@ public class UIMain extends Application {
 		modifier.display(modifier.getContentList());
 	}
 	
-	//public void static popUpHelp(Arraylist<Task> commands, Arraylist<Task> methods)
+	public static void popUpHelp(ArrayList<String> commands, ArrayList<String> methods) {
+		Stage helpStage = new Stage();
+		int i=0, j=0;
+		
+		helpStage.setTitle("Cheat Sheet");
+		
+		ScrollPane helpLayout = new ScrollPane();
+		
+		GridPane helpSheet = new GridPane();
+		ColumnConstraints col0Constraints = new ColumnConstraints();
+		col0Constraints.setPercentWidth(40);
+		ColumnConstraints col1Constraints = new ColumnConstraints();
+		col1Constraints.setPercentWidth(60);
+		
+		helpSheet.getColumnConstraints().addAll(col0Constraints, col1Constraints);
+		
+		for(i=0; i<commands.size(); i++) {
+			Text command = new Text(commands.get(i));
+			Text method = new Text(methods.get(j));
+			
+			GridPane.setConstraints(command, 0, i);
+			GridPane.setConstraints(method, 1, j);
+			
+			helpSheet.getChildren().addAll(command, method);
+			j++;
+		}
+		
+		helpLayout.setContent(helpSheet);
+		
+		Scene helpScene = new Scene(helpLayout, 1000, 600);
+		helpStage.setScene(helpScene);
+		helpStage.show();
+	}
 }
