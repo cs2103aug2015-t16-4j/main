@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import fileModifier.FileModifier;
 import javafx.application.Application;
-import javafx.stage.Stage;
 import listItLogic.AddLogic;
 import listItLogic.DeleteLogic;
 import listItLogic.EditLogic;
@@ -53,27 +52,15 @@ public class UnitTest {
 		Thread.sleep(500);
 	}
 
-
-
-	@Test
-	public void test() {
-		testDelete();
-		testAdd();
-        testSearch();
-		testSort(); 
-        testEdit();
-        testUndoRedo();
-	}
-	
 	@Test
 	public void testDelete() {
 		DeleteLogic.clearFile();
 		testDeleteLogicClear(expected, "test clear"); 
 
-		Task task1 = new Task("EE2020 Oscilloscope project", "03112015", 1);
-		addEvent(task1, "add EE2020 Oscilloscope project by 03112015 rank 1"); 
-		Task task2 = new Task("OP2 presentation", "06112015", 3);
-		addEvent(task2, "add 0P2 presentation by 06112015 rank 3"); 
+		Task task1 = new Task("EE2020 Oscilloscope project", "03112015");
+		addEvent(task1, "add EE2020 Oscilloscope project by 03112015"); 
+		Task task2 = new Task("OP2 presentation", "06112015");
+		addEvent(task2, "add 0P2 presentation by 06112015"); 
 
 		DeleteLogic.deleteEvent("delete 3");
 		deleteMessage = DeleteLogic.getMessage();
@@ -103,7 +90,7 @@ public class UnitTest {
 		AddLogic.addEventWithDeadline("add complete EE2020 lab report by next Friday");
 		addDeadlineMessage = AddLogic.getDeadlineMessage();
 		testAddLogic("test adding with deadline in wrong format", expected, 
-				addDeadlineMessage, "enter valid date");
+				addDeadlineMessage, "enter a valid date");
 
 		Task task3 = new Task("go for light and sound show at the Gardens by the Bay");
 		addEvent(task3, "add go for light and sound show at the Gardens by the Bay");
@@ -241,7 +228,7 @@ public class UnitTest {
 		testEditLogic("test if edit by title works",expected , actual);
 	}
 	
-	@Test
+	/*@Test
 	public void testUndoRedo() {
 		//Test empty undo and redo method
         ArrayList<Task> actual = modifier.getContentList();
@@ -266,7 +253,7 @@ public class UnitTest {
 		AddLogic.addEventDefault("test undo String");
 		expected = undoRedo.getListFromRedo();
 		testRedo("test if redo works", expected, actual);
-	}
+	}*/
 	
 	private void testRedo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
 		assertThat(description, actual, not(expected));
