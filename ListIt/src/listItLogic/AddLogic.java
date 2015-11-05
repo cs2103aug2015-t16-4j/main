@@ -255,7 +255,6 @@ public class AddLogic {
 		String startDate = new String();
 		String endDate = new String();
 		boolean invalidOnCommand = false;
-		
 
 		if (command.contains(COMMAND_ON)) {
 			try {
@@ -274,37 +273,37 @@ public class AddLogic {
 					addRankMessage = MESSAGE_INVALID_RANK;
 					FeedbackPane.displayInvalidInput();
 				}
-		}
+			}
 		}
 
 		if (!command.contains(COMMAND_ON) || invalidOnCommand) {
 			eventTitle = getEventTitleTimeline(command);
 			startDate = getStartDate(command);
 			if (isValidDate(startDate)) {
-				if(isCorrectRange(startDate , endDate)){
-				if (isEventWithImportance(command)) {
-					if (isValidRank(command)) {
-						endDate = getEndDateImportance(command);
-						addTaskWithTimelineAndRank(command, eventTitle, startDate, endDate);
-					} else if (isRankNonCommand(command)) {
+				if (isCorrectRange(startDate, endDate)) {
+					if (isEventWithImportance(command)) {
+						if (isValidRank(command)) {
+							endDate = getEndDateImportance(command);
+							addTaskWithTimelineAndRank(command, eventTitle, startDate, endDate);
+						} else if (isRankNonCommand(command)) {
+							endDate = getEndDateTimeline(command);
+							addTaskWithTimelineAndNoRank(command, eventTitle, startDate, endDate);
+						} else {
+							addRankMessage = MESSAGE_INVALID_RANK;
+							FeedbackPane.displayInvalidInput();
+						}
+					} else {
 						endDate = getEndDateTimeline(command);
 						addTaskWithTimelineAndNoRank(command, eventTitle, startDate, endDate);
-					} else {
-						addRankMessage = MESSAGE_INVALID_RANK;
-						FeedbackPane.displayInvalidInput();
 					}
 				} else {
-					endDate = getEndDateTimeline(command);
-					addTaskWithTimelineAndNoRank(command, eventTitle, startDate, endDate);
+					FeedbackPane.displayInvalidDate();
+					return;
 				}
 			} else {
-				addEventWithImportance(command);
-				return;
+				AddLogic.addEventDefault(command);
 			}
-		}else{
-			FeedbackPane.displayInvalidDate();
 		}
-	  }
 	}
 
 	private static String getSingleDateTitleForTimeline(String command) {
