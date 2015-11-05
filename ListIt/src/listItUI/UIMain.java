@@ -64,4 +64,6 @@ public class UIMain extends Application {
 		primaryStage.show();
 		modifier.display(modifier.getContentList());
 	}
+	
+	//public void static popUpHelp(Arraylist<Task> commands, Arraylist<Task> methods)
 }

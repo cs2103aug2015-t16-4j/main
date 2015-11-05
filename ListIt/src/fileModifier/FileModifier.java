@@ -279,7 +279,7 @@ public class FileModifier {
 
 		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);
-			if (task.getTitle().toLowerCase().contains(keyword)) {
+			if (task.getTitle().toLowerCase().contains(keyword.toLowerCase())) {
 				searchList.add(task);
 			}
 		}
@@ -350,11 +350,11 @@ public class FileModifier {
 		updateFile(taskList);
 	}
 
-	public void editImportance(int lineToBeEdit, String newImportance) {
+	public void editImportance(int IndexToBeEdit, int newImportance) {
 		ArrayList<Task> taskList = modifier.getContentList();
-		Task task = taskList.get(lineToBeEdit);
-		task.setImportance(Integer.parseInt(newImportance));
-		taskList.set(lineToBeEdit, task);
+		Task task = taskList.get(IndexToBeEdit);
+		task.setImportance(newImportance);
+		taskList.set(IndexToBeEdit, task);
 		updateFile(taskList);
 	}
 
