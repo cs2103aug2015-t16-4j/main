@@ -12,6 +12,7 @@ import javafx.application.Application;
 import listItLogic.AddLogic;
 import listItLogic.DeleteLogic;
 import listItLogic.EditLogic;
+import listItLogic.ExecuteCommand;
 import listItLogic.SearchLogic;
 import listItLogic.UndoAndRedoLogic;
 import listItUI.*;
@@ -229,32 +230,31 @@ public class UnitTest {
 		testEditLogic("test if edit by title works",expected , actual);
 	}
 	
-	/*@Test
+	@Test
 	public void testUndoRedo() {
 		//Test empty undo and redo method
-        ArrayList<Task> actual = modifier.getContentList();
+		ArrayList<Task> actual = new ArrayList<Task>();
+        ArrayList<Task> expected = modifier.getContentList();
 		AddLogic.addEventDefault("test empty undo string");
-		expected = undoRedo.getListFromUndo();
+		actual = undoRedo.getListFromUndo();
 		testEmptyUndo("test if empty undo works", expected, actual);
 		
-		actual = modifier.getContentList();
+		expected = modifier.getContentList();
 		AddLogic.addEventDefault("test empty redo string");
-		expected = undoRedo.getListFromRedo();
+		actual = undoRedo.getListFromRedo();
 		testEmptyRedo("test if empty redo works", expected, actual);
 		
 		//Test undo and redo method with strings
-		actual = modifier.getContentList();
-		undoRedo.storeListToUndo(modifier.getContentList());
-		AddLogic.addEventDefault("test undo String");
-		expected = undoRedo.getListFromUndo();
+		expected = modifier.getContentList();
+		ExecuteCommand.processCommandWithSpace("add test undo String");
+		actual = undoRedo.getListFromUndo();
 		testUndo("test if undo works", expected, actual);
 		
-		actual = modifier.getContentList();
-		undoRedo.storeListToRedo(modifier.getContentList());
-		AddLogic.addEventDefault("test undo String");
-		expected = undoRedo.getListFromRedo();
+		expected = modifier.getContentList();
+		ExecuteCommand.processCommandWithSpace("add test undo String");
+		actual = undoRedo.getListFromRedo();
 		testRedo("test if redo works", expected, actual);
-	}*/
+	}
 	
 	private void testRedo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
 		assertThat(description, actual, not(expected));
