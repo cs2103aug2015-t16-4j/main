@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
 
 import fileModifier.FileModifier;
@@ -51,6 +52,9 @@ public class UnitTest {
 		System.out.printf("FX App ListIt thread started\n");
 		Thread.sleep(500);
 	}
+	
+	@Rule
+	public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
 
 	@Test
 	public void testDelete() {
