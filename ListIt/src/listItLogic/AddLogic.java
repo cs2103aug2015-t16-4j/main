@@ -255,55 +255,46 @@ public class AddLogic {
 		String eventTitle = new String();
 		String startDate = new String();
 		String endDate = new String();
+		boolean invalidOnCommand = false;
 		
-		if(command.contains(COMMAND_ON) || command.contains(COMMAND_BY)) {
+		if(command.contains(COMMAND_ON)) {
 			try {
 				eventTitle = getSingleDateTitleForTimeline(command);
 				startDate = getSingleDateStartTime(command);
 				endDate = getSingleDateEndDate(command);
 			} catch (Exception e) {
-				addEventWithImportance(command);
-				return;
+				invalidOnCommand = true;
 			}
-			
-			if (isValidDate(startDate)) {
-				if (isEventWithImportance(command)) {
-					if(isValidRank(command)) {
-						addTaskWithTimelineAndRank(command, eventTitle, startDate);
-					} else if (isRankNonCommand(command)) {
-						addTaskWithTimelineAndNoRank(command, eventTitle, startDate);
-					} else {
-						addRankMessage = MESSAGE_INVALID_RANK;
-						FeedbackPane.displayInvalidInput();
-					}
+			if(isValidDate(startDate) && isValidDate(endDate) && invalidOnCommand == false) {
+				if(isValidRank(command)) {
+					addTaskWithTimelineAndRank(command, eventTitle, startDate, endDate);
+				} else if (isRankNonCommand(command)) {
+					addTaskWithTimelineAndNoRank(command, eventTitle, startDate, endDate);
 				} else {
-					addTaskWithTimelineAndNoRank(command, eventTitle, startDate);
+					addRankMessage = MESSAGE_INVALID_RANK;
+					FeedbackPane.displayInvalidInput();
 				}
-			} else {
-				addEventWithImportance(command);
-				return;
 			}
-		} else {
-			try {
-				eventTitle = getEventTitleTimeline(command);
-				startDate = getStartDate(command);
-			} catch (Exception e) {
-				addEventWithImportance(command);
-				return;
-			}	
-
+		}
+			
+		if(!command.contains(COMMAND_ON) || invalidOnCommand){
+			eventTitle = getEventTitleTimeline(command);
+			startDate = getStartDate(command);
 			if (isValidDate(startDate)) {
 				if (isEventWithImportance(command)) {
 					if(isValidRank(command)) {
-						addTaskWithTimelineAndRank(command, eventTitle, startDate);
+						endDate = getEndDateImportance(command);
+						addTaskWithTimelineAndRank(command, eventTitle, startDate, endDate);
 					} else if (isRankNonCommand(command)) {
-						addTaskWithTimelineAndNoRank(command, eventTitle, startDate);
+						endDate = getEndDateTimeline(command);
+						addTaskWithTimelineAndNoRank(command, eventTitle, startDate, endDate);
 					} else {
 						addRankMessage = MESSAGE_INVALID_RANK;
 						FeedbackPane.displayInvalidInput();
 					}
 				} else {
-					addTaskWithTimelineAndNoRank(command, eventTitle, startDate);
+					endDate = getEndDateTimeline(command);
+					addTaskWithTimelineAndNoRank(command, eventTitle, startDate, endDate);
 				}
 			} else {
 				addEventWithImportance(command);
@@ -313,16 +304,10 @@ public class AddLogic {
 	}
 
 	private static String getSingleDateTitleForTimeline(String command) {
-		if(command.contains(COMMAND_ON)) {
-			return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
-		} else {
-			return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
-		}
+		return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
 	}
 
-	private static void addTaskWithTimelineAndNoRank(String command, String eventTitle, String startDate) {
-		String endDate;
-		endDate = getEndDateTimeline(command);
+	private static void addTaskWithTimelineAndNoRank(String command, String eventTitle, String startDate, String endDate) {
 		Task newTask;
 		if (containsTime(endDate)) {
 			newTask = new Task(eventTitle, startDate, endDate, true);
@@ -332,10 +317,8 @@ public class AddLogic {
 		modifier.addTask(newTask);
 	}
 
-	private static void addTaskWithTimelineAndRank(String command, String eventTitle, String startDate) {
-		String endDate;
+	private static void addTaskWithTimelineAndRank(String command, String eventTitle, String startDate, String endDate) {
 		int rank = convertStringToInt(command);
-		endDate = getEndDateImportance(command);
 		Task newTask;
 		if (containsTime(endDate)) {
 			newTask = new Task(eventTitle, startDate, endDate, rank, true);
@@ -348,13 +331,13 @@ public class AddLogic {
 	private static String getSingleDateEndDate(String command) {
 		return command.substring(command.lastIndexOf(COMMAND_ON) + 3, 
 		        command.lastIndexOf(COMMAND_START_TIME) -1) 
-				+ command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
+				+ " " + command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
 	}
 
 	private static String getSingleDateStartTime(String command) {
 		return command.substring(command.lastIndexOf(COMMAND_ON) + 3, 
 				                      command.lastIndexOf(COMMAND_START_TIME) -1)
-				     + command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
+				     + " " +command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
 								command.lastIndexOf(COMMAND_END_TIME) - 1);
 	}
 	
