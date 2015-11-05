@@ -1,7 +1,10 @@
 package listItLogic;
 
+import java.util.ArrayList;
+
 import fileModifier.FileModifier;
 import listItUI.FeedbackPane;
+import taskGenerator.Task;
 
 public class EditLogic {
 
@@ -22,24 +25,28 @@ public class EditLogic {
     private static final int importanceLevel3 = 3; 
 	
     public static void editEvent(String command) {
-		int IndexToBeEdit = convertStringIndexToInt(command)-1;
-
+		int indexToBeEdit = convertStringIndexToInt(command)-1;
+		ArrayList<Task> taskList = modifier.getContentList();
+		
+		if(indexToBeEdit >= taskList.size()) {
+			FeedbackPane.displayInvalidInput();
+		} else {
 		if (isEditByDate(command)) {
 			String newDate = getNewDate(command);
 			if (AddLogic.isValidDate(newDate)) {
-				modifier.editEndDate(IndexToBeEdit, newDate);
+				modifier.editEndDate(indexToBeEdit, newDate);
 			} else {
 				FeedbackPane.displayInvalidDate();
 				message = editDateInvalid; 
 			}
 		} else if (isEditByTitle(command)) {
 			String newTitle = getNewTitle(command);
-			modifier.editTitle(IndexToBeEdit, newTitle);
+			modifier.editTitle(indexToBeEdit, newTitle);
 		} else if (isEditByImportance(command)) {
 			int newImportance = getNewImportanceLevel(command);
 			
 			if(newImportance == importanceLevel1|| newImportance == importanceLevel2 || newImportance== importanceLevel3){
-				modifier.editImportance(IndexToBeEdit, newImportance);			
+				modifier.editImportance(indexToBeEdit, newImportance);			
 			}else{
 				FeedbackPane.displayInvalidIndexImptLevel(); 
 				message = editImptanceInvalid; 
@@ -47,7 +54,7 @@ public class EditLogic {
 		} else if (isEditByTimeline(command)) {
 			String newStartDate = getNewStartDate(command);
 			String newEndDate = getNewEndDate(command);
-			modifier.editTimeline(IndexToBeEdit, newStartDate, newEndDate);
+			modifier.editTimeline(indexToBeEdit, newStartDate, newEndDate);
 		} else if (isEditByRepeat(command)) {
 			String repeatCommand = command.substring(command.indexOf(COMMAND_REPEAT) + 10);
 			if (AddLogic.isCorrectRepeatCycle(repeatCommand)) {
@@ -55,13 +62,14 @@ public class EditLogic {
 				String repeatType = null;
 				newPeriod = Integer.parseInt(repeatCommand.substring(0, repeatCommand.indexOf(" ")));
 				repeatType = repeatCommand.substring(repeatCommand.indexOf(" ") + 1);
-				modifier.editRepeat(IndexToBeEdit , newPeriod, repeatType);
+				modifier.editRepeat(indexToBeEdit , newPeriod, repeatType);
 			} else {
 				FeedbackPane.displayInvalidEdit();
 			}
 
 		} else if (isEditByBlock(command)) {
-			modifier.editBlock(IndexToBeEdit);
+			modifier.editBlock(indexToBeEdit);
+		}
 		}
 	}
 
