@@ -12,7 +12,9 @@ public class SearchLogic {
 	private static final String SEARCH_ALPHA = "alpha";
 	private static final String INVALID_IMPT ="Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n"; 
 	private static final String NO_SEARCH ="No content to display"; 
-	private static final String SEARCH_IMPORTANCE_VALID="Search by importance level works"; 
+	private static final String SEARCH_IMPORTANCE_VALID="Search by importance level works."; 
+	private static final String SEARCH_DEFAULT_VALID = "Default search level works."; 
+	private static final String SEARCH_ALPHA_VALID = "Alpha search level works."; 
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
 	private static String message = "null"; 
 
@@ -30,6 +32,8 @@ public class SearchLogic {
 			}
 			modifier.setViewMode(SEARCH_DEFAULT);
 			sortAndDisplaySearchList(modifier, taskList);
+			message = SEARCH_DEFAULT_VALID; 
+			LoggingLogic.logging(message); 
 			
 		} else if (keyword.indexOf(SEARCH_IMPT) == 0) {
 			keyword = getKeyword(keyword);
@@ -44,14 +48,18 @@ public class SearchLogic {
 			}else { 
 				FeedbackPane.displayInvalidIndexImptLevel();
 				message = INVALID_IMPT; 
+				LoggingLogic.logging(message);
 			}
 		}else {
 			taskList = modifier.searchKeyword(keyword);
 			if(isTaskListEmpty(taskList)){
-				message=NO_SEARCH; 
+				message = NO_SEARCH; 
+				LoggingLogic.logging(message);
 			}
 			modifier.setViewMode(SEARCH_ALPHA);
 			sortAndDisplaySearchList(modifier, taskList);
+			message = SEARCH_ALPHA_VALID;
+			LoggingLogic.logging(message);
 		}
 	}
 
