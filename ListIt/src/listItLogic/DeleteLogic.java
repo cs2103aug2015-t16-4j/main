@@ -7,9 +7,9 @@ public class DeleteLogic {
 	
 	private static FileModifier modifier = FileModifier.getInstance();
 	private static String message = null;
-	private static final String MESSAGE_OUT_OF_BOUNDS = "Index is out of bounds";
-	private static final String DELETE_VALID = "The task has been successfully deleted";
-	private static final String CLEAR_VALID = "The file has been successfully been cleared";
+	private static final String MESSAGE_OUT_OF_BOUNDS = "Index is out of bounds.\n";
+	private static final String DELETE_VALID = "The task has been successfully deleted.\n";
+	private static final String CLEAR_VALID = "The file has been successfully been cleared.\n";
 
 
 	public static void deleteEvent(String command) {
