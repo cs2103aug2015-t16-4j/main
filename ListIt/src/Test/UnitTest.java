@@ -327,12 +327,6 @@ public class UnitTest {
 		compareResults("test if edit by title works",expected , actual);
 	}
 	
-	@Test
-<<<<<<< HEAD
-<<<<<<< HEAD
-	public void testUndoRedo() {
-=======
-=======
 	//edit title with wrong input 
 	public void testEdit6(){
 		expected = clearExpectedList(expected);
@@ -343,14 +337,12 @@ public class UnitTest {
 	}
 	
 	@Test
->>>>>>> origin/master
 	public void testUndoRedo1() {
->>>>>>> origin/master
+
 		//Test empty undo and redo method
 		ArrayList<Task> actual = new ArrayList<Task>();
         ArrayList<Task> expected = modifier.getContentList();
 		AddLogic.addEventDefault("test empty undo string");
-<<<<<<< HEAD
 		actual = undoRedo.getListFromUndo();
 		testEmptyUndo("test if empty undo works", expected, actual);
 		
@@ -385,7 +377,6 @@ public class UnitTest {
 	
 	private void testEmptyUndo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
 		assertEquals(description, actual, expected);
-=======
 		expected = undoRedo.getListFromUndo();
 		compareResults("test if empty undo works", expected, actual);
 	}
@@ -415,7 +406,6 @@ public class UnitTest {
 		AddLogic.addEventDefault("test undo String");
 		expected = undoRedo.getListFromRedo();
 		compareResults("test if redo works", expected, actual);
->>>>>>> origin/master
 	}
 	
 	private ArrayList<Task> getExpectedforEditTitle(ArrayList<Task> expected) {
