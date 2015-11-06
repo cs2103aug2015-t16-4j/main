@@ -81,7 +81,7 @@ public class HelpLogic {
 	 */
 	public static void displayHelp() {
 		help = getInstance();
-		UIMain.popUpHelp(commandList, inputCommand);
+		UIMain.popUpHelp(commandList, inputCommand);	
 		
 	}
 }

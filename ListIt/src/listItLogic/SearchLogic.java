@@ -10,8 +10,9 @@ public class SearchLogic {
 	private static final String SEARCH_DEFAULT = "default";
 	private static final String SEARCH_IMPT = "impt";
 	private static final String SEARCH_ALPHA = "alpha";
-	private static final String invalidImpt ="Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n"; 
+	private static final String INVALID_IMPT ="Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n"; 
 	private static final String NO_SEARCH ="No content to display"; 
+	private static final String SEARCH_IMPORTANCE_VALID="Search by importance level works"; 
 	private static ArrayList<Task> taskList = new ArrayList<Task>();
 	private static String message = "null"; 
 
@@ -25,6 +26,7 @@ public class SearchLogic {
 			taskList = modifier.searchByDate(keyword);
 			if(isTaskListEmpty(taskList)){
 				message=NO_SEARCH; 
+				LoggingLogic.logging(message);
 			}
 			modifier.setViewMode(SEARCH_DEFAULT);
 			sortAndDisplaySearchList(modifier, taskList);
@@ -37,9 +39,11 @@ public class SearchLogic {
 				taskList = modifier.searchByImportance(imptLevel);
 				modifier.setViewMode(SEARCH_IMPT);
 				sortAndDisplaySearchList(modifier, taskList);
+				message = SEARCH_IMPORTANCE_VALID; 
+				LoggingLogic.logging(message);
 			}else { 
 				FeedbackPane.displayInvalidIndexImptLevel();
-				message = invalidImpt; 
+				message = INVALID_IMPT; 
 			}
 		}else {
 			taskList = modifier.searchKeyword(keyword);

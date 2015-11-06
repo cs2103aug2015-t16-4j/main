@@ -66,6 +66,7 @@ public class AddLogic {
 		} else {
 			addDeadlineMessage = MESSAGE_ADD_VALID_DATE;
 			FeedbackPane.displayInvalidInput();
+			 LoggingLogic.logging(addDeadlineMessage);
 		}
 	}
 
@@ -168,6 +169,7 @@ public class AddLogic {
 		} else {
 			addDefaultMessage = MESSAGE_ADD_TITLE;
 			FeedbackPane.displayInvalidInput();
+			LoggingLogic.logging(addDefaultMessage);
 			return "null";
 		}
 	}
@@ -207,6 +209,8 @@ public class AddLogic {
 				} else {
 					addRankMessage = MESSAGE_INVALID_RANK;
 					FeedbackPane.displayInvalidInput();
+					LoggingLogic.logging(addRankMessage);
+
 				}
 			} catch (Exception e) {
 				addEventWithDeadline(command);
@@ -419,6 +423,8 @@ public class AddLogic {
 			} else if (repeatCycle == 0) {
 				addRecurMessage = MESSAGE_RECUR_CYCLE;
 				FeedbackPane.displayInvalidInput();
+				LoggingLogic.logging(addRecurMessage);
+
 			} else if (deadline.equals("")) {
 				addRecurMessage = MESSAGE_RECUR_START;
 				FeedbackPane.displayInvalidInput();
@@ -519,12 +525,13 @@ public class AddLogic {
 				modifier.addTask(newTask);
 			} else {
 				addBlockMessage = MESSAGE_INVALID_RANGE;
-				System.out.println(addBlockMessage);
+				LoggingLogic.logging(addBlockMessage);
 				FeedbackPane.displayInvalidInput();
 			}
 		} else {
 			addBlockMessage = MESSAGE_INVALID_INPUT;
-			System.out.println(addBlockMessage);
+			LoggingLogic.logging(addBlockMessage);
+			//System.out.println(addBlockMessage);
 			FeedbackPane.displayInvalidAdd();
 		}
 	}
