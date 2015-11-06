@@ -35,7 +35,7 @@ public class ChangeDirectoryLogic {
 			LoggingLogic.logging(message);
 		} else {
 			FeedbackPane.displayInvalidFileMove();
-			message = CHANGE_DIRECTORY_VALID; 
+			message = CHANGE_DIRECTORY_INVALID; 
 			LoggingLogic.logging(message);
 		}
 	}

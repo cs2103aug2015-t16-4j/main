@@ -29,6 +29,11 @@ public class ExecuteCommand {
 	private static final Object COMPLETE_COMMAND = "complete";
 	private static final String EXIT_COMMAND = "exit";
 	private static final String HELP_COMMAND = "help";
+	private static final String INVALID_REDO ="No action can be redo!\n";
+	private static final String INVALID_UNDO ="Undo not available\n";
+	private static final String VALID_REDO ="Redo successful!\n";
+	private static final String VALID_UNDO ="Undo avaliable\n";
+
 
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	private static FileModifier modifier = FileModifier.getInstance();
@@ -142,6 +147,7 @@ public class ExecuteCommand {
 		} else if (command.equals(UNDO_COMMAND)) {
 			if (undoRedo.isUndoEmpty()) {
 				FeedbackPane.displayInvalidUndo();
+				LoggingLogic.logging(INVALID_UNDO);
 			} else {
 				ArrayList<Task> previousTaskList = undoRedo.getListFromUndo();
 				ArrayList<Task> previousCompleteTaskList = undoRedo.getListFromUndoComplete();
@@ -150,10 +156,12 @@ public class ExecuteCommand {
 				modifier.saveFile(previousTaskList);
 				modifier.saveCompleteFile(previousCompleteTaskList);
 				modifier.display();
+				LoggingLogic.logging(VALID_UNDO);
 			}
 		} else if (command.equals(REDO_COMMAND)) { 
 			if (undoRedo.isRedoEmpty()) {
 				FeedbackPane.displayInvalidRedo();
+				LoggingLogic.logging(INVALID_REDO);
 			} else {
 				ArrayList<Task> lastTaskList = undoRedo.getListFromRedo();
 				ArrayList<Task> lastCompleteTaskList = undoRedo.getListFromRedoComplete();
@@ -162,6 +170,7 @@ public class ExecuteCommand {
 				modifier.saveFile(lastTaskList);
 				modifier.saveCompleteFile(lastCompleteTaskList);
 				modifier.display();
+				LoggingLogic.logging(VALID_REDO);
 			}
 		}else if(command.equals(EXIT_COMMAND)){
 			System.exit(0);
