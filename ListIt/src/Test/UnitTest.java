@@ -13,6 +13,7 @@ import javafx.application.Application;
 import listItLogic.AddLogic;
 import listItLogic.DeleteLogic;
 import listItLogic.EditLogic;
+import listItLogic.ExecuteCommand;
 import listItLogic.SearchLogic;
 import listItLogic.UndoAndRedoLogic;
 import listItUI.*;
@@ -327,6 +328,11 @@ public class UnitTest {
 	}
 	
 	@Test
+<<<<<<< HEAD
+<<<<<<< HEAD
+	public void testUndoRedo() {
+=======
+=======
 	//edit title with wrong input 
 	public void testEdit6(){
 		expected = clearExpectedList(expected);
@@ -337,10 +343,49 @@ public class UnitTest {
 	}
 	
 	@Test
+>>>>>>> origin/master
 	public void testUndoRedo1() {
+>>>>>>> origin/master
 		//Test empty undo and redo method
-        ArrayList<Task> actual = modifier.getContentList();
+		ArrayList<Task> actual = new ArrayList<Task>();
+        ArrayList<Task> expected = modifier.getContentList();
 		AddLogic.addEventDefault("test empty undo string");
+<<<<<<< HEAD
+		actual = undoRedo.getListFromUndo();
+		testEmptyUndo("test if empty undo works", expected, actual);
+		
+		expected = modifier.getContentList();
+		AddLogic.addEventDefault("test empty redo string");
+		actual = undoRedo.getListFromRedo();
+		testEmptyRedo("test if empty redo works", expected, actual);
+		
+		//Test undo and redo method with strings
+		expected = modifier.getContentList();
+		ExecuteCommand.processCommandWithSpace("add test undo String");
+		actual = undoRedo.getListFromUndo();
+		testUndo("test if undo works", expected, actual);
+		
+		expected = modifier.getContentList();
+		ExecuteCommand.processCommandWithSpace("add test undo String");
+		actual = undoRedo.getListFromRedo();
+		testRedo("test if redo works", expected, actual);
+	}
+	
+	private void testRedo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
+		assertThat(description, actual, not(expected));
+	}
+
+	private void testUndo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
+		assertThat(description, actual, not(expected));
+	}
+
+	private void testEmptyRedo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
+		assertEquals(description, actual, expected);
+	}
+	
+	private void testEmptyUndo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
+		assertEquals(description, actual, expected);
+=======
 		expected = undoRedo.getListFromUndo();
 		compareResults("test if empty undo works", expected, actual);
 	}
@@ -370,6 +415,7 @@ public class UnitTest {
 		AddLogic.addEventDefault("test undo String");
 		expected = undoRedo.getListFromRedo();
 		compareResults("test if redo works", expected, actual);
+>>>>>>> origin/master
 	}
 	
 	private ArrayList<Task> getExpectedforEditTitle(ArrayList<Task> expected) {

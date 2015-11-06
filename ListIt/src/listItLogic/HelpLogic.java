@@ -63,7 +63,7 @@ public class HelpLogic {
 		inputCommand.add("edit <task index> by date <new date>");
 		inputCommand.add("edit <task index> by title <updated title>");
 		inputCommand.add("edit <task index> by time from <new start date> to <new end date>");
-		inputCommand.add("edit <task index> <new rank>");
+		inputCommand.add("edit <task index> by impt <new rank>");
 		inputCommand.add("delete <task index>");
 		inputCommand.add("undo");
 		inputCommand.add("redo");
