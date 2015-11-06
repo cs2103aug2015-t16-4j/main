@@ -305,8 +305,10 @@ public class FileModifier {
 
 		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);
-			if (task.getDateInputForm().contains(date)) {
-				searchList.add(task);
+			if(task.getEndDate() != null) {
+				if (task.getDateInputForm().contains(date)) {
+					searchList.add(task);
+				}
 			}
 		}
 		return searchList;
