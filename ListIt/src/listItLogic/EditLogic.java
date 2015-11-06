@@ -17,14 +17,16 @@ public class EditLogic {
 	private static final String COMMAND_FROM = "from";
 	private static final String COMMAND_REPEAT = "by repeat";
 	private static final String COMMAND_BLOCK = "cancel block";
+	private static final int IMPORTANCE_LEVEL_1 = 1; 
+	private static final int IMPORTANCE_LEVEL_2 = 2; 
+	private static final int IMPORTANCE_LEVEL_3 = 3; 
+	private static final String  EDIT_IMPORTANCE_INVALID = "Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n"; 
+    private static final String  EDIT_DATE_INVALID= "Invalid date is inputed\n"; 
+    private static final String  EDIT_INPUT = "Invalid input!\n"; 
+    private static final String  EDIT_IMPORTANCE_VALID = "Correct type of importance level,sucessfully editted!"; 
+   	
 	private static String  message =null; 
-	private static final String  editImptanceInvalid = "Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n"; 
-    private static final String  editDateInvalid = "Invalid date is inputed\n"; 
-    private static final int importanceLevel1 = 1; 
-    private static final int importanceLevel2 = 2; 
-    private static final int importanceLevel3 = 3; 
-    private static String messsage = "null"; 
-	
+
     public static void editEvent(String command) {
 		int indexToBeEdit = convertStringIndexToInt(command)-1;
 		
@@ -32,7 +34,8 @@ public class EditLogic {
 
 		if (indexToBeEdit >= taskList.size()) {
 			FeedbackPane.displayInvalidInput();
-			message = "Invalid input!\n"; 
+			message = EDIT_INPUT; 
+			LoggingLogic.logging(message);
 		} else {
 			if (isEditByDate(command)) {
 				String newDate = getNewDate(command);
@@ -40,24 +43,24 @@ public class EditLogic {
 					modifier.editEndDate(indexToBeEdit, newDate);
 				} else {
 					FeedbackPane.displayInvalidDate();
-					message = editDateInvalid;
+					message = EDIT_DATE_INVALID;
+					LoggingLogic.logging(message);
 				}
 			} else if (isEditByTitle(command)) {
 				String newTitle = getNewTitle(command);
 				modifier.editTitle(indexToBeEdit, newTitle);
 			} else if (isEditByImportance(command)) {
 				int newImportance = getNewImportanceLevel(command);
-
-				if (newImportance == importanceLevel1 || newImportance == importanceLevel2 || newImportance == importanceLevel3) {
-					modifier.editImportance(indexToBeEdit, newImportance);
-
-					if (newImportance == importanceLevel1 || newImportance == importanceLevel2
-							|| newImportance == importanceLevel3) {
+				
+				if (newImportance == IMPORTANCE_LEVEL_1 || newImportance == IMPORTANCE_LEVEL_2 || 
+						newImportance == IMPORTANCE_LEVEL_3){
 						modifier.editImportance(indexToBeEdit, newImportance);
-
+						message = EDIT_IMPORTANCE_VALID; 
+						LoggingLogic.logging(message);
 					} else {
 						FeedbackPane.displayInvalidIndexImptLevel();
-						message = editImptanceInvalid;
+						message = EDIT_IMPORTANCE_INVALID;
+						LoggingLogic.logging(message);
 					}
 				} else if (isEditByTimeline(command)) {
 					String newStartDate = getNewStartDate(command);
@@ -80,7 +83,6 @@ public class EditLogic {
 				}
 			}
 		}
-	}
 
 	private static String getNewEndDate(String command) {
 		return command.substring(command.indexOf(COMMAND_TO) + 3);

@@ -9,6 +9,8 @@ public class HelpLogic {
 	private static ArrayList<String> commandList = new ArrayList<String>();
 	private static ArrayList<String> inputCommand = new ArrayList<String>();
 	private static HelpLogic help;
+	private static final String HELP_MESSAGE = "The help sheet is shown on the screen.\n"; 
+
 	
 	public HelpLogic () {
 		createHelpList();
@@ -81,7 +83,7 @@ public class HelpLogic {
 	 */
 	public static void displayHelp() {
 		help = getInstance();
-		UIMain.popUpHelp(commandList, inputCommand);
-		
+		UIMain.popUpHelp(commandList, inputCommand);	
+		LoggingLogic.logging(HELP_MESSAGE);
 	}
 }

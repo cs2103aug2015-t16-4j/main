@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
+import listItLogic.LoggingLogic;
 import listItLogic.TaskCheckLogic;
 import listItUI.FeedbackPane;
 import listItUI.OutputScreenPane;
@@ -34,6 +35,8 @@ public class FileModifier {
 	private static final String MODE_IMPT = "impt";
 	private static final String MODE_ALPHA = "alpha";
 	private static final String MODE_COMPLETE = "complete";
+	private static final String ADDING_SUCCESSFUL = "Adding of the task was successful.\n"; 
+	private static final String ADDING_UNSUCCESSFUL = "The task was not added could be because this task has been blocked for another event.\n"; 
 
 	private FileModifier() {
 		pathStorage = new File(pathStorageFileName);
@@ -186,8 +189,10 @@ public class FileModifier {
 			ArrayList<Task> newList = modifier.getContentList();
 			newList.add(newtask);
 			updateFile(newList);
+			LoggingLogic.logging(ADDING_SUCCESSFUL); 
 		} else {
 			FeedbackPane.displayInvalidAddBlocked();
+			LoggingLogic.logging(ADDING_UNSUCCESSFUL); 
 		}
 	}
 
@@ -305,8 +310,10 @@ public class FileModifier {
 
 		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);
-			if (task.getDateInputForm().contains(date)) {
-				searchList.add(task);
+			if(task.getEndDate() != null) {
+				if (task.getDateInputForm().contains(date)) {
+					searchList.add(task);
+				}
 			}
 		}
 		return searchList;
