@@ -22,6 +22,13 @@ import taskGenerator.TaskComparatorAlpha;
 import taskGenerator.TaskComparatorDefault;
 import taskGenerator.TaskComparatorImpt;
 
+/**
+ *This class runs the command given by the user,
+ *stores the created task objects, and writes the data into 
+ *the data file.
+ * @author Urvashi
+ * @version 0.5
+ */
 public class FileModifier {
 	private static FileModifier modifier;
 	private static String viewMode = "default";
@@ -77,6 +84,10 @@ public class FileModifier {
 		return modifier;
 	}
 
+	/**
+	 * This method saves the current task into the data file
+	 * @param dataStorage data file that stores all tasks
+	 */
 	public void saveFile(ArrayList<Task> dataStorage) {
 		try {
 			FileOutputStream fos = new FileOutputStream(dataFile, false);
@@ -88,6 +99,10 @@ public class FileModifier {
 		}
 	}
 
+	/**
+	 * This method 
+	 * @param completeTaskStorage
+	 */
 	public void saveCompleteFile(ArrayList<Task> completeTaskStorage) {
 		try {
 			FileOutputStream fos = new FileOutputStream(completeDataFile, false);
@@ -99,6 +114,11 @@ public class FileModifier {
 		}
 	}
 
+	/**
+	 * This method gets the current contents available in the file at 
+	 * that current instance
+	 * @return the list of task objects 
+	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<Task> getContentList() {
 		ArrayList<Task> list = new ArrayList<Task>();
@@ -128,12 +148,16 @@ public class FileModifier {
 		return list;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public ArrayList<Task> getCompleteContentList() {
 		ArrayList<Task> list = new ArrayList<Task>();
 
-		// Retrieve the list if the list exist, if not, create a empty list then
-		// retrieve
+		// Retrieve the list if the list exists, if not, creates an empty list 
+		// then retrieves the empty list
 		if (!isListEmpty()) {
 			try {
 				FileInputStream fis = new FileInputStream(completeDataFile);
@@ -157,6 +181,10 @@ public class FileModifier {
 		return list;
 	}
 
+	/**
+	 * Checks if the list is empty or not
+	 * @return a boolean value of 1 if list is empty and 0 if not empty
+	 */
 	private boolean isListEmpty() {
 		boolean isEmpty = true;
 
@@ -172,18 +200,34 @@ public class FileModifier {
 		return isEmpty;
 	}
 	
+	/**
+	 * This returns the current data file
+	 * @return dataFile data file that stores all tasks
+	 */
 	public File getDataFile() {
 		return this.dataFile;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public File getCompleteDataFile() {
 		return this.completeDataFile;
 	}
 	
+	/**
+	 * This returns the 
+	 * @return
+	 */
 	public File getPathFile() {
 		return this.pathStorage;
 	}
 
+	/**
+	 * This method adds the task to the current list of tasks
+	 * @param newtask the task to be added into the list
+	 */
 	public void addTask(Task newtask) {
 		if(TaskCheckLogic.blockedDateCheck(newtask)) {
 			ArrayList<Task> newList = modifier.getContentList();
@@ -196,6 +240,12 @@ public class FileModifier {
 		}
 	}
 
+	/**
+	 * This method updates the list after a change is done to the task
+	 * by sorting the list 
+	 * and then updating the line index after that
+	 * @param newList the task to be added into the list
+	 */
 	private void updateFile(ArrayList<Task> newList) {
 		modifier.sort(newList);
 		modifier.updateIndex(newList);
@@ -204,6 +254,10 @@ public class FileModifier {
 		modifier.display(newList);
 	}
 
+	/**
+	 * 
+	 * @param newList
+	 */
 	private void updateCompleteListFile(ArrayList<Task> newList) {
 		modifier.updateIndex(newList);
 		modifier.saveCompleteFile(newList);
@@ -212,6 +266,10 @@ public class FileModifier {
 		}
 	}
 
+	/**
+	 * This method removes a task from the current list
+	 * @param index the line number of the task to be removed
+	 */
 	public void removeTask(int index) {
 		ArrayList<Task> taskList;
 		if (isViewModeComplete()) {
@@ -226,6 +284,10 @@ public class FileModifier {
 
 	}
 	
+	/**
+	 * This method will check whether the list is complete or not
+	 * then display the appropriate UI by calling the appropriate methods
+	 */
 	public void display() {
 		if(isViewModeComplete()) {
 			display(getCompleteContentList());
@@ -235,6 +297,11 @@ public class FileModifier {
 		}
 	}
 
+	/**
+	 * This method will display the UI after all the tasks 
+	 * are updated
+	 * @param taskList the entire list of tasks to be displayed
+	 */
 	public void display(ArrayList<Task> taskList) {
 		if (taskList.isEmpty()) {
 			OutputScreenPane.displayEmpty();
@@ -249,22 +316,41 @@ public class FileModifier {
 		}
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public boolean isViewModeComplete() {
 		return viewMode.equals(MODE_COMPLETE);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private boolean isViewModeAlpha() {
 		return viewMode.equals(MODE_ALPHA);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private boolean isViewModeImpt() {
 		return viewMode.equals(MODE_IMPT);
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	private boolean isViewModeDefault() {
 		return viewMode.equals(MODE_DEFAULT);
 	}
 
+	/**
+	 * This method clears the entire list of tasks
+	 */
 	public void clearAll() {
 		ArrayList<Task> taskList;
 		if (isViewModeComplete()) {
@@ -278,6 +364,12 @@ public class FileModifier {
 		}
 	}
 
+	/**
+	 * This method searches the current list by title/keyword,
+	 * not caring about case sensitivity
+	 * @param keyword the keyword to be searched for
+	 * @return the list of tasks which contains the keyword
+	 */
 	public ArrayList<Task> searchKeyword(String keyword) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
@@ -291,6 +383,11 @@ public class FileModifier {
 		return searchList;
 	}
 
+	/**
+	 * This method searches the current list by the importance variable
+	 * @param searchKey The level of importance, 1, 2 or 3
+	 * @return the list of tasks which has that importance level
+	 */
 	public ArrayList<Task> searchByImportance(int searchKey) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
@@ -304,6 +401,11 @@ public class FileModifier {
 		return searchList;
 	}
 
+	/**
+	 * This method searches the current list by the date input
+	 * @param date the date variable 
+	 * @return list of tasks which is on the date searched
+	 */
 	public ArrayList<Task> searchByDate(String date) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
@@ -319,6 +421,13 @@ public class FileModifier {
 		return searchList;
 	}
 
+	/**
+	 * This method edits the end date variable, by checking
+	 * whether it is a date object with time or date without time
+	 * then changes the date appropriately
+	 * @param lineToBeEdit the line index of the task to be edited
+	 * @param endDate the date object, with or without time
+	 */
 	public void editEndDate(int lineToBeEdit, String endDate) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task task = taskList.get(lineToBeEdit);
@@ -333,6 +442,13 @@ public class FileModifier {
 		updateFile(taskList);
 	}
 
+	/**
+	 * This method edits the entire timeline of the task, which must include
+	 * both the start date as well as the end date
+	 * @param lineToBeEdit the line index of the task to be edited
+	 * @param startDate the start date object with or without time
+	 * @param endDate the end date object with or without time
+	 */
 	public void editTimeline(int lineToBeEdit, String startDate, String endDate) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task task = taskList.get(lineToBeEdit);
@@ -349,6 +465,11 @@ public class FileModifier {
 		updateFile(taskList);
 	}
 
+	/**
+	 * This method edits the title of the task
+	 * @param lineToBeEdit the line index of the task to be edited
+	 * @param newTitle the edited version of the title
+	 */
 	public void editTitle(int lineToBeEdit, String newTitle) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task task = taskList.get(lineToBeEdit);
@@ -357,6 +478,11 @@ public class FileModifier {
 		updateFile(taskList);
 	}
 
+	/**
+	 * This method edits the importance variable of the task
+	 * @param IndexToBeEdit the line index of the task to be edited
+	 * @param newImportance the edited version of the importance variable
+	 */
 	public void editImportance(int IndexToBeEdit, int newImportance) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task task = taskList.get(IndexToBeEdit);
@@ -365,6 +491,11 @@ public class FileModifier {
 		updateFile(taskList);
 	}
 
+	/**
+	 * This method sorts the list of tasks according to our own sorting
+	 * algorithm in the task class
+	 * @param taskList the entire list to be sorted
+	 */
 	public void sort(ArrayList<Task> taskList) {
 		if (isViewModeDefault()) {
 			Collections.sort((taskList), new TaskComparatorDefault());
@@ -375,10 +506,18 @@ public class FileModifier {
 		}
 	}
 
+	/**
+	 * This method sets the view mode
+	 * @param newMode
+	 */
 	public void setViewMode(String newMode) {
 		viewMode = newMode;
 	}
 
+	/**
+	 * This method updates the line index of the entire task list
+	 * @param taskList the entire arraylist of tasks
+	 */
 	public void updateIndex(ArrayList<Task> taskList) {
 		if (taskList.isEmpty()) {
 			return;
@@ -389,6 +528,11 @@ public class FileModifier {
 		}
 	}
 
+	/**
+	 * This method sends the task selected into the completed task list
+	 * and removes it from the current task list
+	 * @param index the line index of the task to be moved 
+	 */
 	public void completeTask(int index) {
 		ArrayList<Task> completedList = modifier.getCompleteContentList();
 		ArrayList<Task> taskList = modifier.getContentList();
@@ -428,6 +572,13 @@ public class FileModifier {
 		}
 	}
 	
+	/**
+	 * This method edits the recursive tasks, by changing these variables;
+	 * the period of repetition and the type of repetition.
+	 * @param index
+	 * @param newPeriod The time frame of the recursive task
+	 * @param repeatType the type of recursive task
+	 */
 	public void editRepeat(int index, int newPeriod, String repeatType) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task tempTask = taskList.get(index);
@@ -437,6 +588,15 @@ public class FileModifier {
 		updateFile(taskList);
 	}
 
+	/**
+	 * This method gets the next date for the recursive function
+	 * by calling the calendar and calculating the date according to the
+	 * type of recursive function the user input
+	 * @param calendar the calendar
+	 * @param repeatCycle the length of time needed to repeat
+	 * @param repeatType the type of recursive task
+	 * @return the deadline object with a startdate and enddate
+	 */
 	private Date getNextDeadline(Calendar calendar, int repeatCycle, String repeatType) {
 		if (repeatType.equals("daily")) {
 			calendar.add(Calendar.DATE, repeatCycle);
@@ -452,6 +612,10 @@ public class FileModifier {
 		return nextDeadline;
 	}
 
+	/**
+	 * Edits the block timeline, which has a start and end time
+	 * @param index the line index of the task to be edited
+	 */
 	public void editBlock(int index) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task tempTask = taskList.get(index);
