@@ -21,9 +21,12 @@ public class DeleteLogic {
 		}
 		if((taskIndexToBeDelete-1) < sizeOfFile && taskIndexToBeDelete-1 >= 0) {
 			modifier.removeTask(taskIndexToBeDelete - 1);  
+			message =DELETE_VALID; 
+			LoggingLogic.logging(message);
 		} else {
 			FeedbackPane.displayInvalidIndexToDelete();
 			message = MESSAGE_OUT_OF_BOUNDS;
+			LoggingLogic.logging(message); 
 		}
 	}
 
