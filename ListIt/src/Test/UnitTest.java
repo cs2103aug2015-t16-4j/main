@@ -199,11 +199,27 @@ public class UnitTest {
 		actual = modifier.getContentList();
 		compareResults("test blocking with wrong date format", expected, actual);
 	}
-		/*AddLogic.addEventWithTimeline("add attend project meeting on 05112015 from 1400 to 1200 rank 1");
-		addTimelineMessage = AddLogic.getTimelineMessage();
-		testAddLogic("testing adding with wrong timeline input", expected, addTimelineMessage, 
-				     "invalid timeline range");*/
-
+	
+	@Test 
+	// this tests invalid date input 
+	public void testAdd12(){
+		DeleteLogic.clearFile();
+		expected.clear();
+		AddLogic.addEventWithTimeline("add attend JP Morgon conference from 15112015 to 12112015");
+		actual = modifier.getContentList();
+		compareResults("testing adding invalid date for timeline task", expected, actual);
+	}
+	
+	@Test
+	public void testAdd13(){
+		Task task3 = new Task("attend JP Morgon conference ","12122015","15122015",1);
+		expected.add(task3);
+		AddLogic.addEventWithTimeline("add attend JP Morgon conference from 1212015 to 15122015 rank 1");
+		actual  = modifier.getContentList();
+		compareResults("testing adding valid date for timeline task", expected, 
+				      actual);
+	}
+	
 	@Test
 	public void testSearch1() {
 		Task task2 = new Task("OP2 presentation", "06112015");
