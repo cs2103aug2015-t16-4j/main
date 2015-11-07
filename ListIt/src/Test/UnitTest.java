@@ -61,7 +61,7 @@ public class UnitTest {
 		Task task1 = new Task("EE2020 Oscilloscope project", "03112015");
 		addEvent(task1, "add EE2020 Oscilloscope project by 03112015"); 
 		Task task2 = new Task("OP2 presentation", "06112015");
-		addEvent(task2, "add 0P2 presentation by 06112015"); 
+		addEvent(task2, "add 0P2 presentation by 06112015");
 
 		DeleteLogic.deleteEvent("delete 3");
 		actual = modifier.getContentList();
@@ -187,7 +187,7 @@ public class UnitTest {
 	public void testAdd10() {
 		DeleteLogic.clearFile();
 		expected.clear();
-		AddLogic.addBlockEvent("add attend Navratri festival block from 19112015 to 10112015");
+		AddLogic.addBlockEvent("add attend Navratri festival block 19112015 to 10112015");
 		actual = modifier.getContentList();
 		compareResults("test blocking with reversed dates", expected, actual);
 	}
@@ -196,7 +196,7 @@ public class UnitTest {
 	public void testAdd11() {
 		DeleteLogic.clearFile();
 		expected.clear();
-		AddLogic.addBlockEvent("add attend sports event block from 112015 to 122015");
+		AddLogic.addBlockEvent("add attend sports event block 112015 to 122015");
 		actual = modifier.getContentList();
 		compareResults("test blocking with wrong date format", expected, actual);
 	}

@@ -42,6 +42,7 @@ public class ExecuteCommand {
 		String commandType = command.substring(0, command.indexOf(" "));
 
 		if (commandType.equals(ADD_COMMAND)) {
+			
 			if(modifier.isViewModeComplete()) {
 				FeedbackPane.displayInvalidAdd();
 				return;
@@ -53,6 +54,8 @@ public class ExecuteCommand {
 			}
 			ArrayList<Task> taskList = modifier.getContentList();
 			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
+			assert taskList != null;
+			assert taskCompleteList != null;
 			undoRedo.storeListToUndo(taskList);
 			undoRedo.storeListToUndoComplete(taskCompleteList);
 			
@@ -79,6 +82,8 @@ public class ExecuteCommand {
 			}
 			ArrayList<Task> taskList = modifier.getContentList();
 			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
+			assert taskList != null;
+			assert taskCompleteList != null;
 			undoRedo.storeListToUndo(taskList);
 			undoRedo.storeListToUndoComplete(taskCompleteList);
 			DeleteLogic.deleteEvent(command);
@@ -94,6 +99,8 @@ public class ExecuteCommand {
 			}
 			ArrayList<Task> taskList = modifier.getContentList();
 			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
+			assert taskList != null;
+			assert taskCompleteList != null;
 			undoRedo.storeListToUndo(taskList);
 			undoRedo.storeListToUndoComplete(taskCompleteList);
 
@@ -116,6 +123,8 @@ public class ExecuteCommand {
 			}
 			ArrayList<Task> taskList = modifier.getContentList();
 			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
+			assert taskList != null;
+			assert taskCompleteList != null;
 			undoRedo.storeListToUndo(taskList);
 			undoRedo.storeListToUndoComplete(taskCompleteList);
 			
@@ -140,6 +149,8 @@ public class ExecuteCommand {
 			}
 			ArrayList<Task> taskList = modifier.getContentList();
 			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
+			assert taskList != null;
+			assert taskCompleteList != null;
 			undoRedo.storeListToUndo(taskList);
 			undoRedo.storeListToUndoComplete(taskCompleteList);
 
