@@ -16,16 +16,21 @@ import listItUI.FeedbackPane;
 public class ChangeDirectoryLogic {
 	static FileModifier modifier = FileModifier.getInstance();
 	private static String message = "null";
-	private static final String CHANGE_DIRECTORY_VALID = "Changing the directory of the file is successful.";
-	private static final String CHANGE_DIRECTORY_INVALID = "Changing the directory of the file was not sucessful please try again.";
+	private static final String CHANGE_DIRECTORY_VALID = "Changing the directory of"
+			                                              + " the file is successful.";
+	private static final String CHANGE_DIRECTORY_INVALID = "Changing the directory"
+			                                                + " of the file was not"
+			                                                + " sucessful please try"
+			                                                + " again.";
 
 	public static void changeDirectory(String command) {
-		String newPath = command.substring(command.indexOf("cd") + 3);
+		String newPath = getNewPath(command);
 		BufferedWriter textFileWriter;
 		boolean isSucessful = true;
 
 		try {
-			textFileWriter = new BufferedWriter(new FileWriter(modifier.getPathFile(), false));
+			textFileWriter = new BufferedWriter(new FileWriter(modifier.getPathFile(),
+					                                           false));
 			textFileWriter.write(newPath);
 			textFileWriter.close();
 		} catch (IOException e) {
@@ -35,10 +40,13 @@ public class ChangeDirectoryLogic {
 		assert modifier.getDataFile() != null;
 		assert modifier.getCompleteDataFile() != null;
 		
-		Path destinationOfDataFile = Paths.get(newPath + "\\" + modifier.getDataFile().getName());
-		Path destinationOfCompleteFile = Paths.get(newPath + "\\" + modifier.getCompleteDataFile().getName());
+		Path destinationOfDataFile = Paths.get(newPath + "\\" 
+		                                       + modifier.getDataFile().getName());
+		Path destinationOfCompleteFile = Paths.get(newPath + "\\"
+		                                           + modifier.getCompleteDataFile().getName());
 		
-		isSucessful = modifier.moveFiles(destinationOfDataFile, destinationOfCompleteFile);
+		isSucessful = modifier.moveFiles(destinationOfDataFile,
+				                         destinationOfCompleteFile);
 
 		if (isSucessful) {
 			FeedbackPane.displayValidFileMove();
@@ -49,5 +57,9 @@ public class ChangeDirectoryLogic {
 			message = CHANGE_DIRECTORY_INVALID;
 			LoggingLogic.logging(message);
 		}
+	}
+
+	private static String getNewPath(String command) {
+		return command.substring(command.indexOf("cd") + 3);
 	}
 }

@@ -42,12 +42,20 @@ public class FileModifier {
 	private String taskFileName = "Task.ser";
 	private String completeTaskFileName = "CompleteTask.ser";
 	private String pathStorageFileName = "path.txt";
+	private static final String TYPE_DAILY = "daily";
+	private static final String TYPE_WEEKLY = "weekly";
+	private static final String TYPE_MONTHLY = "monthly";
+	private static final String TYPE_YEARLY = "yearly";
 	private static final String MODE_DEFAULT = "default";
 	private static final String MODE_IMPT = "impt";
 	private static final String MODE_ALPHA = "alpha";
 	private static final String MODE_COMPLETE = "complete";
-	private static final String ADDING_SUCCESSFUL = "Adding of the task was successful.\n";
-	private static final String ADDING_UNSUCCESSFUL = "The task was not added could be because this task has been blocked for another event.\n";
+	private static final String ADDING_SUCCESSFUL = "Adding of the task was "
+			                                         + "successful.\n";
+	private static final String ADDING_UNSUCCESSFUL = "The task was not added"
+			                                          + " could be because this"
+			                                          + " task has been blocked for"
+			                                          + " another event.\n";
 
 	private FileModifier() {
 		pathStorage = new File(pathStorageFileName);
@@ -183,7 +191,8 @@ public class FileModifier {
 			}
 		} else {
 			try {
-				FileOutputStream fos = new FileOutputStream(completeDataFile, false);
+				FileOutputStream fos = new FileOutputStream(completeDataFile, 
+						                                    false);
 				ObjectOutputStream oos = new ObjectOutputStream(fos);
 				oos.writeObject(new ArrayList<Task>());
 				oos.close();
@@ -598,7 +607,8 @@ public class FileModifier {
 				int repeatCycle = completedTask.getRepeatCycle();
 				String repeatType = completedTask.getRepeatType();
 				calendar.setTime(currentDeadline);
-				Date nextDeadline = getNextDeadline(calendar, repeatCycle, repeatType);
+				Date nextDeadline = getNextDeadline(calendar, repeatCycle, 
+						                            repeatType);
 				completedTask.setEndDateInDate(nextDeadline);
 				taskList.set(index, completedTask);
 				updateFile(taskList);
@@ -608,9 +618,11 @@ public class FileModifier {
 				int repeatCycle = completedTask.getRepeatCycle();
 				String repeatType = completedTask.getRepeatType();
 				calendar.setTime(currentStartDate);
-				Date nextStartDate = getNextDeadline(calendar, repeatCycle, repeatType);
+				Date nextStartDate = getNextDeadline(calendar, repeatCycle,
+						                             repeatType);
 				calendar.setTime(currentEndDate);
-				Date nextEndDate = getNextDeadline(calendar, repeatCycle, repeatType);
+				Date nextEndDate = getNextDeadline(calendar, repeatCycle,
+						                           repeatType);
 				completedTask.setStartDateInDate(nextStartDate);
 				completedTask.setEndDateInDate(nextEndDate);
 				taskList.set(index, completedTask);
@@ -651,14 +663,15 @@ public class FileModifier {
 	 *            the type of recursive task
 	 * @return the deadline object with a startdate and enddate
 	 */
-	private Date getNextDeadline(Calendar calendar, int repeatCycle, String repeatType) {
-		if (repeatType.equals("daily")) {
+	private Date getNextDeadline(Calendar calendar, int repeatCycle,
+			                     String repeatType) {
+		if (repeatType.equals(TYPE_DAILY)) {
 			calendar.add(Calendar.DATE, repeatCycle);
-		} else if (repeatType.equals("weekly")) {
+		} else if (repeatType.equals(TYPE_WEEKLY)) {
 			calendar.add(Calendar.WEEK_OF_YEAR, repeatCycle);
-		} else if (repeatType.equals("monthly")) {
+		} else if (repeatType.equals(TYPE_MONTHLY)) {
 			calendar.add(Calendar.MONTH, repeatCycle);
-		} else if (repeatType.equals("yearly")) {
+		} else if (repeatType.equals(TYPE_YEARLY)) {
 			calendar.add(Calendar.YEAR, repeatCycle);
 		}
 
@@ -683,8 +696,10 @@ public class FileModifier {
 	public boolean moveFiles(Path destination1, Path destination2) {
 
 		try {
-			dataFile = new File(Files.move(dataFile.toPath(), destination1, REPLACE_EXISTING).toString());
-			completeDataFile = new File(Files.move(completeDataFile.toPath(), destination2, REPLACE_EXISTING).toString());
+			dataFile = new File(Files.move(dataFile.toPath(), destination1,
+					            REPLACE_EXISTING).toString());
+			completeDataFile = new File(Files.move(completeDataFile.toPath(),
+					                    destination2, REPLACE_EXISTING).toString());
 			return true;
 		} catch (IOException e) {
 			e.printStackTrace();

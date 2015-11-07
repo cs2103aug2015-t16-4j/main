@@ -11,11 +11,11 @@ public class CompleteLogic {
 	private static final String COMPLETE_SUCCESSFUL = "Task is completed";
 
 	public static void completeEvent(String command) {
-		int taskIndexComplete = convertStringIndexToInt(command);
-		int sizeOfFile = modifier.getContentList().size();
-		if((taskIndexComplete-1) < sizeOfFile && taskIndexComplete-1 >= 0) {
+		int taskIndexComplete = getCompleteIndex(command);
+		int sizeOfFile = getSizeOfFile();
+		if(isValidIndex(taskIndexComplete, sizeOfFile)) {
 			modifier.completeTask(taskIndexComplete - 1);
-			message=COMPLETE_SUCCESSFUL;
+			message = COMPLETE_SUCCESSFUL;
 			LoggingLogic.logging(message); 
 			
 		} else {
@@ -25,12 +25,19 @@ public class CompleteLogic {
 		}
 	}
 
-	private static int convertStringIndexToInt(String command) {
+	private static boolean isValidIndex(int taskIndexComplete, int sizeOfFile) {
+		return (taskIndexComplete-1) < sizeOfFile && taskIndexComplete-1 >= 0;
+	}
+
+	private static int getSizeOfFile() {
+		return modifier.getContentList().size();
+	}
+
+	private static int getCompleteIndex(String command) {
 		return Integer.parseInt(command.substring(9));
 	}
 	
 	public static String getMessage() {
 		return message;
 	}
-
 }

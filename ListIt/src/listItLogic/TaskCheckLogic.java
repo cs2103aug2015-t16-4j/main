@@ -16,10 +16,10 @@ public class TaskCheckLogic {
 	public static void overDateCheck(ArrayList<Task> taskList) {
 		Task tempTask = new Task();
 		Date systemTime = new Date();
-		for(int i = 0; i < taskList.size(); i++) {
+		for (int i = 0; i < taskList.size(); i++) {
 			tempTask = taskList.get(i);
-			if(tempTask.getEndDate() != null) {
-				if(systemTime.compareTo(tempTask.getEndDateInDateType()) > 0) {
+			if (!isEndDateNull(tempTask)) {
+				if (isOverDate(tempTask, systemTime)) {
 					tempTask.setOverDate();
 					taskList.set(i, tempTask);
 				} else {
@@ -33,17 +33,25 @@ public class TaskCheckLogic {
 		
 		modifier.saveFile(taskList);
 	}
+
+	private static boolean isOverDate(Task tempTask, 
+			                                           Date systemTime) {
+		return systemTime.compareTo(tempTask.getEndDateInDateType()) > 0;
+	}
+
+	private static boolean isEndDateNull(Task tempTask) {
+		return tempTask.getEndDate() == null;
+	}
 	
 	public static boolean blockedDateCheck(Task taskForCheck) {
 		boolean result = true;
-		if(taskForCheck.getEndDate() != null && taskForCheck.getStartDate() != null) {
+		if (isEndDateNull(taskForCheck) && !isStartDateNull(taskForCheck)) {
 			ArrayList<Task> taskList = modifier.getContentList();
 			Task tempTask = new Task();
-			for(int i = 0; i < taskList.size(); i++) {
+			for (int i = 0; i < taskList.size(); i++) {
 				tempTask = taskList.get(i);
-				if(tempTask.isBlocking()) {
-					if(taskForCheck.getEndDateInDateType().compareTo(tempTask.getEndDateInDateType()) <= 0 &&
-							taskForCheck.getEndDateInDateType().compareTo(tempTask.getStartDateInDateType()) >= 0) {
+				if (tempTask.isBlocking()) {
+					if (isBlockDatesValid(taskForCheck, tempTask)) {
 						result = false;
 						break;
 					}
@@ -51,5 +59,14 @@ public class TaskCheckLogic {
 			}
 		}
 		return result;
+	}
+
+	private static boolean isBlockDatesValid(Task taskForCheck, Task tempTask) {
+		return taskForCheck.getEndDateInDateType().compareTo(tempTask.getEndDateInDateType()) <= 0 
+			   && taskForCheck.getEndDateInDateType().compareTo(tempTask.getStartDateInDateType()) >= 0;
+	}
+
+	private static boolean isStartDateNull(Task taskForCheck) {
+		return taskForCheck.getStartDate() == null;
 	}
 }

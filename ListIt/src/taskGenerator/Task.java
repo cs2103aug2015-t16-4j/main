@@ -77,7 +77,8 @@ public class Task implements Serializable {
 		this.importance = importance;
 	}
 
-	public Task(String eventTitle, String start, String end, int importance, boolean hasTime) {
+	public Task(String eventTitle, String start, String end, int importance,
+			    boolean hasTime) {
 		this.eventTitle = eventTitle;
 		try {
 			this.startDate = dateTimeInputFormatter.parse(start);
@@ -138,7 +139,8 @@ public class Task implements Serializable {
 		this.importance = 3;
 	}
 
-	public Task(String eventTitle, String repeatType, int repeatCycle, String deadline, boolean isRepeat) {
+	public Task(String eventTitle, String repeatType, int repeatCycle, 
+			    String deadline, boolean isRepeat) {
 		this.eventTitle = eventTitle;
 		try {
 			this.endDate = dateInputFormatter.parse(deadline);
@@ -151,8 +153,8 @@ public class Task implements Serializable {
 		this.importance = 3;
 	}
 
-	public Task(String eventTitle, String repeatType, int repeatCycle, String deadline, boolean isRepeat,
-			boolean hasTime) {
+	public Task(String eventTitle, String repeatType, int repeatCycle,
+			    String deadline, boolean isRepeat, boolean hasTime) {
 		this.eventTitle = eventTitle;
 		try {
 			this.endDate = dateTimeInputFormatter.parse(deadline);
@@ -166,8 +168,9 @@ public class Task implements Serializable {
 		this.importance = 3;
 	}
 
-	public Task(String eventTitle, String repeatType, int repeatCycle, String startDate, String endDate,
-			boolean isRepeat, boolean hasTime) {
+	public Task(String eventTitle, String repeatType, int repeatCycle, 
+			    String startDate, String endDate, boolean isRepeat, 
+			    boolean hasTime) {
 		this.eventTitle = eventTitle;
 		try {
 			this.startDate = dateTimeInputFormatter.parse(startDate);
@@ -184,8 +187,8 @@ public class Task implements Serializable {
 	
 	
 
-	public Task(String eventTitle, String repeatType, int repeatCycle, String startDate, String endDate,
-			boolean isRepeat) {
+	public Task(String eventTitle, String repeatType, int repeatCycle, 
+			    String startDate, String endDate, boolean isRepeat) {
 		this.eventTitle = eventTitle;
 		try {
 			this.startDate = dateInputFormatter.parse(startDate);

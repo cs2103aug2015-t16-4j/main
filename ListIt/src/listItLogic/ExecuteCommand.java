@@ -10,6 +10,7 @@ import taskGenerator.Task;
 
 public class ExecuteCommand {
 
+	private static final String WHITESPACE = " ";
 	private static final String ADD_COMMAND = "add";
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String DELETE_COMMAND = "delete";
@@ -39,36 +40,38 @@ public class ExecuteCommand {
 	private static FileModifier modifier = FileModifier.getInstance();
 
 	public static void processCommandWithSpace(String command) {
-		String commandType = command.substring(0, command.indexOf(" "));
+		String commandType = getCommandType(command);
 
 		if (commandType.equals(ADD_COMMAND)) {
-			
 			if(modifier.isViewModeComplete()) {
 				FeedbackPane.displayInvalidAdd();
 				return;
 			}
 			
 			if (!undoRedo.isRedoEmpty()) {
-				undoRedo.clearRedo();
-				undoRedo.clearRedoComplete();
+				clearRedoList();
 			}
+			
 			ArrayList<Task> taskList = modifier.getContentList();
 			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
 			assert taskList != null;
 			assert taskCompleteList != null;
-			undoRedo.storeListToUndo(taskList);
-			undoRedo.storeListToUndoComplete(taskCompleteList);
+			saveCurrentFileToUndoList(taskList, taskCompleteList);
 			
-			if (command.contains(TYPE_RECURSIVE) && command.contains(WITH_TIMELINE_CONDITION1) 
-					&& command.contains(WITH_TIMELINE_CONDITION2)) {
+			if (command.contains(TYPE_RECURSIVE) 
+				&& command.contains(WITH_TIMELINE_CONDITION1) 
+				&& command.contains(WITH_TIMELINE_CONDITION2)) {
 				AddLogic.addRecursiveEventTimeline(command);
-			} else if (command.contains(TYPE_RECURSIVE) && (command.contains(WITH_DEADLINE_TYPE2))) {
+			} else if (command.contains(TYPE_RECURSIVE) 
+					   && (command.contains(WITH_DEADLINE_TYPE2))) {
 				AddLogic.addRecursiveEventDeadline(command);
-			} else if (command.contains(WITH_TIMELINE_CONDITION1) && command.contains(WITH_TIMELINE_CONDITION2)) {
+			} else if (command.contains(WITH_TIMELINE_CONDITION1)
+					   && command.contains(WITH_TIMELINE_CONDITION2)) {
 				AddLogic.addEventWithTimeline(command);
 			} else if (command.contains(WITH_IMPT)) {
 				AddLogic.addEventWithImportance(command);
-			} else if (command.contains(WITH_DEADLINE) || command.contains(WITH_DEADLINE_TYPE2)) {
+			} else if (command.contains(WITH_DEADLINE)
+					   || command.contains(WITH_DEADLINE_TYPE2)) {
 				AddLogic.addEventWithDeadline(command);
 			} else if(command.contains(TYPE_BLOCK)){
 				AddLogic.addBlockEvent(command);
@@ -77,15 +80,13 @@ public class ExecuteCommand {
 			}
 		}else if (commandType.equals(DELETE_COMMAND)) {
 			if (!undoRedo.isRedoEmpty()) {
-				undoRedo.clearRedo();
-				undoRedo.clearRedoComplete();
+				clearRedoList();
 			}
 			ArrayList<Task> taskList = modifier.getContentList();
 			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
 			assert taskList != null;
 			assert taskCompleteList != null;
-			undoRedo.storeListToUndo(taskList);
-			undoRedo.storeListToUndoComplete(taskCompleteList);
+			saveCurrentFileToUndoList(taskList, taskCompleteList);
 			DeleteLogic.deleteEvent(command);
 		} else if (commandType.equals(EDIT_COMMAND)) {
 			if(modifier.isViewModeComplete()) {
@@ -94,15 +95,13 @@ public class ExecuteCommand {
 			}
 			
 			if (!undoRedo.isRedoEmpty()) {
-				undoRedo.clearRedo();
-				undoRedo.clearRedoComplete();
+				clearRedoList();
 			}
 			ArrayList<Task> taskList = modifier.getContentList();
 			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
 			assert taskList != null;
 			assert taskCompleteList != null;
-			undoRedo.storeListToUndo(taskList);
-			undoRedo.storeListToUndoComplete(taskCompleteList);
+			saveCurrentFileToUndoList(taskList, taskCompleteList);
 
 			EditLogic.editEvent(command);
 		} else if (commandType.equals(SEARCH_COMMAND)) {
@@ -111,49 +110,59 @@ public class ExecuteCommand {
 			DisplayLogic.determineDisplayMode(command);
 		} else if (commandType.equals(CHANGE_DIRECTORY_COMMAND)) {
 			ChangeDirectoryLogic.changeDirectory(command);
-		} else if(commandType.equals(COMPLETE_COMMAND)){
-			if(modifier.isViewModeComplete()) {
+		} else if (commandType.equals(COMPLETE_COMMAND)){
+			if (modifier.isViewModeComplete()) {
 				FeedbackPane.displayInvalidComplete();
 				return;
 			}
 			
 			if (!undoRedo.isRedoEmpty()) {
-				undoRedo.clearRedo();
-				undoRedo.clearRedoComplete();
+				clearRedoList();
 			}
 			ArrayList<Task> taskList = modifier.getContentList();
 			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
 			assert taskList != null;
 			assert taskCompleteList != null;
-			undoRedo.storeListToUndo(taskList);
-			undoRedo.storeListToUndoComplete(taskCompleteList);
+			saveCurrentFileToUndoList(taskList, taskCompleteList);
 			
 			CompleteLogic.completeEvent(command); 
-		}else {
+		} else {
 			FeedbackPane.displayInvalidInput();
 		}
 	}
 
+	private static void clearRedoList() {
+		undoRedo.clearRedo();
+		undoRedo.clearRedoComplete();
+	}
+
+	private static void saveCurrentFileToUndoList(ArrayList<Task> taskList,
+			                            ArrayList<Task> taskCompleteList) {
+		undoRedo.storeListToUndo(taskList);
+		undoRedo.storeListToUndoComplete(taskCompleteList);
+	}
+
+	private static String getCommandType(String command) {
+		return command.substring(0, command.indexOf(WHITESPACE));
+	}
+
 	public static void processCommandWithoutSpace(String command) {
-		
 		if (command.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.defaultDisplay();
-		} else if(command.equals(EXIT_COMMAND)){
+		} else if (command.equals(EXIT_COMMAND)){
 			System.exit(0);
-		} else if(command.equals(HELP_COMMAND)) {
+		} else if (command.equals(HELP_COMMAND)) {
 			HelpLogic.displayHelp();
 		} else if (command.equals(CLEAR_COMMAND)) {
 			if (!undoRedo.isRedoEmpty()) {
-				undoRedo.clearRedo();
-				undoRedo.clearRedoComplete();
+				clearRedoList();
 			}
+			
 			ArrayList<Task> taskList = modifier.getContentList();
 			ArrayList<Task> taskCompleteList = modifier.getCompleteContentList();
 			assert taskList != null;
 			assert taskCompleteList != null;
-			undoRedo.storeListToUndo(taskList);
-			undoRedo.storeListToUndoComplete(taskCompleteList);
-
+			saveCurrentFileToUndoList(taskList, taskCompleteList);
 			DeleteLogic.clearFile();
 		} else if (command.equals(UNDO_COMMAND)) {
 			if (undoRedo.isUndoEmpty()) {
@@ -162,11 +171,8 @@ public class ExecuteCommand {
 			} else {
 				ArrayList<Task> previousTaskList = undoRedo.getListFromUndo();
 				ArrayList<Task> previousCompleteTaskList = undoRedo.getListFromUndoComplete();
- 				undoRedo.storeListToRedo(modifier.getContentList());
- 				undoRedo.storeListToRedoComplete(modifier.getCompleteContentList());
-				modifier.saveFile(previousTaskList);
-				modifier.saveCompleteFile(previousCompleteTaskList);
-				modifier.display();
+ 				saveCurrentFileToRedoList(modifier.getCompleteContentList());
+				updateAndSaveFile(previousTaskList, previousCompleteTaskList);
 				LoggingLogic.logging(VALID_UNDO);
 			}
 		} else if (command.equals(REDO_COMMAND)) { 
@@ -176,18 +182,27 @@ public class ExecuteCommand {
 			} else {
 				ArrayList<Task> lastTaskList = undoRedo.getListFromRedo();
 				ArrayList<Task> lastCompleteTaskList = undoRedo.getListFromRedoComplete();
-				undoRedo.storeListToUndo(modifier.getContentList());
-				undoRedo.storeListToUndoComplete(lastCompleteTaskList);
-				modifier.saveFile(lastTaskList);
-				modifier.saveCompleteFile(lastCompleteTaskList);
-				modifier.display();
+				saveCurrentFileToUndoList(modifier.getContentList(), lastCompleteTaskList);
+				updateAndSaveFile(lastTaskList, lastCompleteTaskList);
 				LoggingLogic.logging(VALID_REDO);
 			}
-		}else if(command.equals(EXIT_COMMAND)){
+		}else if (command.equals(EXIT_COMMAND)){
 			System.exit(0);
 		}
 		else {
 			FeedbackPane.displayInvalidInput();
 		}
+	}
+
+	private static void updateAndSaveFile(ArrayList<Task> previousTaskList,
+			                              ArrayList<Task> previousCompleteTaskList) {
+		modifier.saveFile(previousTaskList);
+		modifier.saveCompleteFile(previousCompleteTaskList);
+		modifier.display();
+	}
+
+	private static void saveCurrentFileToRedoList(ArrayList<Task> completedList) {
+		undoRedo.storeListToRedo(modifier.getContentList());
+		undoRedo.storeListToRedoComplete(completedList);
 	}
 }

@@ -9,7 +9,8 @@ public class HelpLogic {
 	private static ArrayList<String> commandList = new ArrayList<String>();
 	private static ArrayList<String> inputCommand = new ArrayList<String>();
 	private static HelpLogic help;
-	private static final String HELP_MESSAGE = "The help sheet is shown on the screen.\n"; 
+	private static final String HELP_MESSAGE = "The help sheet is shown on the "
+			                                    + "screen.\n"; 
 
 	
 	public HelpLogic () {
@@ -24,7 +25,8 @@ public class HelpLogic {
 	}
 	
 	/**
-	 * This method creates the help list by creating 2 arrays, commandList and inputCommand
+	 * This method creates the help list by creating 2 arrays, commandList 
+	 * and inputCommand
 	 * 
 	 */
 	public void createHelpList() {	
@@ -54,15 +56,19 @@ public class HelpLogic {
 		commandList.add("clear file");
 		
 		inputCommand.add("add <description> by <deadline>");
-		inputCommand.add("add <description> from <start date time> to <end date time> ");
-		inputCommand.add("add <description> on <date> from <start time> to <end time>");
+		inputCommand.add("add <description> from <start date time> to "
+				          + "<end date time> ");
+		inputCommand.add("add <description> on <date> from <start time> "
+				          + "to <end time>");
 		inputCommand.add("add <description>");
 		inputCommand.add("add <description> by <deadline> rank <number>");
-		inputCommand.add("add <description> repeat <monthly/yearly/daily> <repeatcycle>");
+		inputCommand.add("add <description> repeat <monthly/yearly/daily> "
+				         + "<repeatcycle>");
 		inputCommand.add("add <description> block <start date> to <end date>");
 		inputCommand.add("edit <task index> by date <new date>");
 		inputCommand.add("edit <task index> by title <updated title>");
-		inputCommand.add("edit <task index> by time from <new start date> to <new end date>");
+		inputCommand.add("edit <task index> by time from <new start date> "
+				         + "to <new end date>");
 		inputCommand.add("edit <task index> by impt <new rank>");
 		inputCommand.add("delete <task index>");
 		inputCommand.add("undo");

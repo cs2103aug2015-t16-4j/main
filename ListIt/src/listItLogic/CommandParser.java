@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class CommandParser {
+	private static final String WHITESPACE = " ";
 	
 	public CommandParser() {
 		
@@ -21,7 +22,7 @@ public class CommandParser {
 	}
 
 	private static boolean hasWhitespace(String command) {
-		return command.contains(" ");
+		return command.contains(WHITESPACE);
 	}
 }
 	
