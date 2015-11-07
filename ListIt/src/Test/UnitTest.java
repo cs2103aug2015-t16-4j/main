@@ -438,7 +438,7 @@ public class UnitTest {
 	}
 	
 	@Test
-	private void testSort() {
+	public void testSort() {
 		ArrayList<Task> expectedSortedList = new ArrayList<Task>(); 
 		Task task1 = new Task("EE2020 Oscilloscope project", "03112015");	
 		/*AddLogic.addEventWithDeadline("add EE2020 Oscilloscope project on 03112015");

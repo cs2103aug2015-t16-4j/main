@@ -75,11 +75,11 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayValidFileMove() {
-		feedbackScreen.appendText("File move complete!");
+		feedbackScreen.appendText("File move complete!\n");
 	}
 
 	public static void displayInvalidFileMove() {
-		feedbackScreen.appendText("File move failed, please check if datafiles are safe");
+		feedbackScreen.appendText("File move failed, please check if datafiles are safe.\n");
 	}
 
 	public static void displayInvalidIndexImptLevel() {
