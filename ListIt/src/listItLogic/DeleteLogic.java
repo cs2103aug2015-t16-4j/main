@@ -20,6 +20,7 @@ public class DeleteLogic {
 		} else {
 			sizeOfFile = modifier.getContentList().size();
 		}
+		
 		if((taskIndexToBeDelete-1) < sizeOfFile && taskIndexToBeDelete-1 >= 0) {
 			modifier.removeTask(taskIndexToBeDelete - 1);  
 			message =DELETE_VALID; 

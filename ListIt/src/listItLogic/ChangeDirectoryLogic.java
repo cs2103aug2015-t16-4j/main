@@ -32,6 +32,9 @@ public class ChangeDirectoryLogic {
 			e.printStackTrace();
 		}
 		
+		assert modifier.getDataFile() != null;
+		assert modifier.getCompleteDataFile() != null;
+		
 		Path destinationOfDataFile = Paths.get(newPath + "\\" + modifier.getDataFile().getName());
 		Path destinationOfCompleteFile = Paths.get(newPath + "\\" + modifier.getCompleteDataFile().getName());
 		

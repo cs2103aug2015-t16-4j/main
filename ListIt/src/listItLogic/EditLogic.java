@@ -32,7 +32,9 @@ public class EditLogic {
 		
 		ArrayList<Task> taskList = modifier.getContentList();
 
-		if (indexToBeEdit >= taskList.size()) {
+		assert indexToBeEdit >= 0;
+		
+		if (indexToBeEdit <= taskList.size()) {
 			FeedbackPane.displayInvalidInput();
 			message = EDIT_INPUT; 
 			LoggingLogic.logging(message);

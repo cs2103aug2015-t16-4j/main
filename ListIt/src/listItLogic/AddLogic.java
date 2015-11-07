@@ -127,6 +127,8 @@ public class AddLogic {
 
 	static boolean isValidDate(String newDate) {
 		boolean isValid = false;
+		
+		assert newDate != null;
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
 		SimpleDateFormat dateTimeFormat = new SimpleDateFormat(FORMAT_DATETIME);
@@ -456,6 +458,8 @@ public class AddLogic {
 
 	public static boolean isCorrectRepeatCycle(String repeatCycle) {
 		boolean isCorrect = false;
+		
+		assert repeatCycle != null;
 
 		if (repeatCycle.contains(REPEAT_DAILY) || repeatCycle.contains(REPEAT_MONTHLY)
 				|| repeatCycle.contains(REPEAT_YEARLY) || repeatCycle.contains(REPEAT_WEEKLY)) {

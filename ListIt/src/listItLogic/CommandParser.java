@@ -10,6 +10,9 @@ public class CommandParser {
 	}
 	
 	public static void processCommand(String command) throws InvalidCommandException, FileNotFoundException, IOException {
+		
+		assert command != null;
+		
 		if (hasWhitespace(command)) {
 			ExecuteCommand.processCommandWithSpace(command);
 		} else {
