@@ -12,16 +12,19 @@ public class HelpLogic {
 	private static final String HELP_MESSAGE = "The help sheet is shown on the "
 			                                    + "screen.\n"; 
 
-	
 	public HelpLogic () {
 		createHelpList();
 	}
 	
 	public static HelpLogic getInstance() {
-		if(help == null) {
+		if(!isExists()) {
 			help = new HelpLogic();
 		}
 		return help;
+	}
+
+	private static boolean isExists() {
+		return help != null;
 	}
 	
 	/**

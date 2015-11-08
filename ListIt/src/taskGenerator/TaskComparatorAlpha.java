@@ -10,7 +10,7 @@ public class TaskComparatorAlpha implements Comparator<Task> {
 	    
 		result = task1.getTitle().compareTo(task2.getTitle());
 		
-		if(isResultZero(result)) {
+		if (isResultZero(result)) {
 			result = task1.getImportance().compareTo(task2.getImportance());
 		}
 		return result;

@@ -228,23 +228,31 @@ public class Task implements Serializable {
 	}
 
 	public String getStartDate() {
-		if (this.startDate != null && hasTime) {
+		if (!isStartDateNull() && hasTime) {
 			return dateTimeOutputFormatter.format(startDate);
-		} else if (this.startDate != null) {
+		} else if (!isStartDateNull()) {
 			return dateOutputFormatter.format(startDate);
 		} else {
 			return null;
 		}
 	}
 
+	private boolean isStartDateNull() {
+		return this.startDate == null;
+	}
+
 	public String getEndDate() {
-		if (this.endDate != null && hasTime) {
+		if (!isEndDateNull() && hasTime) {
 			return dateTimeOutputFormatter.format(endDate);
-		} else if (this.endDate != null) {
+		} else if (!isEndDateNull()) {
 			return dateOutputFormatter.format(endDate);
 		} else {
 			return null;
 		}
+	}
+
+	private boolean isEndDateNull() {
+		return this.endDate == null;
 	}
 
 	public String getEndDateWithoutTime() {

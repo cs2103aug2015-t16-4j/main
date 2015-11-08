@@ -17,7 +17,7 @@ public class TaskComparatorDefault implements Comparator<Task> {
 		} else {
 			result = task1.getDateInDate().compareTo(task2.getDateInDate());
 			
-			if(isResultZero(result)) {
+			if (isResultZero(result)) {
 				result = task1.getTitle().compareTo(task2.getTitle());
 			}
 		}

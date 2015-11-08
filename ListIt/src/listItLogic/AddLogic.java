@@ -285,11 +285,15 @@ public class AddLogic {
 		}
 	}
 
-	private static Task createTaskWithDeadlineAndRank(String eventTitle, String deadline, int rank) {
+	private static Task createTaskWithDeadlineAndRank(String eventTitle, 
+			                                          String deadline,
+			                                          int rank) {
 		return new Task(eventTitle, deadline, rank);
 	}
 
-	private static Task createTaskWithDeadlineRankAndTime(String eventTitle, String deadline, int rank) {
+	private static Task createTaskWithDeadlineRankAndTime(String eventTitle,
+			                                              String deadline,
+			                                              int rank) {
 		return new Task(eventTitle, deadline, rank, true);
 	}
 
@@ -306,7 +310,8 @@ public class AddLogic {
 	}
 
 	private static String getEventDeadlineImportance(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_BY) + 3, command.lastIndexOf(COMMAND_RANK) - 1);
+		return command.substring(command.lastIndexOf(COMMAND_BY) + 3, 
+				                 command.lastIndexOf(COMMAND_RANK) - 1);
 	}
 
 	private static boolean isEventWithDeadline(String command) {
@@ -450,7 +455,7 @@ public class AddLogic {
 
 	private static String getStartDate(String command) {
 		return command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
-				command.lastIndexOf(COMMAND_END_TIME) - 1);
+				                 command.lastIndexOf(COMMAND_END_TIME) - 1);
 	}
 
 	private static String getEventTitleTimeline(String command) {
@@ -486,7 +491,7 @@ public class AddLogic {
 			try {
 				deadline = getEventDeadlineAfterOn(command);
 			} catch (Exception e) {
-				deadline = "";
+				deadline = EMPTY_STRING;
 			}
 			if (isValidDate(deadline) && repeatCycle != 0) {
 				if (containsTime(deadline)) {

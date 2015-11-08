@@ -34,8 +34,7 @@ public class TaskCheckLogic {
 		modifier.saveFile(taskList);
 	}
 
-	private static boolean isOverDate(Task tempTask, 
-			                                           Date systemTime) {
+	private static boolean isOverDate(Task tempTask, Date systemTime) {
 		return systemTime.compareTo(tempTask.getEndDateInDateType()) > 0;
 	}
 

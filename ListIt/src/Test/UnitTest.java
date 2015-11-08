@@ -32,7 +32,6 @@ public class UnitTest {
 	@BeforeClass
 	public static void setUpApplication() throws InterruptedException {
 		// Initialize Java FX
-
 		System.out.printf("About to launch FX App ListIt\n");
 		Thread t = new Thread("JavaFX Init Thread") {
 			public void run() {
@@ -56,8 +55,7 @@ public class UnitTest {
 	
 	@Test
 	public void testDelete1() {
-		DeleteLogic.clearFile();
-		expected.clear();
+		clearExpectedActual();
 		Task task1 = new Task("EE2020 Oscilloscope project", "03112015");
 		addEvent(task1, "add EE2020 Oscilloscope project by 03112015"); 
 		Task task2 = new Task("OP2 presentation", "06112015");
@@ -91,17 +89,23 @@ public class UnitTest {
 	
 	@Test
 	public void testAdd1() {
-		DeleteLogic.clearFile();
-		expected.clear();
+		clearExpectedActual();
+		actual = modifier.getContentList();
+		boolean isEmpty = actual.isEmpty();
+		assert isEmpty = true;
 		AddLogic.addEventDefault("add "); 
 		actual = modifier.getContentList();
 		compareResults("test default add", expected, actual);
 	}
+
+	private void clearExpectedActual() {
+		DeleteLogic.clearFile();
+		expected.clear();
+	}
 	
 	@Test
     public void testAdd2() {
-		DeleteLogic.clearFile();
-		expected.clear();
+		clearExpectedActual();
 		AddLogic.addEventWithDeadline("add complete EE2020 lab report by next "
 				                       + "Friday");
 		actual = modifier.getContentList();
@@ -111,40 +115,38 @@ public class UnitTest {
 
 	@Test
 	public void testAdd3() {
-		DeleteLogic.clearFile();
-		expected.clear();
-		Task task3 = new Task("go for light and sound show at the Gardens by the Bay");
+		clearExpectedActual();
+		Task task3 = new Task("go for light and sound show at the Gardens by the "
+				               + "Bay");
 		expected.add(task3);
-		AddLogic.addEventWithDeadline("add go for light and sound show at the Gardens by the Bay");
+		AddLogic.addEventWithDeadline("add go for light and sound show at the "
+				                       + "Gardens by the Bay");
 		actual  = modifier.getContentList();
 		compareResults("testing adding floating task with the word by", expected, 
-				      actual);
+				        actual);
 	}
 
 	@Test
 	public void testAdd4() {
-		DeleteLogic.clearFile();
-		expected.clear();
+		clearExpectedActual();
 		AddLogic.addEventWithDeadline("add attend meeting by 152015");
 		actual = modifier.getContentList();
-		compareResults("testing adding with deadline with wrong date format", expected,
-				      actual);
+		compareResults("testing adding with deadline with wrong date format",
+				        expected, actual);
 	}
     
 	@Test
 	public void testAdd5() {
-		DeleteLogic.clearFile();
-		expected.clear();
+		clearExpectedActual();
 		AddLogic.addEventWithImportance("add watch movie rank 0");
 		actual = modifier.getContentList();
 		compareResults("test adding with wrong rank range", expected, 
-				      actual);
+				        actual);
 	}
 	
     @Test
     public void testAdd6() {
-    	DeleteLogic.clearFile();
-		expected.clear();
+    	clearExpectedActual();
 		AddLogic.addEventWithImportance("add go for manicure rank 4");
 		actual = modifier.getContentList();
 		compareResults("test adding with wrong rank range", expected, actual);
@@ -152,8 +154,7 @@ public class UnitTest {
 
     @Test
     public void testAdd7() {
-    	DeleteLogic.clearFile();
-		expected.clear();
+    	clearExpectedActual();
 		AddLogic.addEventWithImportance("add do groceries rank 3");
 		actual = modifier.getContentList();
 		Task task4 = new Task("do groceries", 3);
@@ -163,21 +164,22 @@ public class UnitTest {
 	
     @Test
     public void testAdd8() {
-    	DeleteLogic.clearFile();
-		expected.clear();
+    	clearExpectedActual();
 		AddLogic.addEventWithImportance("add rank all staff based on capabilities");
 		Task task5 = new Task("rank all staff based on capabilities");
 		expected.add(task5);
 		actual = modifier.getContentList();
-		compareResults("testing input with the rank not as a command word", expected, actual);
+		compareResults("testing input with the rank not as a command word",
+				        expected, actual);
     }
     
     @Test
     public void testAdd9() {
-    	DeleteLogic.clearFile();
-		expected.clear();
-		AddLogic.addBlockEvent("add attend regional youth conference block from 14112015 to 17112015");
-		Task task6 = new Task("attend regional youth conference", "14112015", "17112015");
+    	clearExpectedActual();
+		AddLogic.addBlockEvent("add attend regional youth conference block from"
+				                + " 14112015 to 17112015");
+		Task task6 = new Task("attend regional youth conference", "14112015", 
+				              "17112015");
 		expected.add(task6);
 		actual = modifier.getContentList();
 		compareResults("test normal blocking", expected, actual);
@@ -185,17 +187,16 @@ public class UnitTest {
     
 	@Test
 	public void testAdd10() {
-		DeleteLogic.clearFile();
-		expected.clear();
-		AddLogic.addBlockEvent("add attend Navratri festival block 19112015 to 10112015");
+		clearExpectedActual();
+		AddLogic.addBlockEvent("add attend Navratri festival block 19112015"
+				               + " to 10112015");
 		actual = modifier.getContentList();
 		compareResults("test blocking with reversed dates", expected, actual);
 	}
 	
 	@Test
 	public void testAdd11() {
-		DeleteLogic.clearFile();
-		expected.clear();
+		clearExpectedActual();
 		AddLogic.addBlockEvent("add attend sports event block 112015 to 122015");
 		actual = modifier.getContentList();
 		compareResults("test blocking with wrong date format", expected, actual);
@@ -204,30 +205,36 @@ public class UnitTest {
 	@Test 
 	// this tests invalid date input 
 	public void testAdd12(){
-		DeleteLogic.clearFile();
-		expected.clear();
-		AddLogic.addEventWithTimeline("add attend JP Morgon conference from 15112015 to 12112015");
+		clearExpectedActual();
+		AddLogic.addEventWithTimeline("add attend JP Morgon conference from"
+				                       + " 15112015 to 12112015");
 		actual = modifier.getContentList();
-		compareResults("testing adding invalid date for timeline task", expected, actual);
+		compareResults("testing adding invalid date for timeline task", 
+				        expected, actual);
 	}
 	
 	@Test
 	public void testAdd13(){
-		Task task3 = new Task("attend JP Morgon conference ","12122015","15122015",1);
+		clearExpectedActual();
+		Task task3 = new Task("attend JP Morgon conference ","12122015",
+				              "15122015", 1);
 		expected.add(task3);
-		AddLogic.addEventWithTimeline("add attend JP Morgon conference from 1212015 to 15122015 rank 1");
+		AddLogic.addEventWithTimeline("add attend JP Morgon conference from "
+				                       + "1212015 to 15122015 rank 1");
 		actual  = modifier.getContentList();
 		compareResults("testing adding valid date for timeline task", expected, 
-				      actual);
+				        actual);
 	}
 	
 	@Test
 	public void testSearch1() {
+		clearExpectedActual();
 		Task task2 = new Task("OP2 presentation", "06112015");
 		addEvent(task2 , "add OP2 persentation by 06112015"); 
 		SearchLogic.searchKeyWord("search Oral Presentation 2");
 		actualSearchList = SearchLogic.getTaskList();
-		compareResults("test search by title" , expectedSearchList, actualSearchList); 
+		compareResults("test search by title" , expectedSearchList, 
+				       actualSearchList); 
 	}
 
 	@Test
@@ -235,35 +242,44 @@ public class UnitTest {
 		expectedSearchList = clearExpectedList(expectedSearchList); 
 		SearchLogic.searchKeyWord("search tutorial work"); 
 		actualSearchList = SearchLogic.getTaskList();
-		compareResults("test seearching for a title tht does not exist", expectedSearchList, actualSearchList);
+		compareResults("test seearching for a title tht does not exist", 
+				        expectedSearchList, actualSearchList);
 	}
 
 	@Test
 	public void testSearch3() {
+		clearExpectedActual();
 		AddLogic.addEventWithDeadline("add OP2 presentation by 06112015 rank 3");
 		SearchLogic.searchKeyWord("search impt 3");
 		actualSearchList = SearchLogic.getTaskList();
 		Task task2 = new Task("OP2 presentation", "06112015", 3);
+		expected.add(task2);
 		expectedSearchList.add(task2); 
-		compareResults("test search by impt" , expectedSearchList, actualSearchList); 
+		compareResults("test search by impt" , expectedSearchList, 
+				        actualSearchList); 
 	}
 
 	@Test
 	public void testSearch4() {
-		expectedSearchList = clearExpectedList(expectedSearchList); 
+		expectedSearchList = clearExpectedList(expectedSearchList);
+		clearExpectedActual();
 		SearchLogic.searchKeyWord("search impt 4");
 		actualSearchList = SearchLogic.getTaskList();
-		compareResults("test search by impt, ranking 4 which is not present" , expectedSearchList, actualSearchList);
+		compareResults("test search by impt, ranking 4 which is not present" ,
+				        expectedSearchList, actualSearchList);
 	}
 
     @Test
     public void testSearch5() {
-    	AddLogic.addEventWithDeadline("add EE2020 Oscilloscope project by 03112015 rank 1");
+    	clearExpectedActual();
+    	AddLogic.addEventWithDeadline("add EE2020 Oscilloscope project by 03112015"
+    			                       + " rank 1");
 		SearchLogic.searchKeyWord("search date 03112015");
 		actualSearchList = SearchLogic.getTaskList();
 		Task task = new Task ("EE2020 Oscilloscope project", "03112015","1"); 
 		expectedSearchList.add(task); 
-		compareResults("test search by date" , expectedSearchList, actualSearchList); 
+		compareResults("test search by date" , expectedSearchList, 
+				        actualSearchList); 
 		// the expected search list should be cleared to test another search type . 
     }
 
@@ -272,12 +288,13 @@ public class UnitTest {
 		expectedSearchList = clearExpectedList(expectedSearchList); 		
 		SearchLogic.searchKeyWord("search data 05112015"); 
 		actualSearchList = SearchLogic.getTaskList(); 
-		compareResults("test search by impt", expectedSearchList, actualSearchList); 
+		compareResults("test search by impt", expectedSearchList, 
+				        actualSearchList); 
 	}
 	
     //need to fix this 
 	public void testEdit1() {
-		expected = clearExpectedList(expected);
+		clearExpectedActual();
 		AddLogic.addEventWithDeadline("add OP2 presentation by 08112015 rank 3");
 		EditLogic.editEvent("edit 1 by date 08112015"); 
 		actual = modifier.getContentList(); 
@@ -287,7 +304,7 @@ public class UnitTest {
 	
 	@Test
 	public void testEdit2() {
-		expected = clearExpectedList(expected);
+		clearExpectedActual();
     	Task task1 = new Task("EE2020 Oscilloscope project", "03112015");
 		addEvent(task1, "add EE2020 Oscilloscope project by 03112015"); 
 		EditLogic.editEvent("edit 1 by date 11142015");
@@ -298,19 +315,18 @@ public class UnitTest {
 	@Test
 	//edit importance testing with correct input  
 	public void testEdit3() {
-		expected = clearExpectedList(expected);
+		clearExpectedActual();
 		AddLogic.addEventWithImportance("add go for manicure rank and pedicure rank 3");
 		EditLogic.editEvent("edit 1 by impt 2");
 		actual = modifier.getContentList(); 
 		expected = getExpectedforEditImpt(expected);
-
 		compareResults("test if edit by impt works", expected, actual);
 	}
 
 	@Test
 	//edit importance with wrong input 
 	public void testEdit4() {
-		expected = clearExpectedList(expected);
+		clearExpectedActual();
 		EditLogic.editEvent("edit 2 by impt 5"); 
 		actual = modifier.getContentList();
 		compareResults("test if invalid importance level for edit works", expected, actual);
@@ -319,7 +335,7 @@ public class UnitTest {
 	@Test
 	//edit title correct input
 	public void testEdit5() {
-		expected = clearExpectedList(expected);
+		clearExpectedActual();
 		expected = getExpectedforEditTitle(expected);
 		AddLogic.addEventWithDeadline("add 0P2 presentation by 12112015");
 		EditLogic.editEvent("edit 1 by title Oral presentation 2 "); 
@@ -329,7 +345,7 @@ public class UnitTest {
 	
 	//edit title with wrong input 
 	public void testEdit6(){
-		expected = clearExpectedList(expected);
+		clearExpectedActual();
 		AddLogic.addEventWithDeadline("add 0P2 presentation by 12112015");
 		EditLogic.editEvent("edit 2 by title Oral presentation 2 "); 
 		actual = modifier.getContentList(); 
@@ -338,51 +354,58 @@ public class UnitTest {
 	
 	@Test
 	public void testUndoRedo1() {
-
 		//Test empty undo and redo method
 		ArrayList<Task> actual = new ArrayList<Task>();
         ArrayList<Task> expected = modifier.getContentList();
 		AddLogic.addEventDefault("test empty undo string");
 		actual = undoRedo.getListFromUndo();
 		testEmptyUndo("test if empty undo works", expected, actual);
-		
+	}
+	
+	@Test
+	public void testUndoRedo2() {
 		expected = modifier.getContentList();
 		AddLogic.addEventDefault("test empty redo string");
 		actual = undoRedo.getListFromRedo();
-		testEmptyRedo("test if empty redo works", expected, actual);
-		
+		compareResults("test if empty redo works", expected, actual);
+	}
+	
+	@Test
+	public void testUndoRedo3() {
 		//Test undo and redo method with strings
 		expected = modifier.getContentList();
 		ExecuteCommand.processCommandWithSpace("add test undo String");
 		actual = undoRedo.getListFromUndo();
 		testUndo("test if undo works", expected, actual);
+	}
 		
+	@Test
+	public void testUndoRedo4() {
 		expected = modifier.getContentList();
 		ExecuteCommand.processCommandWithSpace("add test undo String");
 		actual = undoRedo.getListFromRedo();
 		testRedo("test if redo works", expected, actual);
 	}
 	
-	private void testRedo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
+	private void testRedo(String description, ArrayList<Task> expected,
+			              ArrayList<Task> actual) {
 		assertThat(description, actual, not(expected));
 	}
 
-	private void testUndo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
+	private void testUndo(String description, ArrayList<Task> expected,
+			              ArrayList<Task> actual) {
 		assertThat(description, actual, not(expected));
-	}
-
-	private void testEmptyRedo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
-		assertEquals(description, actual, expected);
 	}
 	
-	private void testEmptyUndo(String description, ArrayList<Task> expected, ArrayList<Task> actual) {
+	private void testEmptyUndo(String description, ArrayList<Task> expected,
+			                   ArrayList<Task> actual) {
 		assertEquals(description, actual, expected);
 		expected = undoRedo.getListFromUndo();
 		compareResults("test if empty undo works", expected, actual);
 	}
 	
 	@Test
-	public void testUndoRedo2() {
+	public void testUndoRedo5() {
 		actual = modifier.getContentList();
 		AddLogic.addEventDefault("test empty redo string");
 		expected = undoRedo.getListFromRedo();
@@ -390,7 +413,7 @@ public class UnitTest {
 	}
 	
 	@Test
-	public void testUndoRedo3() {
+	public void testUndoRedo6() {
 		//Test undo and redo method with strings
 		actual = modifier.getContentList();
 		undoRedo.storeListToUndo(modifier.getContentList());
@@ -400,7 +423,7 @@ public class UnitTest {
 	}
 	
 	@Test
-	public void testUndoRedo4() {
+	public void testUndoRedo7() {
 		actual = modifier.getContentList();
 		undoRedo.storeListToRedo(modifier.getContentList());
 		AddLogic.addEventDefault("test undo String");
@@ -441,8 +464,8 @@ public class UnitTest {
 	public void testSort() {
 		ArrayList<Task> expectedSortedList = new ArrayList<Task>(); 
 		Task task1 = new Task("EE2020 Oscilloscope project", "03112015");	
-		/*AddLogic.addEventWithDeadline("add EE2020 Oscilloscope project on 03112015");
-		expectedSortedList.add(task1);*/
+		/*AddLogic.addEventWithDeadline("add EE2020 Oscilloscope project on 
+		 * 03112015"); expectedSortedList.add(task1);*/
 		addEvent(task1, "add EE2020 Oscilloscope project on 03112015"); 
 		Task task2 = new Task("OP2 presentation", "06112015");
 		/*AddLogic.addEventWithDeadline("add 0P2 presentation by 06112015");

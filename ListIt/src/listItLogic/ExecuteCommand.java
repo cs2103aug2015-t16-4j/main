@@ -43,7 +43,7 @@ public class ExecuteCommand {
 		String commandType = getCommandType(command);
 
 		if (commandType.equals(ADD_COMMAND)) {
-			if(modifier.isViewModeComplete()) {
+			if (modifier.isViewModeComplete()) {
 				FeedbackPane.displayInvalidAdd();
 				return;
 			}
@@ -89,7 +89,7 @@ public class ExecuteCommand {
 			saveCurrentFileToUndoList(taskList, taskCompleteList);
 			DeleteLogic.deleteEvent(command);
 		} else if (commandType.equals(EDIT_COMMAND)) {
-			if(modifier.isViewModeComplete()) {
+			if (modifier.isViewModeComplete()) {
 				FeedbackPane.displayInvalidEdit();
 				return;
 			}
@@ -115,7 +115,6 @@ public class ExecuteCommand {
 				FeedbackPane.displayInvalidComplete();
 				return;
 			}
-			
 			if (!undoRedo.isRedoEmpty()) {
 				clearRedoList();
 			}

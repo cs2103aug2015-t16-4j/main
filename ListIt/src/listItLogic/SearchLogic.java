@@ -10,14 +10,14 @@ public class SearchLogic {
 	private static final String SEARCH_DEFAULT = "default";
 	private static final String SEARCH_IMPT = "impt";
 	private static final String SEARCH_ALPHA = "alpha";
-	private static final int RANK_ONE = 1;
-	private static final int RANK_TWO = 2;
-	private static final int RANK_THREE = 3;
-	private static final String INVALID_IMPT ="Invalid Importance level, "
+	private static final int IMPORTANCE_LEVEL_ONE = 1;
+	private static final int IMPORTANCE_LEVEL_TWO = 2;
+	private static final int IMPORTANCE_LEVEL_THREE = 3;
+	private static final String INVALID_IMPT = "Invalid Importance level, "
 			                                   + "there are only 3 types: "
 			                                   + "1 , 2 or 3.\n"; 
-	private static final String NO_SEARCH ="No content to display.\n"; 
-	private static final String SEARCH_IMPORTANCE_VALID="Search by importance level"
+	private static final String NO_SEARCH = "No content to display.\n"; 
+	private static final String SEARCH_IMPORTANCE_VALID = "Search by importance level"
 			                                             + " works.\n"; 
 	private static final String SEARCH_DEFAULT_VALID = "Default search level works.\n"; 
 	private static final String SEARCH_ALPHA_VALID = "Alpha search level works.\n"; 
@@ -45,21 +45,21 @@ public class SearchLogic {
 			keyword = getKeyword(keyword);
 			int imptLevel = getImportanceLevel(keyword);
 			
-			if(isVeryImportant(imptLevel) || isImportant(imptLevel) 
-			   || isNotImportant(imptLevel)){
+			if (isVeryImportant(imptLevel) || isImportant(imptLevel) 
+			    || isNotImportant(imptLevel)){
 				taskList = modifier.searchByImportance(imptLevel);
 				modifier.setViewMode(SEARCH_IMPT);
 				sortAndDisplaySearchList(modifier, taskList);
 				message = SEARCH_IMPORTANCE_VALID; 
 				LoggingLogic.logging(message);
-			}else { 
+			} else { 
 				FeedbackPane.displayInvalidIndexImptLevel();
 				message = INVALID_IMPT; 
 				LoggingLogic.logging(message);
 			}
-		}else {
+		} else {
 			taskList = modifier.searchKeyword(keyword);
-			if(isTaskListEmpty(taskList)){
+			if (isTaskListEmpty(taskList)){
 				message = NO_SEARCH; 
 				LoggingLogic.logging(message);
 			}
@@ -71,15 +71,15 @@ public class SearchLogic {
 	}
 
 	private static boolean isNotImportant(int imptLevel) {
-		return imptLevel == RANK_THREE;
+		return imptLevel == IMPORTANCE_LEVEL_THREE;
 	}
 
 	private static boolean isImportant(int imptLevel) {
-		return imptLevel == RANK_TWO;
+		return imptLevel == IMPORTANCE_LEVEL_TWO;
 	}
 
 	private static boolean isVeryImportant(int imptLevel) {
-		return imptLevel == RANK_ONE;
+		return imptLevel == IMPORTANCE_LEVEL_ONE;
 	}
 
 	private static boolean isSearchByImportance(String keyword) {
