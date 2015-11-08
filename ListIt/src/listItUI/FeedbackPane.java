@@ -63,7 +63,7 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayInvalidTitle() {
-		feedbackScreen.appendText("Invalid title");
+		feedbackScreen.appendText("Invalid title\n");
 	}
 
 	public static void displayInvalidIndexComplete() {
@@ -95,6 +95,6 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayInvalidAddBlocked() {
-		feedbackScreen.appendText("The current event timeline is blocked, cannot be added");
+		feedbackScreen.appendText("The current event timeline is blocked, cannot be added\n");
 	}
 }
