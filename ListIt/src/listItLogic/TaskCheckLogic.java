@@ -7,22 +7,24 @@ import fileModifier.FileModifier;
 import taskGenerator.Task;
 
 /**
- * This class contains all the methods that check if the command date input 
- * entered by the user is of a valid date input, and also compares the task date to
- * the actual calendar date.
+ * This class contains all the methods that check if the command date input
+ * entered by the user is of a valid date input, and also compares the task date
+ * to the actual calendar date.
+ * 
  * @author Shrestha
  * @version 0.5
  */
 public class TaskCheckLogic {
 	static FileModifier modifier = FileModifier.getInstance();
-	
+
 	public TaskCheckLogic() {
-		
+
 	}
-	
+
 	/**
 	 * Checks if the date variable of the task is over the actual calendar date.
-	 * @param taskList 
+	 * 
+	 * @param taskList
 	 */
 	public static void overDateCheck(ArrayList<Task> taskList) {
 		Task tempTask = new Task();
@@ -41,7 +43,7 @@ public class TaskCheckLogic {
 				break;
 			}
 		}
-		
+
 		modifier.saveFile(taskList);
 	}
 
@@ -52,11 +54,13 @@ public class TaskCheckLogic {
 	private static boolean isEndDateNull(Task tempTask) {
 		return tempTask.getEndDate() == null;
 	}
-	
+
 	/**
-	 * Checks the block task, that the starting date of the task is earlier than the
-	 * ending date of the task.
-	 * @param taskForCheck task in a block input
+	 * Checks the block tasks in the list, to see if there is a time line overlap
+	 * between the newTask and blockingTask
+	 * 
+	 * @param taskForCheck
+	 *            task in a block input
 	 * @return true if above holds, else returns false.
 	 */
 	public static boolean blockedDateCheck(Task taskForCheck) {
@@ -78,8 +82,18 @@ public class TaskCheckLogic {
 	}
 
 	private static boolean isBlockDatesValid(Task taskForCheck, Task tempTask) {
-		return taskForCheck.getEndDateInDateType().compareTo(tempTask.getEndDateInDateType()) <= 0 
-			   && taskForCheck.getEndDateInDateType().compareTo(tempTask.getStartDateInDateType()) >= 0;
+		if (taskForCheck.getStartDateInDateType().compareTo(tempTask.getStartDateInDateType()) == -1
+				&& taskForCheck.getEndDateInDateType().compareTo(tempTask.getEndDateInDateType()) == 1) {
+			return true;
+		} else if (taskForCheck.getEndDateInDateType().compareTo(tempTask.getStartDateInDateType()) == 1
+				&& taskForCheck.getEndDateInDateType().compareTo(tempTask.getEndDateInDateType()) == -1) {
+			return true;
+		} else if (taskForCheck.getStartDateInDateType().compareTo(tempTask.getStartDateInDateType()) == 1 
+				&& taskForCheck.getStartDateInDateType().compareTo(tempTask.getEndDateInDateType()) == -1) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	private static boolean isStartDateNull(Task taskForCheck) {
