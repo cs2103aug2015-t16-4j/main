@@ -5,6 +5,16 @@ import java.util.Stack;
 
 import taskGenerator.Task;
 
+/**
+ * This class contains methods for our redo and undo logic; 2 temporary stacks
+ * are created and the task lists are stored into these stacks. Therefore, when 
+ * the appropriate command is called, the previous or next list can be recalled. 
+ * The 2 stacks created are temporary as when ListIt is closed, all data lists 
+ * in the stacks are deleted. Hence, the undo and redo function works only up to 
+ * the current status of when ListIt was last open.
+ * @author Shrestha
+ * @version 0.5
+ */
 public class UndoAndRedoLogic {
 
 	private static UndoAndRedoLogic storage;
