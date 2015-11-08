@@ -6,6 +6,13 @@ import fileModifier.FileModifier;
 import listItUI.FeedbackPane;
 import taskGenerator.Task;
 
+/**
+ * This class contains methods to edit the selected task. Edition can be done by
+ * either editing the title, importance level, date, time, repeat type (for recursive
+ * tasks), the entire block time of the task, or everything.
+ * @author Shrestha
+ * @version 0.5
+ */
 public class EditLogic {
 
 	private static FileModifier modifier = FileModifier.getInstance();
@@ -31,7 +38,16 @@ public class EditLogic {
     		                                              + "sucessfully editted!"; 
    	
 	private static String  message = null; 
-
+	
+	/**
+	 * Edits the task event selected by the user, according to the line index the 
+	 * user inputs. also determines the variable type the user wants to input so as to
+	 * edit the correct variable. 
+	 * Repeat type = daily, monthly or yearly.
+	 * Repeat cycle = period of how long the type should occur for. After the cycle is
+	 *                complete, the cycle is reset and run again.
+	 * @param command String command input by the user with an "edit" keyword.
+	 */
     public static void editEvent(String command) {
 		int indexToBeEdit = getEditIndex(command)-1;
 		
@@ -92,6 +108,7 @@ public class EditLogic {
 			}
 		}
 
+    
 	private static String getRepeatType(String repeatCommand) {
 		return repeatCommand.substring(repeatCommand.indexOf(WHITESPACE) + 1);
 	}
@@ -144,27 +161,57 @@ public class EditLogic {
 	private static String getNewDate(String command) {
 		return command.substring(command.indexOf(COMMAND_DEADLINE) + 8);
 	}
-
+	
+	/**
+	 * Checks if the command contains a timeline input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
 	private static boolean isEditByTimeline(String command) {
 		return command.contains(COMMAND_TIMELINE);
 	}
 
+	/**
+	 * Checks if the command contains a importance input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
 	private static boolean isEditByImportance(String command) {
 		return command.contains(COMMAND_IMPORTANCE);
 	}
 
+	/**
+	 * Checks if the command contains a title input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
 	private static boolean isEditByTitle(String command) {
 		return command.contains(COMMAND_TITLE);
 	}
-
+	
+	/**
+	 * Checks if the command contains a date input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
 	private static boolean isEditByDate(String command) {
 		return command.contains(COMMAND_DEADLINE);
 	}
 
+	/**
+	 * Checks if the command contains a recursive input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
 	private static boolean isEditByRepeat(String command) {
 		return command.contains(COMMAND_REPEAT);
 	}
 
+	/**
+	 * Checks if the command contains a block input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
 	private static boolean isEditByBlock(String command) {
 		return command.contains(COMMAND_BLOCK);
 	}
