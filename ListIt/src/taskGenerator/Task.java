@@ -6,6 +6,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+/**
+ * This class generates the data input by the user and turns it into a task object.
+ * This task object contains various information such as the event title,
+ * event date and the importance level. 
+ * @author Shawn
+ * @version 0.5
+ */
 public class Task implements Serializable {
 
 	private String eventTitle;
@@ -368,6 +375,11 @@ public class Task implements Serializable {
 		this.blocking = set;
 	}
 
+	/**
+	 * Checks if the 1 variable in the task object is equal to the same
+	 * variable in another task object. Variables can be in the form of
+	 * the date, time, title, importance.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
