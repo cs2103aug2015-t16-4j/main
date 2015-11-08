@@ -223,9 +223,9 @@ public class AddLogic {
 	}
 
 	public static void addEventWithImportance(String command) {
-		String eventTitle = new String();
+		String eventTitle = null;
 		if (isEventWithDeadline(command)) {
-			String deadline = new String();
+			String deadline = null;
 			try {
 				eventTitle = getEventTitleDeadline(command);
 				deadline = getEventDeadlineImportance(command);
@@ -254,7 +254,6 @@ public class AddLogic {
 					addRankMessage = MESSAGE_INVALID_RANK;
 					FeedbackPane.displayInvalidInput();
 					LoggingLogic.logging(addRankMessage);
-
 				}
 			} catch (Exception e) {
 				addEventWithDeadline(command);
@@ -299,11 +298,15 @@ public class AddLogic {
 	}
 
 	private static String getEventDeadlineImportance(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_BY) + 3, command.lastIndexOf(COMMAND_RANK) - 1);
+		if(command.contains(COMMAND_BY)) {
+			return command.substring(command.lastIndexOf(COMMAND_BY) + 3, command.lastIndexOf(COMMAND_RANK) - 1);
+		} else {
+			return command.substring(command.lastIndexOf(COMMAND_ON) + 3, command.lastIndexOf(COMMAND_RANK) - 1);
+		}
 	}
 
 	private static boolean isEventWithDeadline(String command) {
-		return command.contains(COMMAND_BY);
+		return command.contains(COMMAND_BY) || command.contains(COMMAND_ON);
 	}
 
 	public static void addEventWithTimeline(String command) {
@@ -316,11 +319,13 @@ public class AddLogic {
 			try {
 				eventTitle = getEventTitleBeforeOn(command);
 				startDate = getSingleDateStartTime(command);
-				isValidOnCommand = true;
+				if(isValidDate(startDate)) {
+					isValidOnCommand = true;
+				}
 			} catch (Exception e) {
 				isValidOnCommand = false;
 			}
-			if (isValidDate(startDate) && isValidOnCommand == true) {
+			if (isValidOnCommand == true) {
 				if (isEventWithImportance(command)) {
 					if (isValidRank(command)) {
 						endDate = getSingleDateEndTimeWithImportance(command);
@@ -346,6 +351,7 @@ public class AddLogic {
 						return;
 					}
 				} else {
+					endDate = getSingleDateEndTime(command);
 					if (isCorrectRange(startDate, endDate)) {
 						addTaskWithTimelineAndNoRank(command, eventTitle, startDate, endDate);
 						return;
@@ -354,9 +360,6 @@ public class AddLogic {
 						return;
 					}
 				}
-			} else {
-				FeedbackPane.displayInvalidDate();
-				return;
 			}
 		}
 

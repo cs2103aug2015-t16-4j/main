@@ -370,24 +370,48 @@ public class Task implements Serializable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if(obj == null) {
+		if (obj == null) {
 			return false;
 		}
-		
-		if(obj == this) {
+
+		if (obj == this) {
 			return true;
 		}
-		
-		if(obj instanceof Task) {
-			Task task = (Task)obj;
-			return this.eventTitle.equals(task.eventTitle) &&
-					this.startDate.equals(task.startDate) &&
-					this.endDate.equals(task.endDate) &&
-					this.hasTime == task.hasTime && 
-					this.isComplete == task.isComplete &&
-					this.isRepeat == task.isRepeat &&
-					this.blocking == task.blocking &&
-					this.importance.equals(task.importance);
+
+		if (obj instanceof Task) {
+			Task task = (Task) obj;
+
+			if (this.startDate == null && task.startDate != null) {
+				return false;
+			}
+
+			if (this.startDate != null && task.startDate == null) {
+				return false;
+			}
+
+			if (this.startDate != null && task.startDate != null) {
+				if (!this.startDate.equals(task.startDate)) {
+					return false;
+				}
+			}
+
+			if (this.endDate == null && task.endDate != null) {
+				return false;
+			}
+
+			if (this.endDate != null && task.endDate == null) {
+				return false;
+			}
+
+			if (this.endDate != null && task.endDate != null) {
+				if (!this.endDate.equals(task.endDate)) {
+					return false;
+				}
+			}
+
+			return this.eventTitle.equals(task.eventTitle) && this.hasTime == task.hasTime
+					&& this.isComplete == task.isComplete && this.isRepeat == task.isRepeat
+					&& this.blocking == task.blocking && this.importance.equals(task.importance);
 		} else {
 			return false;
 		}

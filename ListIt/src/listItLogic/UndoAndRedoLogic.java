@@ -59,6 +59,10 @@ public class UndoAndRedoLogic {
 		redo.clear();
 	}
 	
+	public void clearUndo() {
+		undo.clear();
+	}
+	
 	public void storeListToUndoComplete(ArrayList<Task> completeList) {
 		undoComplete.push(completeList);
 	}

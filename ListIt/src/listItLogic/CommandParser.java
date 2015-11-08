@@ -1,8 +1,5 @@
 package listItLogic;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 public class CommandParser {
 	private static final String WHITESPACE = " ";
 	
@@ -10,7 +7,7 @@ public class CommandParser {
 		
 	}
 	
-	public static void processCommand(String command) throws InvalidCommandException, FileNotFoundException, IOException {
+	public static void processCommand(String command) {
 		
 		assert command != null;
 		

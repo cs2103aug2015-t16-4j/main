@@ -1,8 +1,5 @@
 package listItUI;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -13,7 +10,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import listItLogic.CommandParser;
-import listItLogic.InvalidCommandException;
 
 public class InputTextPane extends GridPane implements EventHandler<ActionEvent> {
 
@@ -52,19 +48,11 @@ public class InputTextPane extends GridPane implements EventHandler<ActionEvent>
 	public void handle(ActionEvent event) {
 		if (event.getSource() == inputField) {
 			String command = inputField.getText();
-			try {
-				CommandParser.processCommand(command);
-			} catch (InvalidCommandException e) {
-				e.printStackTrace();
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			CommandParser.processCommand(command);
 			inputField.setText("");
 		}
 	}
-	
+
 	public TextField getTextField() {
 		return inputField;
 	}
