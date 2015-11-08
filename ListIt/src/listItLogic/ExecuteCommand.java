@@ -8,6 +8,15 @@ import fileModifier.FileModifier;
 import listItUI.FeedbackPane;
 import taskGenerator.Task;
 
+/**
+ * This class contains methods to perform the selection logic action to take,
+ * after the command is parsed (by CommandParser). After the action is confirmed,
+ * the modified task list is stored to both the temporary undo and redo stacks and
+ * then the logic actions are carried out.  
+ * @author Shrestha
+ * @version 0.5
+ *
+ */
 public class ExecuteCommand {
 
 	private static final String WHITESPACE = " ";
@@ -39,6 +48,12 @@ public class ExecuteCommand {
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	private static FileModifier modifier = FileModifier.getInstance();
 
+	/**
+	 * Process the commands that has white space(more than 1 word). Possible commands are
+	 * add, edit, delete, complete, search, display, change directory. Also stores the
+	 * task list and the completed task list to the undo and redo stacks.
+	 * @param command String command entered by the user with more than 1 word
+	 */
 	public static void processCommandWithSpace(String command) {
 		String commandType = getCommandType(command);
 
@@ -130,11 +145,20 @@ public class ExecuteCommand {
 		}
 	}
 
+	/**
+	 * Clears the redo stack
+	 */
 	private static void clearRedoList() {
 		undoRedo.clearRedo();
 		undoRedo.clearRedoComplete();
 	}
 
+	/**
+	 * Saves the current list to the undo stack for both the completed task list
+	 * as well as the normal task list
+	 * @param taskList normal task list
+	 * @param taskCompleteList completed task list
+	 */
 	private static void saveCurrentFileToUndoList(ArrayList<Task> taskList,
 			                            ArrayList<Task> taskCompleteList) {
 		undoRedo.storeListToUndo(taskList);
@@ -144,7 +168,13 @@ public class ExecuteCommand {
 	private static String getCommandType(String command) {
 		return command.substring(0, command.indexOf(WHITESPACE));
 	}
-
+	
+	/**
+     * Process the commands that has no white space(1 word commands). Possible commands are
+	 * display, exit, help and clear. Also stores the
+	 * task list and the completed task list to the undo and redo stacks.
+	 * @param command String command entered by the user with 1 word only.
+	 */
 	public static void processCommandWithoutSpace(String command) {
 		if (command.equals(DISPLAY_COMMAND)) {
 			DisplayLogic.defaultDisplay();
@@ -193,6 +223,11 @@ public class ExecuteCommand {
 		}
 	}
 
+	/**
+	 * Updates both task list and completed task list by saving it, then displays it.
+	 * @param previousTaskList
+	 * @param previousCompleteTaskList
+	 */
 	private static void updateAndSaveFile(ArrayList<Task> previousTaskList,
 			                              ArrayList<Task> previousCompleteTaskList) {
 		modifier.saveFile(previousTaskList);
@@ -200,6 +235,11 @@ public class ExecuteCommand {
 		modifier.display();
 	}
 
+	/**
+	 * Saves the current list to the redo stack for the completed task list
+	 * as well as the normal task list
+	 * @param taskCompleteList completed task list
+	 */
 	private static void saveCurrentFileToRedoList(ArrayList<Task> completedList) {
 		undoRedo.storeListToRedo(modifier.getContentList());
 		undoRedo.storeListToRedoComplete(completedList);
