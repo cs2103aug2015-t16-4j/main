@@ -9,6 +9,13 @@ import taskGenerator.TaskComparatorImpt;
 
 import java.util.Collections;
 
+/**
+ * This class contains methods which displays the output(created tasks) as a
+ * task list to the user. The task lists will be sorted according to how the
+ * user wants the tasks to be displayed.
+ * @author Shrestha
+ * @version 0.5
+ */
 public class DisplayLogic {
 
 	private static final String DISPLAY_ALPHA = "display alpha";
@@ -22,6 +29,11 @@ public class DisplayLogic {
 	private static ArrayList<Task> list = new ArrayList<Task>();
 	static FileModifier modifier = FileModifier.getInstance();
 
+	/**
+	 * This method finds out the display mode which the user wants the tasks to be 
+	 * displayed by, then displays it to the user.
+	 * @param command display mode keyword (impt, alpha, complete, default)
+	 */
 	public static void determineDisplayMode(String command) {
 		if (isDisplayAlphabetically(command)) {
 			displayByAlpha();
@@ -34,42 +46,74 @@ public class DisplayLogic {
 		}
 	}
 
+	/**
+	 * Checks if the command entered has the keyword "impt"
+	 * @param command String command entered by the user with the keyword "display"
+	 * @return true if command contains "impt", else returns false.
+	 */
 	private static boolean isDisplayByImportance(String command) {
 		return command.equals(DISPLAY_IMPT);
 	}
 
+	/**
+	 * Checks if the command entered has the keyword "alpha"
+	 * @param command String command entered by the user with the keyword "display"
+	 * @return true if command contains "alpha", else returns false.
+	 */
 	private static boolean isDisplayAlphabetically(String command) {
 		return command.equals(DISPLAY_ALPHA);
 	}
 	
+	/**
+	 * Checks if the command entered has the keyword "complete"
+	 * @param command String command entered by the user with the keyword "display"
+	 * @return true if command contains "complete", else returns false.
+	 */
 	private static boolean isDisplayByComplete(String command) {
 		return command.equals(DISPLAY_COMPLETE);
 	}
 
+	/**
+	 * Gets the task list, and sorts the list alphabetically.
+	 */
 	private static void displayByAlpha() {
 		list = modifier.getContentList();
 		modifier.setViewMode(COMMAND_ALPHA);
 		updateFile();
 	}
 
+	/**
+	 * Gets the task list, and sorts the list by importance.
+	 */
 	private static void displayByImportance() {
 		list = modifier.getContentList();
 		modifier.setViewMode(COMMAND_IMPT);
 		updateFile();
 	}
 	
+	/**
+	 * Gets the completed task list and displays it as it is.
+	 * Tasks are sorted on what is completed first
+	 */
 	private static void displayByComplete() {
 		list = modifier.getCompleteContentList();
 		modifier.setViewMode(COMMAND_COMPLETE);
 		updateFileComplete();
 	}
 
+	/**
+	 * Gets the task list and displays it by our default sorting.
+	 */
 	public static void defaultDisplay() {
 		list = modifier.getContentList();
 		modifier.setViewMode(COMMAND_DEFAULT);
 		updateFile();
 	}
 	
+	/**
+	 * Updates the data file of task list so that the task list is sorted 
+	 * and then saved. After which, it is displayed to the user.
+	 */
 	private static void updateFile() {
 		modifier.sort(list);
 		modifier.updateIndex(list);
@@ -77,7 +121,11 @@ public class DisplayLogic {
 		modifier.saveFile(list);
 		modifier.display(list);
 	}
-	
+
+	/**
+	 * Updates the completed data file of task lists so that the list is
+	 * saved. After which, it is displayed to the user.
+	 */
 	private static void updateFileComplete() {
 		modifier.updateIndex(list);
 		modifier.saveCompleteFile(list);
