@@ -220,7 +220,7 @@ public class UnitTest {
 				              "15122015", 1);
 		expected.add(task3);
 		AddLogic.addEventWithTimeline("add attend JP Morgon conference from "
-				                       + "1212015 to 15122015 rank 1");
+				                       + "12122015 to 15122015 rank 1");
 		
 		actual = modifier.getContentList();
 		

@@ -26,8 +26,7 @@ public class AddLogic {
 	private static final String MESSAGE_RECUR_START = "please enter a start date";
 	private static final String MESSAGE_RECUR_END = "please enter an end date";
 	private static final String MESSAGE_RECUR_CYCLE = "please enter a recur cycle";
-	private static final String MESSAGE_INVALID_RANGE = "start date should be "
-			                                            + "earlier than end date";
+	private static final String MESSAGE_INVALID_RANGE = "start date should be " + "earlier than end date";
 	private static final String COMMAND_BY = "by";
 	private static final String FORMAT_DATE = "ddMMyyyy";
 	private static final String FORMAT_DATETIME = "ddMMyyyy HHmm";
@@ -105,11 +104,9 @@ public class AddLogic {
 
 	public static boolean isDayOfWeek(String deadline) {
 		deadline = deadline.toLowerCase();
-		if (deadline.contains(DAY_MONDAY) || deadline.contains(DAY_TUESDAY) 
-			|| deadline.contains(DAY_WEDNESDAY) || deadline.contains(DAY_THURSDAY) 
-			|| deadline.contains(DAY_FRIDAY) || deadline.contains(DAY_SATURDAY)
-			|| deadline.contains(DAY_SUNDAY) || deadline.contains(DAY_TOMORROW) 
-			|| deadline.contains(DAY_WEEK)) {
+		if (deadline.contains(DAY_MONDAY) || deadline.contains(DAY_TUESDAY) || deadline.contains(DAY_WEDNESDAY)
+				|| deadline.contains(DAY_THURSDAY) || deadline.contains(DAY_FRIDAY) || deadline.contains(DAY_SATURDAY)
+				|| deadline.contains(DAY_SUNDAY) || deadline.contains(DAY_TOMORROW) || deadline.contains(DAY_WEEK)) {
 			return true;
 		} else {
 			return false;
@@ -243,13 +240,9 @@ public class AddLogic {
 					if (isValidDate(deadline)) {
 						Task newTask;
 						if (containsTime(deadline)) {
-							newTask = createTaskWithDeadlineRankAndTime(eventTitle,
-									                                    deadline, 
-									                                    rank);
+							newTask = createTaskWithDeadlineRankAndTime(eventTitle, deadline, rank);
 						} else {
-							newTask = createTaskWithDeadlineAndRank(eventTitle, 
-									                                deadline,
-									                                rank);
+							newTask = createTaskWithDeadlineAndRank(eventTitle, deadline, rank);
 						}
 						modifier.addTask(newTask);
 					} else {
@@ -285,15 +278,11 @@ public class AddLogic {
 		}
 	}
 
-	private static Task createTaskWithDeadlineAndRank(String eventTitle, 
-			                                          String deadline,
-			                                          int rank) {
+	private static Task createTaskWithDeadlineAndRank(String eventTitle, String deadline, int rank) {
 		return new Task(eventTitle, deadline, rank);
 	}
 
-	private static Task createTaskWithDeadlineRankAndTime(String eventTitle,
-			                                              String deadline,
-			                                              int rank) {
+	private static Task createTaskWithDeadlineRankAndTime(String eventTitle, String deadline, int rank) {
 		return new Task(eventTitle, deadline, rank, true);
 	}
 
@@ -310,8 +299,7 @@ public class AddLogic {
 	}
 
 	private static String getEventDeadlineImportance(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_BY) + 3, 
-				                 command.lastIndexOf(COMMAND_RANK) - 1);
+		return command.substring(command.lastIndexOf(COMMAND_BY) + 3, command.lastIndexOf(COMMAND_RANK) - 1);
 	}
 
 	private static boolean isEventWithDeadline(String command) {
@@ -322,28 +310,53 @@ public class AddLogic {
 		String eventTitle = new String();
 		String startDate = new String();
 		String endDate = new String();
-		boolean isValidOnCommand = true;
+		boolean isValidOnCommand = false;
 
 		if (command.contains(COMMAND_ON)) {
 			try {
 				eventTitle = getEventTitleBeforeOn(command);
 				startDate = getSingleDateStartTime(command);
-				endDate = getSingleDateEndTime(command);
+				isValidOnCommand = true;
 			} catch (Exception e) {
 				isValidOnCommand = false;
 			}
-			if (isValidDate(startDate) && isValidDate(endDate) 
-				&& isValidOnCommand == true) {
-				if (isValidRank(command)) {
-					addTaskWithTimelineAndRank(command, eventTitle, startDate,
-							                   endDate);
-				} else if (isRankNonCommand(command)) {
-					addTaskWithTimelineAndNoRank(command, eventTitle, startDate,
-							                     endDate);
+			if (isValidDate(startDate) && isValidOnCommand == true) {
+				if (isEventWithImportance(command)) {
+					if (isValidRank(command)) {
+						endDate = getSingleDateEndTimeWithImportance(command);
+						if (isCorrectRange(startDate, endDate)) {
+							addTaskWithTimelineAndRank(command, eventTitle, startDate, endDate);
+							return;
+						} else {
+							FeedbackPane.displayInvalidDate();
+							return;
+						}
+					} else if (isRankNonCommand(command)) {
+						endDate = getSingleDateEndTime(command);
+						if (isCorrectRange(startDate, endDate)) {
+							addTaskWithTimelineAndNoRank(command, eventTitle, startDate, endDate);
+							return;
+						} else {
+							FeedbackPane.displayInvalidDate();
+							return;
+						}
+					} else {
+						addRankMessage = MESSAGE_INVALID_RANK;
+						FeedbackPane.displayInvalidInput();
+						return;
+					}
 				} else {
-					addRankMessage = MESSAGE_INVALID_RANK;
-					FeedbackPane.displayInvalidInput();
+					if (isCorrectRange(startDate, endDate)) {
+						addTaskWithTimelineAndNoRank(command, eventTitle, startDate, endDate);
+						return;
+					} else {
+						FeedbackPane.displayInvalidDate();
+						return;
+					}
 				}
+			} else {
+				FeedbackPane.displayInvalidDate();
+				return;
 			}
 		}
 
@@ -351,56 +364,62 @@ public class AddLogic {
 			eventTitle = getEventTitleTimeline(command);
 			startDate = getStartDate(command);
 			if (isValidDate(startDate)) {
-				if (isCorrectRange(startDate, endDate)) {
-					if (isEventWithImportance(command)) {
-						if (isValidRank(command)) {
-							endDate = getEndDateImportance(command);
-							addTaskWithTimelineAndRank(command, eventTitle,
-									                   startDate, endDate);
-						} else if (isRankNonCommand(command)) {
-							endDate = getEndDateTimeline(command);
-							addTaskWithTimelineAndNoRank(command, eventTitle,
-									                     startDate, endDate);
+				if (isEventWithImportance(command)) {
+					if (isValidRank(command)) {
+						endDate = getEndDateImportance(command);
+						if (isCorrectRange(startDate, endDate)) {
+							addTaskWithTimelineAndRank(command, eventTitle, startDate, endDate);
 						} else {
-							addRankMessage = MESSAGE_INVALID_RANK;
-							FeedbackPane.displayInvalidInput();
+							FeedbackPane.displayInvalidDate();
+						}
+					} else if (isRankNonCommand(command)) {
+						endDate = getEndDateTimeline(command);
+						if (isCorrectRange(startDate, endDate)) {
+							addTaskWithTimelineAndNoRank(command, eventTitle, startDate, endDate);
+						} else {
+							FeedbackPane.displayInvalidDate();
 						}
 					} else {
-						endDate = getEndDateTimeline(command);
-						addTaskWithTimelineAndNoRank(command, eventTitle,
-								                     startDate, endDate);
+						addRankMessage = MESSAGE_INVALID_RANK;
+						FeedbackPane.displayInvalidInput();
 					}
 				} else {
-					FeedbackPane.displayInvalidDate();
-					return;
+					endDate = getEndDateTimeline(command);
+					if (isCorrectRange(startDate, endDate)) {
+						addTaskWithTimelineAndNoRank(command, eventTitle, startDate, endDate);
+						return;
+					} else {
+						FeedbackPane.displayInvalidDate();
+						return;
+					}
 				}
-			} else {
-				AddLogic.addEventDefault(command);
 			}
+		} else {
+			AddLogic.addEventDefault(command);
 		}
+	}
+
+	private static String getSingleDateEndTimeWithImportance(String command) {
+		return command.substring(command.lastIndexOf("to") + 3, command.lastIndexOf("rank") - 1);
 	}
 
 	private static String getEventTitleBeforeOn(String command) {
 		return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
 	}
 
-	private static void addTaskWithTimelineAndNoRank(String command, 
-			                                         String eventTitle,
-			                                         String startDate,
-			                                         String endDate) {
+	private static void addTaskWithTimelineAndNoRank(String command, String eventTitle, String startDate,
+			String endDate) {
 		Task newTask;
 		if (containsTime(endDate)) {
-			newTask = createBlockedTaskWithTime(eventTitle, startDate, endDate);
+			newTask = new Task(eventTitle, startDate, endDate, true);
 		} else {
-			newTask = createBlockedTaskWithNoTime(eventTitle, startDate, endDate);
+			newTask = new Task(eventTitle, startDate, endDate);
 		}
 		modifier.addTask(newTask);
 	}
 
-	private static void addTaskWithTimelineAndRank(String command, 
-			                                       String eventTitle, 
-			                                       String startDate,
-			                                       String endDate) {
+	private static void addTaskWithTimelineAndRank(String command, String eventTitle, String startDate,
+			String endDate) {
 		int rank = getRankValue(command);
 		Task newTask;
 		if (containsTime(endDate)) {
@@ -412,22 +431,19 @@ public class AddLogic {
 	}
 
 	private static String getSingleDateEndTime(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_ON) + 3, 
-			   command.lastIndexOf(COMMAND_START_TIME) - 1) + " "
-			   + command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
+		return command.substring(command.lastIndexOf(COMMAND_ON) + 3, command.lastIndexOf(COMMAND_START_TIME) - 1) + " "
+				+ command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
 	}
 
 	private static String getSingleDateStartTime(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_ON) + 3, 
-			   command.lastIndexOf(COMMAND_START_TIME) - 1) + " "
+		return command.substring(command.lastIndexOf(COMMAND_ON) + 3, command.lastIndexOf(COMMAND_START_TIME) - 1) + " "
 				+ command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
-				command.lastIndexOf(COMMAND_END_TIME) - 1);
+						command.lastIndexOf(COMMAND_END_TIME) - 1);
 	}
 
 	private static boolean isRankNonCommand(String command) {
 		try {
-			int rank = Integer.parseInt(command.substring(
-					                    command.lastIndexOf(COMMAND_RANK) + 5));
+			int rank = Integer.parseInt(command.substring(command.lastIndexOf(COMMAND_RANK) + 5));
 			return false;
 		} catch (NumberFormatException e) {
 			return true;
@@ -455,7 +471,7 @@ public class AddLogic {
 
 	private static String getStartDate(String command) {
 		return command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
-				                 command.lastIndexOf(COMMAND_END_TIME) - 1);
+				command.lastIndexOf(COMMAND_END_TIME) - 1);
 	}
 
 	private static String getEventTitleTimeline(String command) {
@@ -467,8 +483,7 @@ public class AddLogic {
 	}
 
 	private static String getEndDateImportance(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3,
-				                 command.lastIndexOf(COMMAND_RANK) - 1);
+		return command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3, command.lastIndexOf(COMMAND_RANK) - 1);
 	}
 
 	private static boolean isEventWithImportance(String command) {
@@ -479,12 +494,9 @@ public class AddLogic {
 		String deadline = null;
 		String repeatType = null;
 		int repeatCycle = 0;
-		String eventTitle = command.substring(4, 
-				                              command.lastIndexOf(COMMAND_REPEAT) 
-				                              - 1);
-		String repeatCommand = command.substring(command.lastIndexOf(COMMAND_REPEAT)
-				                                 + 7, command.lastIndexOf(COMMAND_ON)
-				                                 - 1);
+		String eventTitle = command.substring(4, command.lastIndexOf(COMMAND_REPEAT) - 1);
+		String repeatCommand = command.substring(command.lastIndexOf(COMMAND_REPEAT) + 7,
+				command.lastIndexOf(COMMAND_ON) - 1);
 		if (isCorrectRepeatCycle(repeatCommand)) {
 			repeatType = parseRepeatType(repeatCommand);
 			repeatCycle = parseRepeatAmount(repeatCommand);
@@ -495,16 +507,11 @@ public class AddLogic {
 			}
 			if (isValidDate(deadline) && repeatCycle != 0) {
 				if (containsTime(deadline)) {
-					Task newTask = createRecurringTaskWithDeadlineAndTime(deadline,
-							                                              repeatType,
-							                                              repeatCycle,
-							                                              eventTitle);
+					Task newTask = createRecurringTaskWithDeadlineAndTime(deadline, repeatType, repeatCycle,
+							eventTitle);
 					modifier.addTask(newTask);
 				} else {
-					Task newTask = createRecurringTaskWithDeadline(deadline,
-							                                       repeatType,
-							                                       repeatCycle,
-							                                       eventTitle);
+					Task newTask = createRecurringTaskWithDeadline(deadline, repeatType, repeatCycle, eventTitle);
 					modifier.addTask(newTask);
 				}
 			} else if (!hasRepeatCycle(repeatCycle)) {
@@ -524,17 +531,13 @@ public class AddLogic {
 		}
 	}
 
-	private static Task createRecurringTaskWithDeadline(String deadline,
-			                                            String repeatType,
-			                                            int repeatCycle,
-			                                            String eventTitle) {
+	private static Task createRecurringTaskWithDeadline(String deadline, String repeatType, int repeatCycle,
+			String eventTitle) {
 		return new Task(eventTitle, repeatType, repeatCycle, deadline, true);
 	}
 
-	private static Task createRecurringTaskWithDeadlineAndTime(String deadline,
-			                                                   String repeatType,
-			                                                   int repeatCycle, 
-			                                                   String eventTitle) {
+	private static Task createRecurringTaskWithDeadlineAndTime(String deadline, String repeatType, int repeatCycle,
+			String eventTitle) {
 		return new Task(eventTitle, repeatType, repeatCycle, deadline, true, true);
 	}
 
@@ -552,8 +555,7 @@ public class AddLogic {
 
 	private static int parseRepeatAmount(String repeatCycle) {
 		try {
-			int cycle = Integer.parseInt(repeatCycle.substring(0, 
-					                     repeatCycle.indexOf(WHITESPACE)));
+			int cycle = Integer.parseInt(repeatCycle.substring(0, repeatCycle.indexOf(WHITESPACE)));
 			return cycle;
 		} catch (StringIndexOutOfBoundsException e) {
 			return 0;
@@ -566,13 +568,11 @@ public class AddLogic {
 
 	public static boolean isCorrectRepeatCycle(String repeatCycle) {
 		boolean isCorrect = false;
-		
+
 		assert repeatCycle != null;
 
-		if (repeatCycle.contains(REPEAT_DAILY) 
-			|| repeatCycle.contains(REPEAT_MONTHLY)
-			|| repeatCycle.contains(REPEAT_YEARLY) 
-			|| repeatCycle.contains(REPEAT_WEEKLY)) {
+		if (repeatCycle.contains(REPEAT_DAILY) || repeatCycle.contains(REPEAT_MONTHLY)
+				|| repeatCycle.contains(REPEAT_YEARLY) || repeatCycle.contains(REPEAT_WEEKLY)) {
 			isCorrect = true;
 
 		}
@@ -584,40 +584,28 @@ public class AddLogic {
 		String endDate = null;
 		String repeatType = null;
 		int repeatCycle = 0;
-		String eventTitle = command.substring(4, command.lastIndexOf(COMMAND_REPEAT)
-				                                                     - 1);
-		String repeatCommand = command.substring(command.lastIndexOf(COMMAND_REPEAT)
-				                                                     + 7,
-				                                 command.lastIndexOf(COMMAND_START_TIME)
-				                                                     - 1);
+		String eventTitle = command.substring(4, command.lastIndexOf(COMMAND_REPEAT) - 1);
+		String repeatCommand = command.substring(command.lastIndexOf(COMMAND_REPEAT) + 7,
+				command.lastIndexOf(COMMAND_START_TIME) - 1);
 		if (isCorrectRepeatCycle(repeatCommand)) {
 			repeatType = parseRepeatType(repeatCommand);
 			repeatCycle = parseRepeatAmount(repeatCommand);
 			try {
-				startDate = command.substring(command.lastIndexOf(COMMAND_START_TIME)
-						                                          + 5,
-						                                          command.lastIndexOf(COMMAND_END_TIME)
-						                                          - 1);
-				endDate = command.substring(command.lastIndexOf(COMMAND_END_TIME)
-						                                        + 3);
+				startDate = command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
+						command.lastIndexOf(COMMAND_END_TIME) - 1);
+				endDate = command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
 			} catch (Exception e) {
 				startDate = EMPTY_STRING;
 				endDate = EMPTY_STRING;
 			}
 			if (isValidDate(startDate) && hasRepeatCycle(repeatCycle)) {
 				if (containsTime(startDate)) {
-					Task newTask = createRecurringTaskWithTimeline(startDate,
-							                                       endDate,
-							                                       repeatType,
-							                                       repeatCycle,
-							                                       eventTitle);
+					Task newTask = createRecurringTaskWithTimeline(startDate, endDate, repeatType, repeatCycle,
+							eventTitle);
 					modifier.addTask(newTask);
 				} else {
-					Task newTask = createRecurringTaskWithTimelineAndNoTime(startDate,
-							                                                endDate,
-							                                                repeatType,
-							                                                repeatCycle,
-							                                                eventTitle);
+					Task newTask = createRecurringTaskWithTimelineAndNoTime(startDate, endDate, repeatType, repeatCycle,
+							eventTitle);
 					modifier.addTask(newTask);
 				}
 			} else if (isDeadlineEmpty(startDate)) {
@@ -637,22 +625,14 @@ public class AddLogic {
 		}
 	}
 
-	private static Task createRecurringTaskWithTimelineAndNoTime(String startDate,
-			                                                     String endDate,
-			                                                     String repeatType,
-			                                                     int repeatCycle,
-			                                                     String eventTitle) {
-		return new Task(eventTitle, repeatType, repeatCycle, startDate,
-				        endDate, true);
+	private static Task createRecurringTaskWithTimelineAndNoTime(String startDate, String endDate, String repeatType,
+			int repeatCycle, String eventTitle) {
+		return new Task(eventTitle, repeatType, repeatCycle, startDate, endDate, true);
 	}
 
-	private static Task createRecurringTaskWithTimeline(String startDate, 
-			                                            String endDate,
-			                                            String repeatType,
-			                                            int repeatCycle,
-			                                            String eventTitle) {
-		return new Task(eventTitle, repeatType, repeatCycle, startDate, endDate,
-				        true, true);
+	private static Task createRecurringTaskWithTimeline(String startDate, String endDate, String repeatType,
+			int repeatCycle, String eventTitle) {
+		return new Task(eventTitle, repeatType, repeatCycle, startDate, endDate, true, true);
 	}
 
 	public static void addBlockEvent(String command) {
@@ -663,9 +643,9 @@ public class AddLogic {
 		if (isValidDate(end) && isValidDate(start)) {
 			if (isCorrectRange(start, end)) {
 				if (containsTime(end)) {
-					newTask = createBlockedTaskWithTime(eventTitle, start, end);
+					newTask = new Task(eventTitle, start, end, true);
 				} else {
-					newTask = createBlockedTaskWithNoTime(eventTitle, start, end);
+					newTask = new Task(eventTitle, start, end);
 				}
 				newTask.setBlocking(true);
 				modifier.addTask(newTask);
@@ -679,16 +659,6 @@ public class AddLogic {
 			LoggingLogic.logging(addBlockMessage);
 			FeedbackPane.displayInvalidAdd();
 		}
-	}
-
-	private static Task createBlockedTaskWithNoTime(String eventTitle,
-			                                        String start, String end) {
-		return new Task(eventTitle, start, end);
-	}
-
-	private static Task createBlockedTaskWithTime(String eventTitle,
-			                                      String start, String end) {
-		return new Task(eventTitle, start, end, true);
 	}
 
 	private static boolean isCorrectRange(String start, String end) {
@@ -724,8 +694,7 @@ public class AddLogic {
 	}
 
 	private static String getBlockEventStartDate(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_BLOCK) + 6,
-				                 command.lastIndexOf(COMMAND_END_TIME) - 1);
+		return command.substring(command.lastIndexOf(COMMAND_BLOCK) + 6, command.lastIndexOf(COMMAND_END_TIME) - 1);
 	}
 
 	private static String getEventTitleBlock(String command) {
