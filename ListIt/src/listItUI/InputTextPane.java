@@ -20,14 +20,25 @@ public class InputTextPane extends GridPane implements EventHandler<ActionEvent>
 	public InputTextPane() {
 		setPadding(new Insets(10, 10, 10, 10));
 
-		inputLabel = new Text("command:  ");
+		setupLabel();
+
+		setupTextField();
+		
+		setupInputAction();
+
+		setConstraints(inputLabel, 0, 0);
+		setConstraints(inputField, 1, 0);
+
+		getChildren().addAll(inputLabel, inputField);
+	}
+
+	private void setupTextField() {
 		inputField = new TextField();
-
-		inputField.setPrefSize(540, 20);
-		inputLabel.setStyle("-fx-fill: linear-gradient(#0033CC 30%, #0029A3 60%, #001A66 90%);");
-
 		inputField.setOnAction(this);
+		inputField.setPrefSize(540, 20);
+	}
 
+	private void setupInputAction() {
 		inputField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 			@Override
@@ -38,11 +49,11 @@ public class InputTextPane extends GridPane implements EventHandler<ActionEvent>
 			}
 
 		});
+	}
 
-		setConstraints(inputLabel, 0, 0);
-		setConstraints(inputField, 1, 0);
-
-		getChildren().addAll(inputLabel, inputField);
+	private void setupLabel() {
+		inputLabel = new Text("command:  ");
+		inputLabel.setStyle("-fx-fill: linear-gradient(#0033CC 30%, #0029A3 60%, #001A66 90%);");
 	}
 
 	public void handle(ActionEvent event) {

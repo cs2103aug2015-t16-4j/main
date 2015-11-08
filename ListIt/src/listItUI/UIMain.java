@@ -37,14 +37,21 @@ public class UIMain extends Application {
 		
 		GridPane layout = new GridPane();
 		
-		GridPane.setConstraints(topBar, 0, 0);
-		GridPane.setConstraints(screenBox, 0, 1);
-		GridPane.setConstraints(feedbackBox, 0, 2);
-		GridPane.setConstraints(inputBox, 0, 3);
+		componentLayoutSetup(layout);
 		
-		layout.getChildren().addAll(topBar, screenBox, feedbackBox, inputBox);
+		windowDragSetup(primaryStage, layout);
 		
-		//Used to move undecorated window
+		Scene scene = new Scene(layout, 630, 600);
+		scene.getStylesheets().add("listItUI/ListItUITheme.css");
+		
+		inputBox.getTextField().requestFocus();
+		
+		primaryStage.setScene(scene);
+		primaryStage.show();
+		modifier.display(modifier.getContentList());
+	}
+
+	private void windowDragSetup(Stage primaryStage, GridPane layout) {
 		layout.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -59,15 +66,15 @@ public class UIMain extends Application {
                 primaryStage.setY(event.getScreenY() - yOffset);
             }
         });
+	}
+
+	private void componentLayoutSetup(GridPane layout) {
+		GridPane.setConstraints(topBar, 0, 0);
+		GridPane.setConstraints(screenBox, 0, 1);
+		GridPane.setConstraints(feedbackBox, 0, 2);
+		GridPane.setConstraints(inputBox, 0, 3);
 		
-		Scene scene = new Scene(layout, 630, 600);
-		scene.getStylesheets().add("listItUI/ListItUITheme.css");
-		
-		inputBox.getTextField().requestFocus();
-		
-		primaryStage.setScene(scene);
-		primaryStage.show();
-		modifier.display(modifier.getContentList());
+		layout.getChildren().addAll(topBar, screenBox, feedbackBox, inputBox);
 	}
 	
 	public static void popUpHelp(ArrayList<String> commands, ArrayList<String> methods) {
@@ -79,6 +86,7 @@ public class UIMain extends Application {
 		ScrollPane helpLayout = new ScrollPane();
 		
 		GridPane helpSheet = new GridPane();
+		
 		ColumnConstraints col0Constraints = new ColumnConstraints();
 		col0Constraints.setPercentWidth(40);
 		ColumnConstraints col1Constraints = new ColumnConstraints();

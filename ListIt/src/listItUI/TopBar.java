@@ -19,20 +19,9 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 	
 	public TopBar() {
 		
-		listItLabel = new Text("List It");
-		listItLabel.setFont(Font.font("Tonto", FontPosture.ITALIC, 30));
-		listItLabel.setStyle("-fx-fill: linear-gradient(#0000FF 10%, #FFFFFF 30%, #0000FF 50%, #FFFFFF 70%, #0000FF 90%);"
-				+ "-fx-stroke: black;");
+		setupSoftwareLabel();
 		
-		closeButton = new Button();
-		closeButton.setOnAction(this);
-		
-		Image closeIcon = new Image(getClass().getResourceAsStream("icon1.png"));
-		ImageView iconView = new ImageView(closeIcon);
-		iconView.setFitHeight(40);
-		iconView.setFitWidth(40);
-		closeButton.setMaxSize(40, 40);
-		closeButton.setGraphic(iconView);
+		setupCloseButton();
 		
 		setConstraints(listItLabel, 1, 0);
 		setConstraints(closeButton, 2, 0);
@@ -46,6 +35,25 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 		
 		getColumnConstraints().addAll(col0Constraints, col1Constraints, col2Constraints);
 		getChildren().addAll(listItLabel, closeButton);
+	}
+
+	private void setupSoftwareLabel() {
+		listItLabel = new Text("List It");
+		listItLabel.setFont(Font.font("Tonto", FontPosture.ITALIC, 30));
+		listItLabel.setStyle("-fx-fill: linear-gradient(#0000FF 10%, #FFFFFF 30%, #0000FF 50%, #FFFFFF 70%, #0000FF 90%);"
+				+ "-fx-stroke: black;");
+	}
+
+	private void setupCloseButton() {
+		closeButton = new Button();
+		closeButton.setOnAction(this);
+		
+		Image closeIcon = new Image(getClass().getResourceAsStream("icon1.png"));
+		ImageView iconView = new ImageView(closeIcon);
+		iconView.setFitHeight(40);
+		iconView.setFitWidth(40);
+		closeButton.setMaxSize(40, 40);
+		closeButton.setGraphic(iconView);
 	}
 
 	@Override

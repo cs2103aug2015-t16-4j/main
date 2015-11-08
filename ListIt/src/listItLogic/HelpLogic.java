@@ -45,7 +45,7 @@ public class HelpLogic {
 		commandList.add("add event with no deadline");
 		commandList.add("add event with rank");
 		commandList.add("add recurring tasks");
-		commandList.add("add events with range of dates");
+		commandList.add("add timeline events with blocking ability");
 		commandList.add("edit date only");
 		commandList.add("edit title only");
 		commandList.add("edit timeline only");

@@ -14,31 +14,41 @@ import taskGenerator.Task;
 
 public class OutputScreenPane extends GridPane {
 
-	private Text displayHeader;
+	private Text displayLabel;
 	private static VBox taskList;
 	private static ScrollPane Screen;
 
 	public OutputScreenPane() {
 		setPadding(new Insets(10, 10, 10, 10));
 
-		displayHeader = new Text("Display:");
-		displayHeader.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
-		displayHeader.setStyle("-fx-fill: linear-gradient(#0033CC 30%, #0029A3 60%, #001A66 90%);");
+		setupDisplayLabel();
 
-		taskList = new VBox();
-		taskList.setStyle("-fx-background-color: #FFFFFF;");
+		setupDisplayScreen();
 
-		taskList.setPrefSize(600, 370);
+		setupScrollbars();
 
-		Screen = new ScrollPane();
-		Screen.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-
-		Screen.setContent(taskList);
-
-		setConstraints(displayHeader, 0, 0);
+		setConstraints(displayLabel, 0, 0);
 		setConstraints(Screen, 0, 1);
 
-		getChildren().addAll(displayHeader, Screen);
+		getChildren().addAll(displayLabel, Screen);
+	}
+
+	private void setupScrollbars() {
+		Screen = new ScrollPane();
+		Screen.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+		Screen.setContent(taskList);
+	}
+
+	private void setupDisplayScreen() {
+		taskList = new VBox();
+		taskList.setStyle("-fx-background-color: #FFFFFF;");
+		taskList.setPrefSize(600, 370);
+	}
+
+	private void setupDisplayLabel() {
+		displayLabel = new Text("Display:");
+		displayLabel.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
+		displayLabel.setStyle("-fx-fill: linear-gradient(#0033CC 30%, #0029A3 60%, #001A66 90%);");
 	}
 
 	public static void displayList(ArrayList<Task> list) {
@@ -55,43 +65,69 @@ public class OutputScreenPane extends GridPane {
 		}
 
 		if (list.get(0).getEndDate() != null) {
-			currentHeader = list.get(0).getEndDateWithoutTime();
+			currentHeader = generateFirstHeader(list);
+		}
+
+		for (int i = 0; i < list.size(); i++) {
+			tempTask = list.get(i);
+			if (tempTask.getEndDate() != null && isFloatingState == false) {
+				currentHeader = generateDateHeader(tempTask, currentHeader);
+			} else if (isDateNull(tempTask) && isFloatingState == false) {
+				isFloatingState = generateFloatingTaskHeader();
+			}
+
+			GridPane taskDetail = new GridPane();
+
+			taskDetail = generateTaskDatail(tempTask, isFloatingState);
+			taskList.getChildren().add(taskDetail);
+		}
+	}
+
+	private static String generateFirstHeader(ArrayList<Task> list) {
+		String currentHeader;
+		Text headerText;
+		currentHeader = list.get(0).getEndDateWithoutTime();
+		headerText = new Text(currentHeader);
+		headerText.setFont(Font.font("Georgia", 20));
+		HBox header = generateHearder(headerText);
+		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+		taskList.getChildren().add(header);
+		return currentHeader;
+	}
+
+	private static boolean generateFloatingTaskHeader() {
+		boolean isFloatingState;
+		Text headerText;
+		headerText = new Text("Floating");
+		headerText.setFont(Font.font("Georgia", 20));
+		HBox header = generateHearder(headerText);
+		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+		taskList.getChildren().add(header);
+		isFloatingState = true;
+		return isFloatingState;
+	}
+
+	private static String generateDateHeader(Task tempTask, String currentHeader) {
+		Text headerText;
+		if (!tempTask.getEndDateWithoutTime().equals(currentHeader)) {
+			currentHeader = tempTask.getEndDateWithoutTime();
 			headerText = new Text(currentHeader);
 			headerText.setFont(Font.font("Georgia", 20));
 			HBox header = generateHearder(headerText);
 			header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
 			taskList.getChildren().add(header);
 		}
+		return currentHeader;
+	}
 
-		for (int i = 0; i < list.size(); i++) {
-			tempTask = list.get(i);
-			if (tempTask.getEndDate() != null && isFloatingState == false) {
-				if (!tempTask.getEndDateWithoutTime().equals(currentHeader)) {
-					currentHeader = tempTask.getEndDateWithoutTime();
-					headerText = new Text(currentHeader);
-					headerText.setFont(Font.font("Georgia", 20));
-					HBox header = generateHearder(headerText);
-					header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
-					taskList.getChildren().add(header);
-				}
-			} else if (isDateNull(tempTask) && isFloatingState == false) {
-				headerText = new Text("Floating");
-				headerText.setFont(Font.font("Georgia", 20));
-				HBox header = generateHearder(headerText);
-				header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
-				taskList.getChildren().add(header);
-				isFloatingState = true;
-			}
-
-			GridPane taskDetail = new GridPane();
-
-			if (isFloatingState) {
-				taskDetail = createFloatingTaskDetail(tempTask);
-			} else {
-				taskDetail = createTaskDetail(tempTask);
-			}
-			taskList.getChildren().add(taskDetail);
+	private static GridPane generateTaskDatail(Task tempTask, boolean isFloatingState) {
+		GridPane taskDetail;
+		if (isFloatingState) {
+			taskDetail = createFloatingTaskDetail(tempTask);
+		} else {
+			taskDetail = createTaskDetail(tempTask);
 		}
+		return taskDetail;
 	}
 
 	private static HBox generateHearder(Text headerText) {
@@ -110,16 +146,20 @@ public class OutputScreenPane extends GridPane {
 
 		index.setFont(Font.font(18));
 
-		setConstraints(index, 0, 0);
-		setConstraints(eventTitle, 1, 0);
-		setConstraints(rank, 1, 1);
-		setConstraints(emptyLine, 0, 2);
+		arrangeTextPosition(index, eventTitle, rank, emptyLine);
 
 		taskDetail.getChildren().addAll(index, eventTitle, rank, emptyLine);
 
 		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #FFCCFF 20%, #FFFFFF 80%);");
 
 		return taskDetail;
+	}
+
+	private static void arrangeTextPosition(Text index, Text eventTitle, Text rank, Text emptyLine) {
+		setConstraints(index, 0, 0);
+		setConstraints(eventTitle, 1, 0);
+		setConstraints(rank, 1, 1);
+		setConstraints(emptyLine, 0, 2);
 	}
 
 	private static GridPane createTaskDetail(Task tempTask) {
@@ -158,40 +198,8 @@ public class OutputScreenPane extends GridPane {
 			repeatCycle = new Text("Repeat for each: " + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
 		}
 
-		setConstraints(index, 0, 0);
-		setConstraints(eventTitle, 1, 0);
-		if (showDates && showRepeat) {
-			setConstraints(startDate, 1, 1);
-			setConstraints(endDate, 1, 2);
-			setConstraints(repeatCycle, 1, 3);
-			setConstraints(rank, 1, 4);
-			setConstraints(emptyLine, 0, 5);
-			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, repeatCycle, rank, emptyLine);
-		} else if (showDates && showBlock) {
-			setConstraints(startDate, 1, 1);
-			setConstraints(blocker, 2, 0);
-			setConstraints(endDate, 1, 2);
-			setConstraints(rank, 1, 3);
-			setConstraints(emptyLine, 0, 4);
-			taskDetail.getChildren().addAll(index, eventTitle, blocker, startDate, endDate, rank, emptyLine);
-		} else if (showDates) {
-			setConstraints(startDate, 1, 1);
-			setConstraints(endDate, 1, 2);
-			setConstraints(rank, 1, 3);
-			setConstraints(emptyLine, 0, 4);
-			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, rank, emptyLine);
-		} else if (showRepeat) {
-			setConstraints(endDate, 1, 1);
-			setConstraints(repeatCycle, 1, 2);
-			setConstraints(rank, 1, 3);
-			setConstraints(emptyLine, 0, 4);
-			taskDetail.getChildren().addAll(index, eventTitle, endDate, repeatCycle, rank, emptyLine);
-		} else {
-			setConstraints(endDate, 1, 1);
-			setConstraints(rank, 1, 2);
-			setConstraints(emptyLine, 0, 3);
-			taskDetail.getChildren().addAll(index, eventTitle, endDate, rank, emptyLine);
-		}
+		placeAllInformationOnPane(taskDetail, showDates, showRepeat, showBlock, index, eventTitle, emptyLine, startDate,
+				endDate, rank, repeatCycle, blocker);
 
 		if (tempTask.isOverDate() && tempTask.isComplete() == false) {
 			taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #FF0000 20%, #FFFFFF 80%);");
@@ -200,6 +208,63 @@ public class OutputScreenPane extends GridPane {
 		}
 
 		return taskDetail;
+	}
+
+	private static void placeAllInformationOnPane(GridPane taskDetail, boolean showDates, boolean showRepeat,
+			boolean showBlock, Text index, Text eventTitle, Text emptyLine, Text startDate, Text endDate, Text rank,
+			Text repeatCycle, Text blocker) {
+		setConstraints(index, 0, 0);
+		setConstraints(eventTitle, 1, 0);
+		if (showDates && showRepeat) {
+			arrangeInformationForRecurringTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate,
+					rank, repeatCycle);
+		} else if (showDates && showBlock) {
+			arrangeInformationForBlockingTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate, rank,
+					blocker);
+		} else if (showDates) {
+			arrangeInformationForTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate, rank);
+		} else if (showRepeat) {
+			arrangeInformationForTimelineTask(taskDetail, index, eventTitle, emptyLine, endDate, repeatCycle, rank);
+		} else {
+			arrangeInformationForDeadlineTask(taskDetail, index, eventTitle, emptyLine, endDate, rank);
+		}
+	}
+
+	private static void arrangeInformationForDeadlineTask(GridPane taskDetail, Text index, Text eventTitle,
+			Text emptyLine, Text endDate, Text rank) {
+		setConstraints(endDate, 1, 1);
+		setConstraints(rank, 1, 2);
+		setConstraints(emptyLine, 0, 3);
+		taskDetail.getChildren().addAll(index, eventTitle, endDate, rank, emptyLine);
+	}
+
+	private static void arrangeInformationForTimelineTask(GridPane taskDetail, Text index, Text eventTitle,
+			Text emptyLine, Text startDate, Text endDate, Text rank) {
+		setConstraints(startDate, 1, 1);
+		setConstraints(endDate, 1, 2);
+		setConstraints(rank, 1, 3);
+		setConstraints(emptyLine, 0, 4);
+		taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, rank, emptyLine);
+	}
+
+	private static void arrangeInformationForBlockingTask(GridPane taskDetail, Text index, Text eventTitle,
+			Text emptyLine, Text startDate, Text endDate, Text rank, Text blocker) {
+		setConstraints(startDate, 1, 1);
+		setConstraints(blocker, 2, 0);
+		setConstraints(endDate, 1, 2);
+		setConstraints(rank, 1, 3);
+		setConstraints(emptyLine, 0, 4);
+		taskDetail.getChildren().addAll(index, eventTitle, blocker, startDate, endDate, rank, emptyLine);
+	}
+
+	private static void arrangeInformationForRecurringTimelineTask(GridPane taskDetail, Text index, Text eventTitle,
+			Text emptyLine, Text startDate, Text endDate, Text rank, Text repeatCycle) {
+		setConstraints(startDate, 1, 1);
+		setConstraints(endDate, 1, 2);
+		setConstraints(repeatCycle, 1, 3);
+		setConstraints(rank, 1, 4);
+		setConstraints(emptyLine, 0, 5);
+		taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, repeatCycle, rank, emptyLine);
 	}
 
 	private static String getRankingText(Integer importance) {
@@ -234,7 +299,6 @@ public class OutputScreenPane extends GridPane {
 		taskList.getChildren().clear();
 
 		headerText.setFont(Font.font("Georgia", 20));
-
 		HBox header = generateHearder(headerText);
 		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
 		taskList.getChildren().add(header);
@@ -301,40 +365,8 @@ public class OutputScreenPane extends GridPane {
 
 		rank = new Text(getRankingText(tempTask.getImportance()));
 
-		setConstraints(index, 0, 0);
-		setConstraints(eventTitle, 1, 0);
-		if (showDates && showRepeat) {
-			setConstraints(startDate, 1, 1);
-			setConstraints(endDate, 1, 2);
-			setConstraints(repeatCycle, 1, 3);
-			setConstraints(rank, 1, 4);
-			setConstraints(emptyLine, 0, 5);
-			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, repeatCycle, rank, emptyLine);
-		} else if (showDates && showBlock) {
-			setConstraints(startDate, 1, 1);
-			setConstraints(blocker, 2, 0);
-			setConstraints(endDate, 1, 2);
-			setConstraints(rank, 1, 3);
-			setConstraints(emptyLine, 0, 4);
-			taskDetail.getChildren().addAll(index, eventTitle, blocker, startDate, endDate, rank, emptyLine);
-		} else if (showDates) {
-			setConstraints(startDate, 1, 1);
-			setConstraints(endDate, 1, 2);
-			setConstraints(rank, 1, 3);
-			setConstraints(emptyLine, 0, 4);
-			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, rank, emptyLine);
-		} else if (showRepeat) {
-			setConstraints(endDate, 1, 1);
-			setConstraints(repeatCycle, 1, 2);
-			setConstraints(rank, 1, 3);
-			setConstraints(emptyLine, 0, 4);
-			taskDetail.getChildren().addAll(index, eventTitle, endDate, repeatCycle, rank, emptyLine);
-		} else {
-			setConstraints(endDate, 1, 1);
-			setConstraints(rank, 1, 2);
-			setConstraints(emptyLine, 0, 3);
-			taskDetail.getChildren().addAll(index, eventTitle, endDate, rank, emptyLine);
-		}
+		placeAllInformationOnPane(taskDetail, showDates, showRepeat, showBlock, index, eventTitle, emptyLine, startDate,
+				endDate, rank, repeatCycle, blocker);
 
 		if (tempTask.isOverDate()) {
 			taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #FF0000 20%, #FFFFFF 80%);");
@@ -437,11 +469,8 @@ public class OutputScreenPane extends GridPane {
 		setConstraints(index, 0, 0);
 		setConstraints(eventTitle, 1, 0);
 		if (showDates && showRepeat) {
-			setConstraints(startDate, 1, 1);
-			setConstraints(endDate, 1, 2);
-			setConstraints(repeatCycle, 1, 3);
-			setConstraints(emptyLine, 0, 4);
-			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, repeatCycle, emptyLine);
+			arrangeInformationForTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate,
+					repeatCycle);
 		} else if (showDates && showBlock) {
 			setConstraints(startDate, 1, 1);
 			setConstraints(blocker, 2, 0);
@@ -449,15 +478,9 @@ public class OutputScreenPane extends GridPane {
 			setConstraints(emptyLine, 0, 3);
 			taskDetail.getChildren().addAll(index, eventTitle, blocker, startDate, endDate, emptyLine);
 		} else if (showDates) {
-			setConstraints(startDate, 1, 1);
-			setConstraints(endDate, 1, 2);
-			setConstraints(emptyLine, 0, 3);
-			taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, emptyLine);
+			arrangeInformationForDeadlineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate);
 		} else if (showRepeat) {
-			setConstraints(endDate, 1, 1);
-			setConstraints(repeatCycle, 1, 2);
-			setConstraints(emptyLine, 0, 3);
-			taskDetail.getChildren().addAll(index, eventTitle, endDate, repeatCycle, emptyLine);
+			arrangeInformationForDeadlineTask(taskDetail, index, eventTitle, emptyLine, endDate, repeatCycle);
 		} else {
 			setConstraints(endDate, 1, 1);
 			setConstraints(emptyLine, 0, 2);

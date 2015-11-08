@@ -15,19 +15,27 @@ public class FeedbackPane extends GridPane{
 	public FeedbackPane() {
 		setPadding(new Insets(10, 10, 10, 10));
 		
-		label = new Text("Feedback:");
-		label.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
-		label.setStyle("-fx-fill: linear-gradient(#0033CC 30%, #0029A3 60%, #001A66 90%);");
+		setupLabel();
 		
-		feedbackScreen = new TextArea();
-		feedbackScreen.setPrefSize(620, 80);
-		feedbackScreen.setEditable(false);
+		setupFeedbackScreen();
 		
 		setConstraints(label, 0, 0);
 		setConstraints(feedbackScreen, 0, 1);
 		
 		getChildren().add(label);
 		getChildren().add(feedbackScreen);
+	}
+
+	private void setupFeedbackScreen() {
+		feedbackScreen = new TextArea();
+		feedbackScreen.setPrefSize(620, 80);
+		feedbackScreen.setEditable(false);
+	}
+
+	private void setupLabel() {
+		label = new Text("Feedback:");
+		label.setFont(Font.font("Verdana", FontPosture.ITALIC, 20));
+		label.setStyle("-fx-fill: linear-gradient(#0033CC 30%, #0029A3 60%, #001A66 90%);");
 	}
 
 	public static void displayInvalidInput() {
