@@ -24,8 +24,6 @@ public class Task implements Serializable {
 	private SimpleDateFormat dateOutputFormatter = new SimpleDateFormat("dd-MMMM-yyyy", Locale.US);
 	private String repeatType;
 	private int repeatCycle;
-	private String exception;
-	
 
 	// CONSTRUCTORS
 	public Task() {
@@ -35,7 +33,6 @@ public class Task implements Serializable {
 		this.isRepeat = false;
 		this.repeatType = null;
 		this.repeatCycle = 0;
-		this.exception = null;
 		this.startDate = null;
 		this.endDate = null;
 	}
@@ -77,8 +74,7 @@ public class Task implements Serializable {
 		this.importance = importance;
 	}
 
-	public Task(String eventTitle, String start, String end, int importance,
-			    boolean hasTime) {
+	public Task(String eventTitle, String start, String end, int importance, boolean hasTime) {
 		this.eventTitle = eventTitle;
 		try {
 			this.startDate = dateTimeInputFormatter.parse(start);
@@ -139,8 +135,7 @@ public class Task implements Serializable {
 		this.importance = 3;
 	}
 
-	public Task(String eventTitle, String repeatType, int repeatCycle, 
-			    String deadline, boolean isRepeat) {
+	public Task(String eventTitle, String repeatType, int repeatCycle, String deadline, boolean isRepeat) {
 		this.eventTitle = eventTitle;
 		try {
 			this.endDate = dateInputFormatter.parse(deadline);
@@ -153,8 +148,8 @@ public class Task implements Serializable {
 		this.importance = 3;
 	}
 
-	public Task(String eventTitle, String repeatType, int repeatCycle,
-			    String deadline, boolean isRepeat, boolean hasTime) {
+	public Task(String eventTitle, String repeatType, int repeatCycle, String deadline, boolean isRepeat,
+			boolean hasTime) {
 		this.eventTitle = eventTitle;
 		try {
 			this.endDate = dateTimeInputFormatter.parse(deadline);
@@ -168,9 +163,8 @@ public class Task implements Serializable {
 		this.importance = 3;
 	}
 
-	public Task(String eventTitle, String repeatType, int repeatCycle, 
-			    String startDate, String endDate, boolean isRepeat, 
-			    boolean hasTime) {
+	public Task(String eventTitle, String repeatType, int repeatCycle, String startDate, String endDate,
+			boolean isRepeat, boolean hasTime) {
 		this.eventTitle = eventTitle;
 		try {
 			this.startDate = dateTimeInputFormatter.parse(startDate);
@@ -184,11 +178,9 @@ public class Task implements Serializable {
 		this.repeatCycle = repeatCycle;
 		this.importance = 3;
 	}
-	
-	
 
-	public Task(String eventTitle, String repeatType, int repeatCycle, 
-			    String startDate, String endDate, boolean isRepeat) {
+	public Task(String eventTitle, String repeatType, int repeatCycle, String startDate, String endDate,
+			boolean isRepeat) {
 		this.eventTitle = eventTitle;
 		try {
 			this.startDate = dateInputFormatter.parse(startDate);
@@ -213,10 +205,6 @@ public class Task implements Serializable {
 
 	public int getRepeatCycle() {
 		return this.repeatCycle;
-	}
-
-	public String getException() {
-		return this.exception;
 	}
 
 	public String getRepeatType() {
@@ -282,7 +270,7 @@ public class Task implements Serializable {
 	public Date getEndDateInDateType() {
 		return this.endDate;
 	}
-	
+
 	public Date getStartDateInDateType() {
 		return this.startDate;
 	}
@@ -294,7 +282,7 @@ public class Task implements Serializable {
 	public boolean isComplete() {
 		return this.isComplete;
 	}
-	
+
 	public boolean isBlocking() {
 		return blocking;
 	}
@@ -359,7 +347,7 @@ public class Task implements Serializable {
 	public void setEndDateInDate(Date nextDeadline) {
 		this.endDate = nextDeadline;
 	}
-	
+
 	public void setStartDateInDate(Date nextStartDate) {
 		this.startDate = nextStartDate;
 	}
@@ -367,7 +355,7 @@ public class Task implements Serializable {
 	public void setOverDate() {
 		this.isOverDate = true;
 	}
-	
+
 	public void setNotOverDate() {
 		this.isOverDate = false;
 	}
@@ -378,5 +366,30 @@ public class Task implements Serializable {
 
 	public void setBlocking(boolean set) {
 		this.blocking = set;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) {
+			return false;
+		}
+		
+		if(obj == this) {
+			return true;
+		}
+		
+		if(obj instanceof Task) {
+			Task task = (Task)obj;
+			return this.eventTitle.equals(task.eventTitle) &&
+					this.startDate.equals(task.startDate) &&
+					this.endDate.equals(task.endDate) &&
+					this.hasTime == task.hasTime && 
+					this.isComplete == task.isComplete &&
+					this.isRepeat == task.isRepeat &&
+					this.blocking == task.blocking &&
+					this.importance.equals(task.importance);
+		} else {
+			return false;
+		}
 	}
 }

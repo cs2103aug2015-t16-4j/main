@@ -242,7 +242,7 @@ public class FileModifier {
 	}
 
 	/**
-	 * This returns the
+	 * This returns the file that contains the paths of data files
 	 * 
 	 * @return
 	 */

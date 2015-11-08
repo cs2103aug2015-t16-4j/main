@@ -347,7 +347,7 @@ public class AddLogic {
 			}
 		}
 
-		if (!command.contains(COMMAND_ON) || isValidOnCommand) {
+		if (!command.contains(COMMAND_ON) || !isValidOnCommand) {
 			eventTitle = getEventTitleTimeline(command);
 			startDate = getStartDate(command);
 			if (isValidDate(startDate)) {

@@ -216,12 +216,14 @@ public class UnitTest {
 	@Test
 	public void testAdd13(){
 		clearExpectedActual();
-		Task task3 = new Task("attend JP Morgon conference ","12122015",
+		Task task3 = new Task("attend JP Morgon conference", "12122015",
 				              "15122015", 1);
 		expected.add(task3);
 		AddLogic.addEventWithTimeline("add attend JP Morgon conference from "
 				                       + "1212015 to 15122015 rank 1");
-		actual  = modifier.getContentList();
+		
+		actual = modifier.getContentList();
+		
 		compareResults("testing adding valid date for timeline task", expected, 
 				        actual);
 	}
@@ -276,7 +278,7 @@ public class UnitTest {
     			                       + " rank 1");
 		SearchLogic.searchKeyWord("search date 03112015");
 		actualSearchList = SearchLogic.getTaskList();
-		Task task = new Task ("EE2020 Oscilloscope project", "03112015","1"); 
+		Task task = new Task ("EE2020 Oscilloscope project", "03112015", 1); 
 		expectedSearchList.add(task); 
 		compareResults("test search by date" , expectedSearchList, 
 				        actualSearchList); 
