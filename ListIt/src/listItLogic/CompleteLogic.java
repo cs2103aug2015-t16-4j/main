@@ -40,7 +40,7 @@ public class CompleteLogic {
 	 * Checks if the index entered is valid (in the range of the task list)
 	 * @param taskIndexComplete completed task list index
 	 * @param sizeOfFile size of the task list to get the index range
-	 * @return
+	 * @return true if index is valid, else returns false
 	 */
 	private static boolean isValidIndex(int taskIndexComplete, int sizeOfFile) {
 		return (taskIndexComplete-1) < sizeOfFile && taskIndexComplete-1 >= 0;
