@@ -63,6 +63,8 @@ public class HelpLogic {
 		commandList.add("change directory");
 		commandList.add("marking task as complete");
 		commandList.add("clear file");
+		commandList.add("help");
+		commandList.add("exit");
 		
 		inputCommand.add("add <description> by <deadline>");
 		inputCommand.add("add <description> from <start date time> to "
@@ -71,8 +73,8 @@ public class HelpLogic {
 				          + "to <end time>");
 		inputCommand.add("add <description>");
 		inputCommand.add("add <description> by <deadline> rank <number>");
-		inputCommand.add("add <description> repeat <monthly/yearly/daily> "
-				         + "<repeatcycle>");
+		inputCommand.add("add <description> repeat <reoeat period>"
+				         + " <monthly/yearly/daily> ");
 		inputCommand.add("add <description> block <start date> to <end date>");
 		inputCommand.add("edit <task index> by date <new date>");
 		inputCommand.add("edit <task index> by title <updated title>");
@@ -84,7 +86,7 @@ public class HelpLogic {
 		inputCommand.add("redo");
 		inputCommand.add("display");
 		inputCommand.add("display date");
-		inputCommand.add("display rank");
+		inputCommand.add("display impt");
 		inputCommand.add("display alpha");
 		inputCommand.add("search <title>");
 		inputCommand.add("search date <date>");
@@ -92,6 +94,8 @@ public class HelpLogic {
 		inputCommand.add("cd <new directory>");
 		inputCommand.add("complete <task index>");
 		inputCommand.add("clear");
+		inputCommand.add("help");
+		inputCommand.add("exit");
 	}
 	
 	/**
