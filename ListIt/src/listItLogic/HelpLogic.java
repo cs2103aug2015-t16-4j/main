@@ -4,6 +4,12 @@ import java.util.ArrayList;
 
 import listItUI.UIMain;
 
+/**
+ * this class contains the method to activate our help function, which causes another 
+ * pop up window (that contains all our possible commands) to appear. 
+ * @author Shrestha
+ * @version 0.5
+ */
 public class HelpLogic {
 	
 	private static ArrayList<String> commandList = new ArrayList<String>();
@@ -87,8 +93,9 @@ public class HelpLogic {
 		inputCommand.add("complete <task index>");
 		inputCommand.add("clear");
 	}
+	
 	/**
-	 * This method displays the help array into the display panel
+	 * This method displays the help arrays created into a new UI window
 	 */
 	public static void displayHelp() {
 		help = getInstance();
