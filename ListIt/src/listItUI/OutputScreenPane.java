@@ -23,23 +23,23 @@ public class OutputScreenPane extends GridPane {
 
 		setupDisplayLabel();
 
-		setupDisplayScreen();
+		setupListPane();
 
-		setupScrollbars();
+		setupScreen();
 
 		setConstraints(displayLabel, 0, 0);
 		setConstraints(Screen, 0, 1);
 
 		getChildren().addAll(displayLabel, Screen);
 	}
-
-	private void setupScrollbars() {
+	
+	private void setupScreen() {
 		Screen = new ScrollPane();
 		Screen.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 		Screen.setContent(taskList);
 	}
 
-	private void setupDisplayScreen() {
+	private void setupListPane() {
 		taskList = new VBox();
 		taskList.setStyle("-fx-background-color: #FFFFFF;");
 		taskList.setPrefSize(600, 370);
@@ -55,7 +55,6 @@ public class OutputScreenPane extends GridPane {
 		Task tempTask = new Task();
 		boolean isFloatingState = false;
 		String currentHeader = null;
-		Text headerText = null;
 
 		taskList.getChildren().clear();
 
@@ -71,28 +70,28 @@ public class OutputScreenPane extends GridPane {
 		for (int i = 0; i < list.size(); i++) {
 			tempTask = list.get(i);
 			if (tempTask.getEndDate() != null && isFloatingState == false) {
-				currentHeader = generateDateHeader(tempTask, currentHeader);
+				if (!tempTask.getEndDateWithoutTime().equals(currentHeader)) {
+					currentHeader = generateNewDateHeader(tempTask);
+				}
 			} else if (isDateNull(tempTask) && isFloatingState == false) {
 				isFloatingState = generateFloatingTaskHeader();
 			}
 
 			GridPane taskDetail = new GridPane();
 
-			taskDetail = generateTaskDatail(tempTask, isFloatingState);
+			taskDetail = generateTaskInfomation(tempTask, isFloatingState);
 			taskList.getChildren().add(taskDetail);
 		}
 	}
 
-	private static String generateFirstHeader(ArrayList<Task> list) {
-		String currentHeader;
-		Text headerText;
-		currentHeader = list.get(0).getEndDateWithoutTime();
-		headerText = new Text(currentHeader);
-		headerText.setFont(Font.font("Georgia", 20));
-		HBox header = generateHearder(headerText);
-		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
-		taskList.getChildren().add(header);
-		return currentHeader;
+	private static GridPane generateTaskInfomation(Task tempTask, boolean isFloatingState) {
+		GridPane taskDetail;
+		if (isFloatingState) {
+			taskDetail = createFloatingTaskDetail(tempTask);
+		} else {
+			taskDetail = createTaskDetail(tempTask);
+		}
+		return taskDetail;
 	}
 
 	private static boolean generateFloatingTaskHeader() {
@@ -107,27 +106,18 @@ public class OutputScreenPane extends GridPane {
 		return isFloatingState;
 	}
 
-	private static String generateDateHeader(Task tempTask, String currentHeader) {
-		Text headerText;
-		if (!tempTask.getEndDateWithoutTime().equals(currentHeader)) {
-			currentHeader = tempTask.getEndDateWithoutTime();
-			headerText = new Text(currentHeader);
-			headerText.setFont(Font.font("Georgia", 20));
-			HBox header = generateHearder(headerText);
-			header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
-			taskList.getChildren().add(header);
-		}
+	private static String generateNewDateHeader(Task tempTask) {
+		String currentHeader;
+		currentHeader = tempTask.getEndDateWithoutTime();
+		generateCompleteHeader(currentHeader);
 		return currentHeader;
 	}
 
-	private static GridPane generateTaskDatail(Task tempTask, boolean isFloatingState) {
-		GridPane taskDetail;
-		if (isFloatingState) {
-			taskDetail = createFloatingTaskDetail(tempTask);
-		} else {
-			taskDetail = createTaskDetail(tempTask);
-		}
-		return taskDetail;
+	private static String generateFirstHeader(ArrayList<Task> list) {
+		String currentHeader;
+		currentHeader = list.get(0).getEndDateWithoutTime();
+		generateCompleteHeader(currentHeader);
+		return currentHeader;
 	}
 
 	private static HBox generateHearder(Text headerText) {
@@ -143,10 +133,10 @@ public class OutputScreenPane extends GridPane {
 		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
 		Text rank = new Text(getRankingText(tempTask.getImportance()));
 		Text emptyLine = new Text("");
-
+		
 		index.setFont(Font.font(18));
 
-		arrangeTextPosition(index, eventTitle, rank, emptyLine);
+		arrangeTextForFloatingTask(index, eventTitle, rank, emptyLine);
 
 		taskDetail.getChildren().addAll(index, eventTitle, rank, emptyLine);
 
@@ -155,7 +145,7 @@ public class OutputScreenPane extends GridPane {
 		return taskDetail;
 	}
 
-	private static void arrangeTextPosition(Text index, Text eventTitle, Text rank, Text emptyLine) {
+	private static void arrangeTextForFloatingTask(Text index, Text eventTitle, Text rank, Text emptyLine) {
 		setConstraints(index, 0, 0);
 		setConstraints(eventTitle, 1, 0);
 		setConstraints(rank, 1, 1);
@@ -175,7 +165,7 @@ public class OutputScreenPane extends GridPane {
 		Text rank;
 		Text repeatCycle = null;
 		Text blocker = null;
-
+		
 		index.setFont(Font.font(18));
 
 		if (tempTask.getStartDate() != null) {
@@ -198,48 +188,53 @@ public class OutputScreenPane extends GridPane {
 			repeatCycle = new Text("Repeat for each: " + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
 		}
 
-		placeAllInformationOnPane(taskDetail, showDates, showRepeat, showBlock, index, eventTitle, emptyLine, startDate,
-				endDate, rank, repeatCycle, blocker);
+		setConstraints(index, 0, 0);
+		setConstraints(eventTitle, 1, 0);
+		if (showDates && showRepeat) {
+			arrangeTextForRecurringTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate, rank,
+					repeatCycle);
+		} else if (showDates && showBlock) {
+			arrangeTextForBlockingTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate, rank, blocker);
+		} else if (showDates) {
+			arrangeTextForTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate, rank);
+		} else if (showRepeat) {
+			arrangeTextForRecurringTask(taskDetail, index, eventTitle, emptyLine, endDate, rank, repeatCycle);
+		} else {
+			arrangeTextForDeadlineTask(taskDetail, index, eventTitle, emptyLine, endDate, rank);
+		}
 
+		setTaskDetailBackgroundColor(tempTask, taskDetail);
+
+		return taskDetail;
+	}
+
+	private static void setTaskDetailBackgroundColor(Task tempTask, GridPane taskDetail) {
 		if (tempTask.isOverDate() && tempTask.isComplete() == false) {
 			taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #FF0000 20%, #FFFFFF 80%);");
 		} else {
 			taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #00FFFF 20%, #FFFFFF 80%);");
 		}
-
-		return taskDetail;
 	}
 
-	private static void placeAllInformationOnPane(GridPane taskDetail, boolean showDates, boolean showRepeat,
-			boolean showBlock, Text index, Text eventTitle, Text emptyLine, Text startDate, Text endDate, Text rank,
-			Text repeatCycle, Text blocker) {
-		setConstraints(index, 0, 0);
-		setConstraints(eventTitle, 1, 0);
-		if (showDates && showRepeat) {
-			arrangeInformationForRecurringTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate,
-					rank, repeatCycle);
-		} else if (showDates && showBlock) {
-			arrangeInformationForBlockingTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate, rank,
-					blocker);
-		} else if (showDates) {
-			arrangeInformationForTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate, rank);
-		} else if (showRepeat) {
-			arrangeInformationForTimelineTask(taskDetail, index, eventTitle, emptyLine, endDate, repeatCycle, rank);
-		} else {
-			arrangeInformationForDeadlineTask(taskDetail, index, eventTitle, emptyLine, endDate, rank);
-		}
-	}
-
-	private static void arrangeInformationForDeadlineTask(GridPane taskDetail, Text index, Text eventTitle,
-			Text emptyLine, Text endDate, Text rank) {
+	private static void arrangeTextForDeadlineTask(GridPane taskDetail, Text index, Text eventTitle, Text emptyLine,
+			Text endDate, Text rank) {
 		setConstraints(endDate, 1, 1);
 		setConstraints(rank, 1, 2);
 		setConstraints(emptyLine, 0, 3);
 		taskDetail.getChildren().addAll(index, eventTitle, endDate, rank, emptyLine);
 	}
 
-	private static void arrangeInformationForTimelineTask(GridPane taskDetail, Text index, Text eventTitle,
-			Text emptyLine, Text startDate, Text endDate, Text rank) {
+	private static void arrangeTextForRecurringTask(GridPane taskDetail, Text index, Text eventTitle, Text emptyLine,
+			Text endDate, Text rank, Text repeatCycle) {
+		setConstraints(endDate, 1, 1);
+		setConstraints(repeatCycle, 1, 2);
+		setConstraints(rank, 1, 3);
+		setConstraints(emptyLine, 0, 4);
+		taskDetail.getChildren().addAll(index, eventTitle, endDate, repeatCycle, rank, emptyLine);
+	}
+
+	private static void arrangeTextForTimelineTask(GridPane taskDetail, Text index, Text eventTitle, Text emptyLine,
+			Text startDate, Text endDate, Text rank) {
 		setConstraints(startDate, 1, 1);
 		setConstraints(endDate, 1, 2);
 		setConstraints(rank, 1, 3);
@@ -247,8 +242,8 @@ public class OutputScreenPane extends GridPane {
 		taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, rank, emptyLine);
 	}
 
-	private static void arrangeInformationForBlockingTask(GridPane taskDetail, Text index, Text eventTitle,
-			Text emptyLine, Text startDate, Text endDate, Text rank, Text blocker) {
+	private static void arrangeTextForBlockingTask(GridPane taskDetail, Text index, Text eventTitle, Text emptyLine,
+			Text startDate, Text endDate, Text rank, Text blocker) {
 		setConstraints(startDate, 1, 1);
 		setConstraints(blocker, 2, 0);
 		setConstraints(endDate, 1, 2);
@@ -257,7 +252,7 @@ public class OutputScreenPane extends GridPane {
 		taskDetail.getChildren().addAll(index, eventTitle, blocker, startDate, endDate, rank, emptyLine);
 	}
 
-	private static void arrangeInformationForRecurringTimelineTask(GridPane taskDetail, Text index, Text eventTitle,
+	private static void arrangeTextForRecurringTimelineTask(GridPane taskDetail, Text index, Text eventTitle,
 			Text emptyLine, Text startDate, Text endDate, Text rank, Text repeatCycle) {
 		setConstraints(startDate, 1, 1);
 		setConstraints(endDate, 1, 2);
@@ -298,31 +293,49 @@ public class OutputScreenPane extends GridPane {
 
 		taskList.getChildren().clear();
 
-		headerText.setFont(Font.font("Georgia", 20));
-		HBox header = generateHearder(headerText);
-		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
-		taskList.getChildren().add(header);
+		generateFirstLetterHeader(headerText);
 
 		for (int i = 0; i < list.size(); i++) {
 			tempTask = list.get(i);
 			if (list.get(i).getTitle().substring(0, 1).equals(currentHeader) == false) {
-				currentHeader = tempTask.getTitle().substring(0, 1);
-				headerText = new Text(currentHeader);
-
-				headerText.setFont(Font.font("Georgia", 20));
-
-				header = generateHearder(headerText);
-				header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
-				taskList.getChildren().add(header);
+				currentHeader = generateNextLetterHeader(tempTask);
 			}
 
-			if (isDateNull(tempTask)) {
-				taskDetail = createFloatingTaskDetail(tempTask);
-			} else {
-				taskDetail = createTaskDetailAlpha(tempTask);
-			}
+			taskDetail = generateTaskInformation(tempTask);
 			taskList.getChildren().add(taskDetail);
 		}
+	}
+
+	private static GridPane generateTaskInformation(Task tempTask) {
+		GridPane taskDetail;
+		if (isDateNull(tempTask)) {
+			taskDetail = createFloatingTaskDetail(tempTask);
+		} else {
+			taskDetail = createTaskDetailAlpha(tempTask);
+		}
+		return taskDetail;
+	}
+
+	private static String generateNextLetterHeader(Task tempTask) {
+		String currentHeader;
+		Text headerText;
+		HBox header;
+		currentHeader = tempTask.getTitle().substring(0, 1);
+		headerText = new Text(currentHeader);
+
+		headerText.setFont(Font.font("Georgia", 20));
+
+		header = generateHearder(headerText);
+		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+		taskList.getChildren().add(header);
+		return currentHeader;
+	}
+
+	private static void generateFirstLetterHeader(Text headerText) {
+		headerText.setFont(Font.font("Georgia", 20));
+		HBox header = generateHearder(headerText);
+		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+		taskList.getChildren().add(header);
 	}
 
 	private static GridPane createTaskDetailAlpha(Task tempTask) {
@@ -365,8 +378,20 @@ public class OutputScreenPane extends GridPane {
 
 		rank = new Text(getRankingText(tempTask.getImportance()));
 
-		placeAllInformationOnPane(taskDetail, showDates, showRepeat, showBlock, index, eventTitle, emptyLine, startDate,
-				endDate, rank, repeatCycle, blocker);
+		setConstraints(index, 0, 0);
+		setConstraints(eventTitle, 1, 0);
+		if (showDates && showRepeat) {
+			arrangeTextForRecurringTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate,
+					rank, repeatCycle);
+		} else if (showDates && showBlock) {
+			arrangeTextForBlockingTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate, rank, blocker);
+		} else if (showDates) {
+			arrangeTextForTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate, rank);
+		} else if (showRepeat) {
+			arrangeTextForRecurringTask(taskDetail, index, eventTitle, emptyLine, endDate, repeatCycle, rank);
+		} else {
+			arrangeTextForDeadlineTask(taskDetail, index, eventTitle, emptyLine, endDate, rank);
+		}
 
 		if (tempTask.isOverDate()) {
 			taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #FF0000 20%, #FFFFFF 80%);");
@@ -377,39 +402,57 @@ public class OutputScreenPane extends GridPane {
 		return taskDetail;
 	}
 
+
 	public static void displayListImpt(ArrayList<Task> list) {
 		Task tempTask = new Task();
 		GridPane taskDetail;
 		String currentHeader = getRankingText(list.get(0).getImportance());
 		Text headerText = new Text(currentHeader);
 
-		headerText.setFont(Font.font("Georgia", 20));
-
 		taskList.getChildren().clear();
-
-		HBox header = generateHearder(headerText);
-		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
-		taskList.getChildren().add(header);
+		
+		generateFirstRankHeader(headerText);
 
 		for (int i = 0; i < list.size(); i++) {
 			tempTask = list.get(i);
 			if (getRankingText(tempTask.getImportance()).equals(currentHeader) == false) {
-				currentHeader = getRankingText(tempTask.getImportance());
-				headerText = new Text(currentHeader);
-
-				headerText.setFont(Font.font("Georgia", 20));
-				header = generateHearder(headerText);
-				header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
-				taskList.getChildren().add(header);
+				currentHeader = generateNextRankHeader(tempTask);
 			}
 
-			if (isDateNull(tempTask)) {
-				taskDetail = createFloatingTaskDetailImpt(tempTask);
-			} else {
-				taskDetail = createTaskDetailImpt(tempTask);
-			}
+			taskDetail = generateTaskInformationImpt(tempTask);
 			taskList.getChildren().add(taskDetail);
 		}
+	}
+
+	private static GridPane generateTaskInformationImpt(Task tempTask) {
+		GridPane taskDetail;
+		if (isDateNull(tempTask)) {
+			taskDetail = createFloatingTaskDetailImpt(tempTask);
+		} else {
+			taskDetail = createTaskDetailImpt(tempTask);
+		}
+		return taskDetail;
+	}
+
+	private static String generateNextRankHeader(Task tempTask) {
+		String currentHeader;
+		Text headerText;
+		HBox header;
+		currentHeader = getRankingText(tempTask.getImportance());
+		headerText = new Text(currentHeader);
+
+		headerText.setFont(Font.font("Georgia", 20));
+		header = generateHearder(headerText);
+		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+		taskList.getChildren().add(header);
+		return currentHeader;
+	}
+
+	private static void generateFirstRankHeader(Text headerText) {
+		headerText.setFont(Font.font("Georgia", 20));
+		HBox header = generateHearder(headerText);
+		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+		taskList.getChildren().add(header);
 	}
 
 	private static GridPane createFloatingTaskDetailImpt(Task tempTask) {
@@ -420,15 +463,19 @@ public class OutputScreenPane extends GridPane {
 
 		index.setFont(Font.font(18));
 
-		setConstraints(index, 0, 0);
-		setConstraints(eventTitle, 1, 0);
-		setConstraints(emptyLine, 0, 2);
+		arrangeTextForFloatingTask(index, eventTitle, emptyLine);
 
 		taskDetail.getChildren().addAll(index, eventTitle, emptyLine);
 
 		taskDetail.setStyle("-fx-background-color: linear-gradient(to right, #FFCCFF 20%, #FFFFFF 80%);");
 
 		return taskDetail;
+	}
+
+	private static void arrangeTextForFloatingTask(Text index, Text eventTitle, Text emptyLine) {
+		setConstraints(index, 0, 0);
+		setConstraints(eventTitle, 1, 0);
+		setConstraints(emptyLine, 0, 2);
 	}
 
 	private static GridPane createTaskDetailImpt(Task tempTask) {
@@ -469,22 +516,15 @@ public class OutputScreenPane extends GridPane {
 		setConstraints(index, 0, 0);
 		setConstraints(eventTitle, 1, 0);
 		if (showDates && showRepeat) {
-			arrangeInformationForTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate,
-					repeatCycle);
+			arrangeTextForRecurringTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate, repeatCycle);
 		} else if (showDates && showBlock) {
-			setConstraints(startDate, 1, 1);
-			setConstraints(blocker, 2, 0);
-			setConstraints(endDate, 1, 2);
-			setConstraints(emptyLine, 0, 3);
-			taskDetail.getChildren().addAll(index, eventTitle, blocker, startDate, endDate, emptyLine);
+			arrangeTextForBlockingTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate, blocker);
 		} else if (showDates) {
-			arrangeInformationForDeadlineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate);
+			arrangeTextForTimelineTask(taskDetail, index, eventTitle, emptyLine, startDate, endDate);
 		} else if (showRepeat) {
-			arrangeInformationForDeadlineTask(taskDetail, index, eventTitle, emptyLine, endDate, repeatCycle);
+			arrangeTextForRecurringTask(taskDetail, index, eventTitle, emptyLine, endDate, repeatCycle);
 		} else {
-			setConstraints(endDate, 1, 1);
-			setConstraints(emptyLine, 0, 2);
-			taskDetail.getChildren().addAll(index, eventTitle, endDate, emptyLine);
+			arrangeTextForDeadlineTask(taskDetail, index, eventTitle, emptyLine, endDate);
 		}
 
 		if (tempTask.isOverDate()) {
@@ -496,6 +536,48 @@ public class OutputScreenPane extends GridPane {
 		return taskDetail;
 	}
 
+	private static void arrangeTextForDeadlineTask(GridPane taskDetail, Text index, Text eventTitle, Text emptyLine,
+			Text endDate) {
+		setConstraints(endDate, 1, 1);
+		setConstraints(emptyLine, 0, 2);
+		taskDetail.getChildren().addAll(index, eventTitle, endDate, emptyLine);
+	}
+
+	private static void arrangeTextForRecurringTask(GridPane taskDetail, Text index, Text eventTitle, Text emptyLine,
+			Text endDate, Text repeatCycle) {
+		setConstraints(endDate, 1, 1);
+		setConstraints(repeatCycle, 1, 2);
+		setConstraints(emptyLine, 0, 4);
+		taskDetail.getChildren().addAll(index, eventTitle, endDate, repeatCycle, emptyLine);
+	}
+
+	private static void arrangeTextForTimelineTask(GridPane taskDetail, Text index, Text eventTitle, Text emptyLine,
+			Text startDate, Text endDate) {
+		setConstraints(startDate, 1, 1);
+		setConstraints(endDate, 1, 2);
+		setConstraints(emptyLine, 0, 3);
+		taskDetail.getChildren().addAll(index, eventTitle, endDate, emptyLine);
+		
+	}
+
+	private static void arrangeTextForBlockingTask(GridPane taskDetail, Text index, Text eventTitle, Text emptyLine,
+			Text startDate, Text endDate, Text blocker) {
+		setConstraints(startDate, 1, 1);
+		setConstraints(blocker, 2, 0);
+		setConstraints(endDate, 1, 2);
+		setConstraints(emptyLine, 0, 3);
+		taskDetail.getChildren().addAll(index, eventTitle, blocker, startDate, endDate, emptyLine);
+	}
+
+	private static void arrangeTextForRecurringTimelineTask(GridPane taskDetail, Text index, Text eventTitle,
+			Text emptyLine, Text startDate, Text endDate, Text repeatCycle) {
+		setConstraints(startDate, 1, 1);
+		setConstraints(endDate, 1, 2);
+		setConstraints(repeatCycle, 1, 3);
+		setConstraints(emptyLine, 0, 4);
+		taskDetail.getChildren().addAll(index, eventTitle, startDate, endDate, repeatCycle, emptyLine);
+	}
+
 	private static boolean isDateNull(Task tempTask) {
 		return tempTask.getEndDate() == null;
 	}
@@ -503,8 +585,6 @@ public class OutputScreenPane extends GridPane {
 	public static void displayListComplete(ArrayList<Task> list) {
 		Task tempTask = new Task();
 		String currentHeader = "Complete";
-		Text headerText = null;
-
 		taskList.getChildren().clear();
 
 		if (list.isEmpty()) {
@@ -512,23 +592,34 @@ public class OutputScreenPane extends GridPane {
 			return;
 		}
 
-		headerText = new Text(currentHeader);
-		headerText.setFont(Font.font("Georgia", 20));
-		HBox header = generateHearder(headerText);
-		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
-		taskList.getChildren().add(header);
+		generateCompleteHeader(currentHeader);
 
 		for (int i = 0; i < list.size(); i++) {
 			tempTask = list.get(i);
 
 			GridPane taskDetail = new GridPane();
 
-			if (tempTask.getEndDate() == null) {
-				taskDetail = createFloatingTaskDetail(tempTask);
-			} else {
-				taskDetail = createTaskDetail(tempTask);
-			}
+			taskDetail = generateCompletedTaskInformation(tempTask);
 			taskList.getChildren().add(taskDetail);
 		}
+	}
+
+	private static void generateCompleteHeader(String currentHeader) {
+		Text headerText;
+		headerText = new Text(currentHeader);
+		headerText.setFont(Font.font("Georgia", 20));
+		HBox header = generateHearder(headerText);
+		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
+		taskList.getChildren().add(header);
+	}
+
+	private static GridPane generateCompletedTaskInformation(Task tempTask) {
+		GridPane taskDetail;
+		if (tempTask.getEndDate() == null) {
+			taskDetail = createFloatingTaskDetail(tempTask);
+		} else {
+			taskDetail = createTaskDetail(tempTask);
+		}
+		return taskDetail;
 	}
 }

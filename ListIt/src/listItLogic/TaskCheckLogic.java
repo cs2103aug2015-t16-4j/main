@@ -61,7 +61,7 @@ public class TaskCheckLogic {
 	 */
 	public static boolean blockedDateCheck(Task taskForCheck) {
 		boolean result = true;
-		if (isEndDateNull(taskForCheck) && !isStartDateNull(taskForCheck)) {
+		if (!isEndDateNull(taskForCheck) && !isStartDateNull(taskForCheck)) {
 			ArrayList<Task> taskList = modifier.getContentList();
 			Task tempTask = new Task();
 			for (int i = 0; i < taskList.size(); i++) {
