@@ -6,6 +6,13 @@ import java.util.Date;
 import fileModifier.FileModifier;
 import taskGenerator.Task;
 
+/**
+ * This class contains all the methods that check if the command date input 
+ * entered by the user is of a valid date input, and also compares the task date to
+ * the actual calendar date.
+ * @author Shrestha
+ * @version 0.5
+ */
 public class TaskCheckLogic {
 	static FileModifier modifier = FileModifier.getInstance();
 	
@@ -13,6 +20,10 @@ public class TaskCheckLogic {
 		
 	}
 	
+	/**
+	 * Checks if the date variable of the task is over the actual calendar date.
+	 * @param taskList 
+	 */
 	public static void overDateCheck(ArrayList<Task> taskList) {
 		Task tempTask = new Task();
 		Date systemTime = new Date();
@@ -42,6 +53,12 @@ public class TaskCheckLogic {
 		return tempTask.getEndDate() == null;
 	}
 	
+	/**
+	 * Checks the block task, that the starting date of the task is earlier than the
+	 * ending date of the task.
+	 * @param taskForCheck task in a block input
+	 * @return true if above holds, else returns false.
+	 */
 	public static boolean blockedDateCheck(Task taskForCheck) {
 		boolean result = true;
 		if (isEndDateNull(taskForCheck) && !isStartDateNull(taskForCheck)) {
