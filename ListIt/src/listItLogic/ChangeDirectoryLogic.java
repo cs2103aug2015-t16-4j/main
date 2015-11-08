@@ -13,6 +13,12 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 import fileModifier.FileModifier;
 import listItUI.FeedbackPane;
 
+/**
+ *This class contains methods which changes the directory of the entire ListIt,
+ *by allowing the directory (which includes the data file and the completed data file.  
+ * @author Shrestha
+ * @version 0.5
+ */
 public class ChangeDirectoryLogic {
 	static FileModifier modifier = FileModifier.getInstance();
 	private static String message = "null";
@@ -23,6 +29,11 @@ public class ChangeDirectoryLogic {
 			                                                + " sucessful please try"
 			                                                + " again.";
 
+	/**
+	 * This method checks if the path name entered is valid, then gets the data files and
+	 * moves the files to the user input location.
+	 * @param command string command input by the user with a "cd" at the start
+	 */
 	public static void changeDirectory(String command) {
 		String newPath = getNewPath(command);
 		BufferedWriter textFileWriter;
