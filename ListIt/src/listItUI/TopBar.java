@@ -12,6 +12,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 
+/**
+ * This class helps constructs the toolbar at the top of our GUI by creating our ListIt icon, 
+ * as well as a close button which helps close ListIt with the use of a mouse. 
+ * 
+ * @version 0.5
+ */
+
 public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 	
 	private Text listItLabel;

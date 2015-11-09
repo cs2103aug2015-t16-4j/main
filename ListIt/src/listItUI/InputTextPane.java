@@ -11,6 +11,13 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import listItLogic.CommandParser;
 
+/**
+ * This class helps constructs the input text field of the program. 
+ * It creates the field to receive your command, and 
+ * passes the command to the command parser in the Logic component.
+ * @version 0.5
+ */
+
 public class InputTextPane extends GridPane implements EventHandler<ActionEvent> {
 
 	Text inputLabel;
