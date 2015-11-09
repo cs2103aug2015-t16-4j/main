@@ -1,7 +1,19 @@
+<<<<<<< HEAD
 // @@author Shi Hao A0129916W
+=======
+
+>>>>>>> origin/master
 package listItUI;
 
 import java.util.ArrayList;
+
+/**
+ * This class helps form the user interface of ListIt. 
+ * it contains the basic settings for creating the entire interface of our application. 
+ * It involves the creation of the different panels. 
+ * 
+ * @version 0.5
+ */
 
 import fileModifier.FileModifier;
 import javafx.application.Application;
@@ -51,7 +63,11 @@ public class UIMain extends Application {
 		primaryStage.show();
 		modifier.display(modifier.getContentList());
 	}
-
+    /**
+     * this allows the ListIt window to be dragged around.  
+     * @param primaryStage
+     * @param layout
+     */
 	private void windowDragSetup(Stage primaryStage, GridPane layout) {
 		layout.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
@@ -78,8 +94,11 @@ public class UIMain extends Application {
 		layout.getChildren().addAll(topBar, screenBox, feedbackBox, inputBox);
 	}
 	
-	/*
-	 * Construct help window and pop it out.
+	
+	/**
+	 * this helps construct the help window and pops it up on the screen 
+	 * @param commands
+	 * @param methods
 	 */
 	public static void popUpHelp(ArrayList<String> commands, ArrayList<String> methods) {
 		Stage helpStage = new Stage();

@@ -3,6 +3,12 @@ package listItUI;
 
 import java.util.ArrayList;
 
+/**
+ * This class helps constructs the output text field of the program.
+ * 
+ * @version 0.5
+ */
+
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
@@ -87,9 +93,12 @@ public class OutputScreenPane extends GridPane {
 		}
 	}
 	
-	/*
-	 * Decides what kinds of Task display layout to be used
-	 * @return the Correct task display layout as a GridPane
+
+	/**
+	 * decides what kind of task display layout should be used. 
+	 * @param tempTask 
+	 * @param isFloatingState
+	 * @return the correct task display layout as a GridPane
 	 */
 	private static GridPane generateTaskInfomation(Task tempTask, boolean isFloatingState) {
 		GridPane taskDetail;
@@ -292,7 +301,11 @@ public class OutputScreenPane extends GridPane {
 		taskList.getChildren().add(emptyMessage);
 	}
 
-	//Display list sorted to alphabetic order
+	
+	/**
+	 * Display list sorted in alphabetical order. 
+	 * @param list
+	 */
 	public static void displayListAlpha(ArrayList<Task> list) {
 		Task tempTask = new Task();
 		GridPane taskDetail;
@@ -412,7 +425,11 @@ public class OutputScreenPane extends GridPane {
 		return taskDetail;
 	}
 
-	//Display the list sorted by priority
+    /**
+     * displays the list sorted by priority level. 
+     * @param list
+     */
+	
 	public static void displayListImpt(ArrayList<Task> list) {
 		Task tempTask = new Task();
 		GridPane taskDetail;
@@ -595,7 +612,10 @@ public class OutputScreenPane extends GridPane {
 		return tempTask.getEndDate() == null;
 	}
 	
-	//Display the Completed task list on the Screen
+	/**
+	 * displays the completed task list on the screen 
+	 * @param list
+	 */
 	public static void displayListComplete(ArrayList<Task> list) {
 		Task tempTask = new Task();
 		String currentHeader = "Complete";

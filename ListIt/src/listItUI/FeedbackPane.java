@@ -8,6 +8,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
 
+/**
+ * This class constructs the feedback text area of the program 
+ * which is used to present the feedback from our program. 
+ * it displays the different messages required when a user
+ * has inputed either an valid or an invalid command. 
+ * 
+ * @version 0.5
+ */
+
 public class FeedbackPane extends GridPane{
 	
 	private static TextArea feedbackScreen;
