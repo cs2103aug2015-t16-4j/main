@@ -85,7 +85,11 @@ public class OutputScreenPane extends GridPane {
 			taskList.getChildren().add(taskDetail);
 		}
 	}
-
+	
+	/*
+	 * Decides what kinds of Task display layout to be used
+	 * @return the Correct task display layout as a GridPane
+	 */
 	private static GridPane generateTaskInfomation(Task tempTask, boolean isFloatingState) {
 		GridPane taskDetail;
 		if (isFloatingState) {
@@ -287,6 +291,7 @@ public class OutputScreenPane extends GridPane {
 		taskList.getChildren().add(emptyMessage);
 	}
 
+	//Display list sorted to alphabetic order
 	public static void displayListAlpha(ArrayList<Task> list) {
 		Task tempTask = new Task();
 		GridPane taskDetail;
@@ -406,7 +411,7 @@ public class OutputScreenPane extends GridPane {
 		return taskDetail;
 	}
 
-
+	//Display the list sorted by priority
 	public static void displayListImpt(ArrayList<Task> list) {
 		Task tempTask = new Task();
 		GridPane taskDetail;
@@ -429,7 +434,8 @@ public class OutputScreenPane extends GridPane {
 			taskList.getChildren().add(taskDetail);
 		}
 	}
-
+	
+	
 	private static GridPane generateTaskInformationImpt(Task tempTask) {
 		GridPane taskDetail;
 		if (isDateNull(tempTask)) {
@@ -460,7 +466,7 @@ public class OutputScreenPane extends GridPane {
 		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
 		taskList.getChildren().add(header);
 	}
-
+	
 	private static GridPane createFloatingTaskDetailImpt(Task tempTask) {
 		GridPane taskDetail = new GridPane();
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
@@ -587,7 +593,8 @@ public class OutputScreenPane extends GridPane {
 	private static boolean isDateNull(Task tempTask) {
 		return tempTask.getEndDate() == null;
 	}
-
+	
+	//Display the Completed task list on the Screen
 	public static void displayListComplete(ArrayList<Task> list) {
 		Task tempTask = new Task();
 		String currentHeader = "Complete";
