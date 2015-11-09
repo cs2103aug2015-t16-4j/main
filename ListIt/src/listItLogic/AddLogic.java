@@ -816,7 +816,6 @@ public class AddLogic {
 
 	private static String getEventTitleBlock(String command) {
 		return command.substring(4, command.lastIndexOf(COMMAND_BLOCK) - 1);
-
 	}
 	
 	public static boolean containsTime(String date) {
