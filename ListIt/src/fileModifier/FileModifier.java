@@ -39,8 +39,8 @@ public class FileModifier {
 	private File dataFile;
 	private File completeDataFile;
 	private File pathStorage;
-	private String taskFileName = "Task.ser";
-	private String completeTaskFileName = "CompleteTask.ser";
+	private String taskFileName = "Task.txt";
+	private String completeTaskFileName = "CompleteTask.txt";
 	private String pathStorageFileName = "path.txt";
 	private static final String TYPE_DAILY = "daily";
 	private static final String TYPE_WEEKLY = "weekly";
