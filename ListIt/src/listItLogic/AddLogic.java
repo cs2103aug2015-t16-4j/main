@@ -102,10 +102,6 @@ public class AddLogic {
 		return new Task(eventTitle, deadline, true);
 	}
 
-	/**
-	 * This method displays the system message if input is entered 
-	 * incorrectly by the user.
-	 */
 	private static void displayInvalidInput() {
 		addDeadlineMessage = MESSAGE_ADD_VALID_DATE;
 		FeedbackPane.displayInvalidInput();
@@ -127,7 +123,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Checks if the string variable is a day of the week or not.
 	 * @param deadline deadline variable
 	 * @return true if deadline is a day of the week, else returns false.
 	 */
@@ -207,7 +202,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Checks if the command input has both "by" and "on" keywords.
 	 * @param command  string command input by the user with an "add" at the start
 	 * @return true if the above holds, else returns false.
 	 */
@@ -268,7 +262,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Gets the event title for the default event(task with only title)
 	 * @param command string command input by the user with an "add" at the start
 	 * @return event title
 	 */
@@ -380,7 +373,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Checks if the event has a deadline
 	 * @param command string command input by the user with an "add" at the start
 	 * @return true if event has a deadline, else returns false
 	 */
@@ -495,7 +487,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Adds a task with title and timeline
 	 * @param command string command input by the user with an "add" at the start
 	 * @param eventTitle event title
 	 * @param startDate start date of the event
@@ -602,8 +593,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Checks if the event has the command word "rank", even though it may not
-	 * be the keyword for the importance variable.
 	 * @param command string command input by the user with an "add" at the start
 	 * @return true if the command contains "rank". Else, returns false
 	 */
@@ -671,7 +660,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Checks if the deadline entered is an empty string or not
 	 * @param deadline
 	 * @return true if it is empty, else returns false
 	 */
@@ -707,7 +695,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Parses the repeat type 
 	 * @param repeatCycle daily, monthly, yearly
 	 * @return repeat type
 	 */
@@ -716,7 +703,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Checks if the repeat cycle has the correct word daily, mothly or yearly.
 	 * @param repeatCycle daily, monthly, yearly
 	 * @return true if it contains the keyword, else returns false
 	 */
@@ -861,7 +847,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Checks if the starting date is earlier than the ending date
 	 * @param startDate
 	 * @param endDate
 	 * @return -1 if the starting date is before end date
@@ -884,7 +869,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Checks if the date contains time.
 	 * @param date date variable, with or without time.
 	 * @return true if it has a time variable, else returns false
 	 */
