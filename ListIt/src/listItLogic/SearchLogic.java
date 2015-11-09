@@ -1,3 +1,4 @@
+// @@author Shrestha A0130280X
 package listItLogic;
 
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import taskGenerator.Task;
  * This class contains methods to search for the user input keyword, to find that keyword
  * in our task list. Keyword can be in the form of importance variable, date variable or 
  * event title. 
- * @author Shrestha
  * @version 0.5
  */
 public class SearchLogic {

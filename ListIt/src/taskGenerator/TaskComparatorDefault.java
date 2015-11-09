@@ -1,3 +1,4 @@
+// @@author Shawn A0124181R
 package taskGenerator;
 
 import java.util.Comparator;
@@ -9,7 +10,6 @@ import java.util.Comparator;
 * Result = 1 if the 1st task has an earlier date
 * Result = 0 if both tasks have the same date
 * Result = -1 if the 2nd task has an earlier date
-* @author Shawn
 * @version 0.5
 */
 public class TaskComparatorDefault implements Comparator<Task> {

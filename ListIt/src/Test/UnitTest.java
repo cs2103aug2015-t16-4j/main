@@ -20,12 +20,12 @@ import listItUI.*;
 import taskGenerator.Task;
 
 public class UnitTest {
-
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
 	FileModifier modifier = FileModifier.getInstance();
 	ArrayList<Task> actual = new ArrayList<Task>();
 	ArrayList<Task> expected = new ArrayList<Task>();
 
+	// @@author Shi Hao A0129916W
 	@BeforeClass
 	public static void setUpApplication() throws InterruptedException {
 		// Initialize Java FX
@@ -44,6 +44,7 @@ public class UnitTest {
 	@Rule
 	public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
 
+	// @@author Shi Hao A0129916W
 	@Test
 	public void testClear() {
 		clearExpectedActual();
@@ -51,6 +52,7 @@ public class UnitTest {
 		compareResults("test clear", expected, actual);
 	}
 
+	// @@author Shawn A0124181R
 	@Test
 	public void testDelete1() {
 		clearExpectedActual();
@@ -96,6 +98,7 @@ public class UnitTest {
 		expected.add(task1);
 	}
 
+	// @@author Shrestha A0130280X
 	@Test
 	public void testAdd1() {
 		clearExpectedActual();
@@ -199,6 +202,7 @@ public class UnitTest {
 		compareResults("test blocking with wrong date format", expected, actual);
 	}
 
+	// @@author Urvashi A0127781Y
 	@Test
 	// this tests invalid date input
 	public void testAdd12() {
@@ -289,6 +293,7 @@ public class UnitTest {
 		compareResults("test if edit by date works", expected, actual);
 	}
 
+	// @@author Shi Hao A0129916W
 	@Test
 	public void testEdit2() {
 		clearExpectedActual();
@@ -338,7 +343,8 @@ public class UnitTest {
 		actual = modifier.getContentList();
 		compareResults("test if edit invalid number works", expected, actual);
 	}
-
+ 
+	// @@author Shawn A0124181R
 	@Test
 	public void testUndoRedo1() {
 		clearExpectedActual();
@@ -469,6 +475,7 @@ public class UnitTest {
 		assertEquals(description, expected, actual);
 	}
 
+	// @@author Shi Hao A0129916W
 	@Test
 	public void testSort1() {
 		clearExpectedActual();

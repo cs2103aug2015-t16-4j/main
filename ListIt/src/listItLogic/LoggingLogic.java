@@ -1,3 +1,4 @@
+// @@author Shrestha A0130280X
 package listItLogic;
 
 /**
@@ -5,7 +6,6 @@ package listItLogic;
  * a log that prints out a message on the console. 
  * This is done for analysis purposes. 
  * 
- * @author Shrestha
  * @version 0.5
  */
 

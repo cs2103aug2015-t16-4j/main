@@ -1,3 +1,4 @@
+// @@author Shawn A0124181R
 package taskGenerator;
 
 import java.util.Comparator;
@@ -6,7 +7,7 @@ import java.util.Comparator;
 This class updates the collection.sort method in order to compare and
 * sort tasks by the importance variable. The higher the importance value,
 * the task is sorted higher up the list
-* @author Shawn
+* @@author Shawn
 * @version 0.5
 */
 public class TaskComparatorImpt implements Comparator<Task> {

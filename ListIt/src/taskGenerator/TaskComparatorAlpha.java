@@ -1,3 +1,4 @@
+// @@author Shawn A0124181R
 package taskGenerator;
 
 import java.util.Comparator;
@@ -8,14 +9,13 @@ import java.util.Comparator;
  * Result = 1 if the 1st task has a greater ACSII value
  * Result = 0 if both values are the same
  * Result = -1 if the 2nd task has a greater ACSII value
- * @author Shawn
  * @version 0.5
  */
 public class TaskComparatorAlpha implements Comparator<Task> {
 	
 	/**
 	 * This method compares 2 event titles by ACSII value. if the titles are the same, 
-	 * another sorting method to compare by the importance variable is called.
+	 * the importance variable is the next priority.
 	 * @param task1 The first task to be compared
 	 * @param task2 the second task to be compared
 	 * @return result the value of 0 (equals to), -1 (less than) or 1 (greater than)

@@ -1,3 +1,4 @@
+// @@author Urvashi A0127781Y
 package fileModifier;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -30,7 +31,6 @@ import taskGenerator.TaskComparatorImpt;
  * This class runs the command given by the user, stores the created task
  * objects, and writes the data into the data file.
  * 
- * @author Urvashi
  * @version 0.5
  */
 public class FileModifier {
@@ -56,6 +56,10 @@ public class FileModifier {
 			                                          + " could be because this"
 			                                          + " task has been blocked for"
 			                                          + " another event.\n";
+	private static final String DELETE_VALID = "The task has been successfully"
+            + " deleted.\n";
+	private static final String CLEAR_VALID = "The file has been successfully been"
+           + " cleared.\n";
 
 	private FileModifier() {
 		pathStorage = new File(pathStorageFileName);
@@ -295,10 +299,12 @@ public class FileModifier {
 			taskList = modifier.getCompleteContentList();
 			taskList.remove(index);
 			updateCompleteListFile(taskList);
+			LoggingLogic.logging(DELETE_VALID);
 		} else {
 			taskList = modifier.getContentList();
 			taskList.remove(index);
 			updateFile(taskList);
+			LoggingLogic.logging(DELETE_VALID);
 		}
 
 	}
@@ -322,14 +328,19 @@ public class FileModifier {
 	public void display(ArrayList<Task> taskList) {
 		if (taskList.isEmpty()) {
 			OutputScreenPane.displayEmpty();
+			LoggingLogic.logging("Nothing to display");
 		} else if (isViewModeDefault()) {
 			OutputScreenPane.displayList(taskList);
+			LoggingLogic.logging("Displaying in default mode success");
 		} else if (isViewModeImpt()) {
 			OutputScreenPane.displayListImpt(taskList);
+			LoggingLogic.logging("Display by importance level mode success");
 		} else if (isViewModeAlpha()) {
 			OutputScreenPane.displayListAlpha(taskList);
+			LoggingLogic.logging("Display in alphabetical mode success");
 		} else if (isViewModeComplete()) {
 			OutputScreenPane.displayListComplete(taskList);
+			LoggingLogic.logging("Complete list is displayed");
 		}
 	}
 
@@ -359,10 +370,12 @@ public class FileModifier {
 			taskList = modifier.getCompleteContentList();
 			taskList.clear();
 			updateCompleteListFile(taskList);
+			LoggingLogic.logging(CLEAR_VALID);
 		} else {
 			taskList = modifier.getContentList();
 			taskList.clear();
 			updateFile(taskList);
+			LoggingLogic.logging(CLEAR_VALID);
 		}
 	}
 

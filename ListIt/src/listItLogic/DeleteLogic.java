@@ -1,3 +1,4 @@
+// @@author Shrestha A0130280X
 package listItLogic;
 
 import fileModifier.FileModifier;
@@ -5,18 +6,13 @@ import listItUI.FeedbackPane;
 
 /**
  * This class contains methods which deletes a particular task from the task list.
- * @author Shrestha
  * @version 0.5
  */
 public class DeleteLogic {
 	
 	private static FileModifier modifier = FileModifier.getInstance();
-	private static String message = null;
-	private static final String MESSAGE_OUT_OF_BOUNDS = "Index is out of bounds.\n";
 	private static final String DELETE_VALID = "The task has been successfully"
-			                                    + " deleted.\n";
-	private static final String CLEAR_VALID = "The file has been successfully been"
-			                                   + " cleared.\n";
+                                                + " deleted.\n";
 
 	/**
 	 * This method finds a task from the list by getting the line index of the task,
@@ -34,13 +30,9 @@ public class DeleteLogic {
 		
 		if (isValidIndex(taskIndexToBeDelete, sizeOfFile)) {
 			modifier.removeTask(taskIndexToBeDelete - 1);  
-			message =DELETE_VALID; 
-			LoggingLogic.logging(message);
-			FeedbackPane.displayMessage(message);
+			FeedbackPane.displayMessage(DELETE_VALID);
 		} else {
 			FeedbackPane.displayInvalidIndexToDelete();
-			message = MESSAGE_OUT_OF_BOUNDS;
-			LoggingLogic.logging(message); 
 		}
 	}
 
@@ -67,9 +59,7 @@ public class DeleteLogic {
 	 * need the line index.
 	 */
 	public static void clearFile() {
-		modifier.clearAll();
-		message = CLEAR_VALID; 
-		LoggingLogic.logging(message);
+		modifier.clearAll(); 
 	}
 
 }

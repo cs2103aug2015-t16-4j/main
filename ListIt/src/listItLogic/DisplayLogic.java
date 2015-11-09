@@ -1,3 +1,4 @@
+// @@author Shawn A0124181R
 package listItLogic;
 
 import java.util.ArrayList;
@@ -12,8 +13,7 @@ import java.util.Collections;
 /**
  * This class contains methods which displays the output(created tasks) as a
  * task list to the user. The task lists will be sorted according to how the
- * user wants the tasks to be displayed.
- * @author Shrestha
+ * user wants the tasks to be displayed
  * @version 0.5
  */
 public class DisplayLogic {
@@ -25,6 +25,9 @@ public class DisplayLogic {
 	private static final String COMMAND_IMPT = "impt";
 	private static final String COMMAND_DEFAULT = "default";
 	private static final String COMMAND_COMPLETE = "complete";
+	private static final String MESSAGE_SUCCESS_ALPHA = "succesfully sorted alphabetically";
+	private static final String MESSAGE_SUCCESS_DATE = "succesfully sorted by date";
+	private static final String MESSAGE_SUCCESS_IMPT = "succesfully sorted by importance level";
 	
 	private static ArrayList<Task> list = new ArrayList<Task>();
 	static FileModifier modifier = FileModifier.getInstance();
@@ -80,6 +83,7 @@ public class DisplayLogic {
 		list = modifier.getContentList();
 		modifier.setViewMode(COMMAND_ALPHA);
 		updateFile();
+		LoggingLogic.logging(MESSAGE_SUCCESS_ALPHA);
 	}
 
 	/**
@@ -89,6 +93,7 @@ public class DisplayLogic {
 		list = modifier.getContentList();
 		modifier.setViewMode(COMMAND_IMPT);
 		updateFile();
+		LoggingLogic.logging(MESSAGE_SUCCESS_IMPT);
 	}
 	
 	/**
@@ -108,6 +113,7 @@ public class DisplayLogic {
 		list = modifier.getContentList();
 		modifier.setViewMode(COMMAND_DEFAULT);
 		updateFile();
+		LoggingLogic.logging(MESSAGE_SUCCESS_DATE);
 	}
 	
 	/**

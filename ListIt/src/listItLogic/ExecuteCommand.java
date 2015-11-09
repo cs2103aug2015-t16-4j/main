@@ -1,3 +1,4 @@
+// @@author Shrestha A0130280X
 package listItLogic;
 
 import java.util.ArrayList;
@@ -11,7 +12,6 @@ import taskGenerator.Task;
  * after the command is parsed (by CommandParser). After the action is confirmed,
  * the modified task list is stored to both the temporary undo and redo stacks and
  * then the logic actions are carried out.  
- * @author Shrestha
  * @version 0.5
  *
  */

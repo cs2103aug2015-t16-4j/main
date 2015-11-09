@@ -1,3 +1,4 @@
+// @@author Shawn A0124181R
 package listItLogic;
 
 import java.util.ArrayList;
@@ -7,7 +8,6 @@ import listItUI.UIMain;
 /**
  * this class contains the method to activate our help function, which causes another 
  * pop up window (that contains all our possible commands) to appear. 
- * @author Shrestha
  * @version 0.5
  */
 public class HelpLogic {

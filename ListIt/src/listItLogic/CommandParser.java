@@ -1,10 +1,10 @@
+// @@author Shrestha A0130280X
 package listItLogic;
 
 /**
  * This class contains methods which parses the user commands by checking if the 
  * command has white space (more than 1 word), or has no white space (1 word only). 
  * Then, it can execute the command. 
- * @author Shrestha
  * @version 0.5
  */
 public class CommandParser {

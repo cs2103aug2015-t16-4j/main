@@ -1,3 +1,4 @@
+// @author Shawn A0124181R
 package listItLogic;
 
 import java.io.BufferedWriter;
@@ -16,7 +17,6 @@ import listItUI.FeedbackPane;
 /**
  *This class contains methods which changes the directory of the entire ListIt,
  *by allowing the directory (which includes the data file and the completed data file.  
- * @author Shrestha
  * @version 0.5
  */
 public class ChangeDirectoryLogic {

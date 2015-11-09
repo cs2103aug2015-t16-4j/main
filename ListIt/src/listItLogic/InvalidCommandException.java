@@ -7,10 +7,10 @@ package listItLogic;
  * @author Shrestha
  *
  */
-@SuppressWarnings("serial")
+/*@SuppressWarnings("serial")
 public class InvalidCommandException extends Exception{
 	
 	InvalidCommandException(String message) {
 		super(message);
 	}
-}
+}*/

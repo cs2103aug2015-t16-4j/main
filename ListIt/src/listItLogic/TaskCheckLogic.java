@@ -1,3 +1,4 @@
+// @@author Shi Hao A0129916W
 package listItLogic;
 
 import java.util.ArrayList;
@@ -10,8 +11,6 @@ import taskGenerator.Task;
  * This class contains all the methods that check if the command date input
  * entered by the user is of a valid date input, and also compares the task date
  * to the actual calendar date.
- * 
- * @author Shrestha
  * @version 0.5
  */
 public class TaskCheckLogic {

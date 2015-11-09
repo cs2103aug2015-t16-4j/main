@@ -1,3 +1,4 @@
+// @@author Shi Hao A0129916W 
 package listItLogic;
 
 import java.util.ArrayList;
@@ -12,7 +13,6 @@ import taskGenerator.Task;
  * The 2 stacks created are temporary as when ListIt is closed, all data lists 
  * in the stacks are deleted. Hence, the undo and redo function works only up to 
  * the current status of when ListIt was last open.
- * @author Shrestha
  * @version 0.5
  */
 public class UndoAndRedoLogic {

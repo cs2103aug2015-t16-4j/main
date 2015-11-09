@@ -1,3 +1,4 @@
+// @@author Shrestha A0130280X
 package listItLogic;
 
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import taskGenerator.Task;
  * This class contains methods to edit the selected task. Edition can be done by
  * either editing the title, importance level, date, time, repeat type (for recursive
  * tasks), the entire block time of the task, or everything.
- * @author Shrestha
  * @version 0.5
  */
 public class EditLogic {

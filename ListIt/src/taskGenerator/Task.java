@@ -1,3 +1,4 @@
+// @@author Shawn A0124181R
 package taskGenerator;
 
 import java.io.Serializable;
@@ -10,7 +11,6 @@ import java.util.Locale;
  * This class generates the data input by the user and turns it into a task object.
  * This task object contains various information such as the event title,
  * event date and the importance level. 
- * @author Shawn
  * @version 0.5
  */
 public class Task implements Serializable {

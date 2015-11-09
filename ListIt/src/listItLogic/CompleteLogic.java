@@ -1,3 +1,4 @@
+// @@author Shi Hao A0129916W
 package listItLogic;
 
 import fileModifier.FileModifier;
@@ -6,7 +7,6 @@ import listItUI.FeedbackPane;
 /**
  * This class contains methods to move tasks from the usual data file, 
  * into the completed data file, when the user enters "complete". 
- * @author Shrestha
  *
  */
 public class CompleteLogic {

@@ -1,3 +1,4 @@
+// @@author Shrestha A0130280X
 package listItLogic;
 
 import java.text.ParseException;
@@ -12,7 +13,6 @@ import taskGenerator.Task;
  * This class adds a task to the data file, by breaking down the string command
  * and separates the different variables, in order to create the task object to 
  * be added. 
- * @author Shrestha
  * @version 0.5
  */
 public class AddLogic {
