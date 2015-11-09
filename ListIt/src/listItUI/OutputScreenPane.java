@@ -635,4 +635,10 @@ public class OutputScreenPane extends GridPane {
 		}
 		return taskDetail;
 	}
+
+	public static ScrollPane getScreen() {
+		return Screen;
+	}
+	
+	
 }

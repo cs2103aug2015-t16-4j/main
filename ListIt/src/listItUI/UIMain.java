@@ -44,6 +44,7 @@ public class UIMain extends Application {
 		Scene scene = new Scene(layout, 630, 600);
 		scene.getStylesheets().add("listItUI/ListItUITheme.css");
 		
+		OutputScreenPane.getScreen().setFocusTraversable(true);
 		inputBox.getTextField().requestFocus();
 		
 		primaryStage.setScene(scene);
