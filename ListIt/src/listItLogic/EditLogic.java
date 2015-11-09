@@ -64,6 +64,7 @@ public class EditLogic {
 				String newDate = getNewDate(command);
 				if (AddLogic.isValidDate(newDate)) {
 					modifier.editEndDate(indexToBeEdit, newDate);
+					FeedbackPane.displayValidEdit();
 				} else {
 					FeedbackPane.displayInvalidDate();
 					message = EDIT_DATE_INVALID;
@@ -72,6 +73,7 @@ public class EditLogic {
 			} else if (isEditByTitle(command)) {
 				String newTitle = getNewTitle(command);
 				modifier.editTitle(indexToBeEdit, newTitle);
+				FeedbackPane.displayValidEdit();
 			} else if (isEditByImportance(command)) {
 				int newImportance = getNewImportanceLevel(command);
 				
@@ -81,6 +83,7 @@ public class EditLogic {
 						modifier.editImportance(indexToBeEdit, newImportance);
 						message = EDIT_IMPORTANCE_VALID; 
 						LoggingLogic.logging(message);
+						FeedbackPane.displayValidEdit();
 					} else {
 						FeedbackPane.displayInvalidIndexImptLevel();
 						message = EDIT_IMPORTANCE_INVALID;
@@ -90,6 +93,7 @@ public class EditLogic {
 					String newStartDate = getNewStartDate(command);
 					String newEndDate = getNewEndDate(command);
 					modifier.editTimeline(indexToBeEdit, newStartDate, newEndDate);
+					FeedbackPane.displayValidEdit();
 				} else if (isEditByRepeat(command)) {
 					String repeatCommand = getRepeatCommand(command);
 					if (AddLogic.isCorrectRepeatCycle(repeatCommand)) {
@@ -98,12 +102,14 @@ public class EditLogic {
 						newPeriod = getNewPeriod(repeatCommand);
 						repeatType = getRepeatType(repeatCommand);
 						modifier.editRepeat(indexToBeEdit, newPeriod, repeatType);
+						FeedbackPane.displayValidEdit();
 					} else {
 						FeedbackPane.displayInvalidEdit();
 					}
 
 				} else if (isEditByBlock(command)) {
 					modifier.editBlock(indexToBeEdit);
+					FeedbackPane.displayValidEdit();
 				}
 			}
 		}

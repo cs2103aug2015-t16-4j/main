@@ -1,7 +1,5 @@
 package listItLogic;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import fileModifier.FileModifier;
@@ -42,7 +40,7 @@ public class ExecuteCommand {
 	private static final String INVALID_REDO ="No action can be redo!\n";
 	private static final String INVALID_UNDO ="Undo not available\n";
 	private static final String VALID_REDO ="Redo successful!\n";
-	private static final String VALID_UNDO ="Undo avaliable\n";
+	private static final String VALID_UNDO ="Undo sucessful!\n";
 
 
 	private static UndoAndRedoLogic undoRedo = UndoAndRedoLogic.getInstance();
@@ -203,6 +201,7 @@ public class ExecuteCommand {
  				saveCurrentFileToRedoList(modifier.getCompleteContentList());
 				updateAndSaveFile(previousTaskList, previousCompleteTaskList);
 				LoggingLogic.logging(VALID_UNDO);
+				FeedbackPane.displayMessage(VALID_UNDO);
 			}
 		} else if (command.equals(REDO_COMMAND)) { 
 			if (undoRedo.isRedoEmpty()) {
@@ -214,6 +213,7 @@ public class ExecuteCommand {
 				saveCurrentFileToUndoList(modifier.getContentList(), lastCompleteTaskList);
 				updateAndSaveFile(lastTaskList, lastCompleteTaskList);
 				LoggingLogic.logging(VALID_REDO);
+				FeedbackPane.displayMessage(VALID_REDO);
 			}
 		}else if (command.equals(EXIT_COMMAND)){
 			System.exit(0);

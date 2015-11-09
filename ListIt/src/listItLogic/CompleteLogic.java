@@ -27,7 +27,8 @@ public class CompleteLogic {
 		if(isValidIndex(taskIndexComplete, sizeOfFile)) {
 			modifier.completeTask(taskIndexComplete - 1);
 			message = COMPLETE_SUCCESSFUL;
-			LoggingLogic.logging(message); 
+			LoggingLogic.logging(message);
+			FeedbackPane.displayMessage(message);
 			
 		} else {
 			FeedbackPane.displayInvalidIndexComplete();

@@ -46,11 +46,13 @@ public class SearchLogic {
 			if (isTaskListEmpty(taskList)) {
 				message = NO_SEARCH;
 				LoggingLogic.logging(message);
+				FeedbackPane.displayMessage(message);
 			} else {
 				modifier.setViewMode(SEARCH_DEFAULT);
 				sortAndDisplaySearchList(modifier, taskList);
 				message = SEARCH_DEFAULT_VALID;
 				LoggingLogic.logging(message);
+				FeedbackPane.displayMessage(message);
 			}
 
 		} else if (isSearchByImportance(keyword)) {
@@ -63,6 +65,7 @@ public class SearchLogic {
 				sortAndDisplaySearchList(modifier, taskList);
 				message = SEARCH_IMPORTANCE_VALID;
 				LoggingLogic.logging(message);
+				FeedbackPane.displayMessage(message);
 			} else {
 				FeedbackPane.displayInvalidIndexImptLevel();
 				message = INVALID_IMPT;
@@ -74,11 +77,13 @@ public class SearchLogic {
 			if (isTaskListEmpty(taskList)) {
 				message = NO_SEARCH;
 				LoggingLogic.logging(message);
+				FeedbackPane.displayMessage(message);
 			} else {
 				modifier.setViewMode(SEARCH_ALPHA);
 				sortAndDisplaySearchList(modifier, taskList);
 				message = SEARCH_ALPHA_VALID;
 				LoggingLogic.logging(message);
+				FeedbackPane.displayMessage(message);
 			}
 		}
 	}

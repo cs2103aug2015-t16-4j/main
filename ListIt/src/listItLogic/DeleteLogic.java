@@ -36,6 +36,7 @@ public class DeleteLogic {
 			modifier.removeTask(taskIndexToBeDelete - 1);  
 			message =DELETE_VALID; 
 			LoggingLogic.logging(message);
+			FeedbackPane.displayMessage(message);
 		} else {
 			FeedbackPane.displayInvalidIndexToDelete();
 			message = MESSAGE_OUT_OF_BOUNDS;

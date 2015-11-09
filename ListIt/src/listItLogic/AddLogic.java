@@ -82,6 +82,7 @@ public class AddLogic {
 				newTask = createTaskWithDeadline(eventTitle, deadline);
 			}
 			modifier.addTask(newTask);
+			FeedbackPane.displayValidAdd();
 		} else if (isDayOfWeek(deadline)) {
 			displayInvalidInput();
 		} else if (isWord(deadline)) {
@@ -262,6 +263,7 @@ public class AddLogic {
 		} else {
 			Task newTask = new Task(eventTitle);
 			modifier.addTask(newTask);
+			FeedbackPane.displayValidAdd();
 		}
 	}
 
@@ -313,10 +315,12 @@ public class AddLogic {
 							newTask = createTaskWithDeadlineAndRank(eventTitle, deadline, rank);
 						}
 						modifier.addTask(newTask);
+						FeedbackPane.displayValidAdd();
 					} else {
 						eventTitle = getEventTitleImportance(command);
 						Task newTask = new Task(eventTitle, rank);
 						modifier.addTask(newTask);
+						FeedbackPane.displayValidAdd();
 					}
 				} else {
 					addRankMessage = MESSAGE_INVALID_RANK;
@@ -334,6 +338,7 @@ public class AddLogic {
 					int rank = getRankValue(command);
 					Task newTask = new Task(eventTitle, rank);
 					modifier.addTask(newTask);
+					FeedbackPane.displayValidAdd();
 				} else {
 					addRankMessage = MESSAGE_INVALID_RANK;
 					FeedbackPane.displayInvalidInput();
@@ -505,6 +510,7 @@ public class AddLogic {
 			newTask = new Task(eventTitle, startDate, endDate);
 		}
 		modifier.addTask(newTask);
+		FeedbackPane.displayValidAdd();
 	}
 	
 	/**
@@ -524,6 +530,7 @@ public class AddLogic {
 			newTask = new Task(eventTitle, startDate, endDate, rank);
 		}
 		modifier.addTask(newTask);
+		FeedbackPane.displayValidAdd();
 	}
 
 	private static String getSingleDateEndTime(String command) {
@@ -630,9 +637,11 @@ public class AddLogic {
 					Task newTask = createRecurringTaskWithDeadlineAndTime(deadline, repeatType, repeatCycle,
 							eventTitle);
 					modifier.addTask(newTask);
+					FeedbackPane.displayValidAdd();
 				} else {
 					Task newTask = createRecurringTaskWithDeadline(deadline, repeatType, repeatCycle, eventTitle);
 					modifier.addTask(newTask);
+					FeedbackPane.displayValidAdd();
 				}
 			} else if (!hasRepeatCycle(repeatCycle)) {
 				addRecurMessage = MESSAGE_RECUR_CYCLE;
@@ -754,10 +763,12 @@ public class AddLogic {
 					Task newTask = createRecurringTaskWithTimeline(startDate, endDate, repeatType, repeatCycle,
 							eventTitle);
 					modifier.addTask(newTask);
+					FeedbackPane.displayValidAdd();
 				} else {
 					Task newTask = createRecurringTaskWithTimelineAndNoTime(startDate, endDate, repeatType, repeatCycle,
 							eventTitle);
 					modifier.addTask(newTask);
+					FeedbackPane.displayValidAdd();
 				}
 			} else if (isDeadlineEmpty(startDate)) {
 				addRecurMessage = MESSAGE_RECUR_START;
@@ -805,6 +816,7 @@ public class AddLogic {
 				}
 				newTask.setBlocking(true);
 				modifier.addTask(newTask);
+				FeedbackPane.displayValidAdd();
 			} else {
 				addBlockMessage = MESSAGE_INVALID_RANGE;
 				LoggingLogic.logging(addBlockMessage);

@@ -1,3 +1,4 @@
+//@@author A0129916W-reused
 package Test;
 
 import java.util.concurrent.CountDownLatch;
@@ -22,6 +23,8 @@ import org.junit.runners.model.Statement;
  * </pre>
  * 
  * @author Andy Till
+ * 
+ * @source https://gist.github.com/andytill/3835914
  * 
  */
 public class JavaFXThreadingRule implements TestRule {

@@ -97,4 +97,17 @@ public class FeedbackPane extends GridPane{
 	public static void displayInvalidAddBlocked() {
 		feedbackScreen.appendText("The current event timeline is blocked, cannot be added\n");
 	}
+
+	public static void displayMessage(String message) {
+		feedbackScreen.appendText(message + "\n");
+		
+	}
+
+	public static void displayValidEdit() {
+		feedbackScreen.appendText("Sucessful edit!\n");
+	}
+
+	public static void displayValidAdd() {
+		feedbackScreen.appendText("Sucessful add!\n");
+	}
 }
