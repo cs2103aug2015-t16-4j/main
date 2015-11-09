@@ -15,6 +15,10 @@ import java.util.Locale;
  */
 public class Task implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2848287967383183184L;
 	private String eventTitle;
 	private Date startDate;
 	private Date endDate;
