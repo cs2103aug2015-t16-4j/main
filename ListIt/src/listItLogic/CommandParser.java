@@ -18,7 +18,7 @@ public class CommandParser {
 	 * This method parses the user commands by checking if the  
      * command has white space (more than 1 word), or has no white space (1 word only).
 	 * @param command string command input by the user
-	 * @throws InvalidCommandException
+	 * @throws InvalidCommandException 
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */

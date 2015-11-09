@@ -23,8 +23,7 @@ public class TaskCheckLogic {
 
 	/**
 	 * Checks if the date variable of the task is over the actual calendar date.
-	 * 
-	 * @param taskList
+	 * @param taskList selected task list
 	 */
 	public static void overDateCheck(ArrayList<Task> taskList) {
 		Task tempTask = new Task();

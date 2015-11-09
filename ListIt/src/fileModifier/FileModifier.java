@@ -509,7 +509,7 @@ public class FileModifier {
 
 	/**
 	 * This method sets the view mode
-	 * @param newMode
+	 * @param newMode view mode
 	 */
 	public void setViewMode(String newMode) {
 		viewMode = newMode;
