@@ -229,7 +229,7 @@ public class EditLogic {
 	}
 
 	private static int getEditIndex(String command) {
-		return Integer.parseInt(command.substring(5, 6));
+		return Integer.parseInt(command.substring(5, command.indexOf(" ", 5)));
 	}
 
 	public static String getMessage() {
