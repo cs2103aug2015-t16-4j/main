@@ -20,6 +20,7 @@ import listItUI.FeedbackPane;
  * @version 0.5
  */
 public class ChangeDirectoryLogic {
+	private static final String COMMAND_CHANGE_DIRECTORY = "cd";
 	static FileModifier modifier = FileModifier.getInstance();
 	private static String message = "null";
 	private static final String CHANGE_DIRECTORY_VALID = "Changing the directory of"
@@ -36,6 +37,7 @@ public class ChangeDirectoryLogic {
 	 */
 	public static void changeDirectory(String command) {
 		String newPath = getNewPath(command);
+		assert command !=null;
 		BufferedWriter textFileWriter;
 		boolean isSucessful = true;
 
@@ -71,6 +73,6 @@ public class ChangeDirectoryLogic {
 	}
 
 	private static String getNewPath(String command) {
-		return command.substring(command.indexOf("cd") + 3);
+		return command.substring(command.indexOf(COMMAND_CHANGE_DIRECTORY) + 3);
 	}
 }
