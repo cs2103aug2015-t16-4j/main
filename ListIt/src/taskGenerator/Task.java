@@ -262,10 +262,6 @@ public class Task implements Serializable {
 		return dateInputFormatter.format(endDate);
 	}
 
-	public Date getDateInDate() {
-		return endDate;
-	}
-
 	public Integer getImportance() {
 		return importance;
 	}

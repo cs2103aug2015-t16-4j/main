@@ -6,9 +6,9 @@ import java.util.Comparator;
 /**
  * This class updates the collection.sort method in order to compare and
  * sort tasks by the event title, alphabetically. 
- * Result = 1 if the 1st task has a greater ACSII value
- * Result = 0 if both values are the same
- * Result = -1 if the 2nd task has a greater ACSII value
+ * Result = 1 1st task should be arrange after 2nd task
+ * Result = 0 1st task is same in position as 2nd task
+ * Result = -1 1st task should be arrange before 2nd task
  * @version 0.5
  */
 public class TaskComparatorAlpha implements Comparator<Task> {
@@ -32,12 +32,6 @@ public class TaskComparatorAlpha implements Comparator<Task> {
 		return result;
 	}
 	
-	/**
-	 * This method checks if the compared result of the ACSII value of the
-	 * 2 event title = 0, meaning that the titles are the same.
-	 * @param result compared title result
-	 * @return result to be 0 (equals to)
-	 */
 	private boolean isResultZero(int result) {
 		return result == 0;
 	}
