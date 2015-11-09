@@ -54,10 +54,6 @@
 		return new Task(eventTitle, repeatType, repeatCycle, deadline, true, true);
 	}
 
-	/**
-	 * @param deadline
-	 * @return true if it is empty, else returns false
-	 */
 	private static boolean isDeadlineEmpty(String deadline) {
 		return deadline.equals(EMPTY_STRING);
 	}
@@ -89,18 +85,10 @@
 		}
 	}
 
-	/**
-	 * @param repeatCycle daily, monthly, yearly
-	 * @return repeat type
-	 */
 	private static String parseRepeatType(String repeatCycle) {
 		return repeatCycle.substring(repeatCycle.indexOf(WHITESPACE) + 1);
 	}
 
-	/**
-	 * @param repeatCycle daily, monthly, yearly
-	 * @return true if it contains the keyword, else returns false
-	 */
 	public static boolean isCorrectRepeatCycle(String repeatCycle) {
 		boolean isCorrect = false;
 
@@ -220,6 +208,8 @@
 ```
 ###### src\listItLogic\AddLogic.java
 ``` java
+=======
+>>>>>>> origin/master
 	private static boolean isStartDateBeforeEndDate(Date startDate, Date endDate) {
 		return startDate.compareTo(endDate) == -1;
 	}
@@ -236,11 +226,7 @@
 		return command.substring(4, command.lastIndexOf(COMMAND_BLOCK) - 1);
 
 	}
-
-	/**
-	 * @param date date variable, with or without time.
-	 * @return true if it has a time variable, else returns false
-	 */
+	
 	public static boolean containsTime(String date) {
 		if (date.contains(WHITESPACE)) {
 			return true;
@@ -1309,6 +1295,8 @@ import javafx.scene.text.Text;
 
 public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 	
+	private static final String BUTTON_IMAGE_NAME = "icon1.png";
+	private static final String LIST_IT_LABLE = "List It";
 	private Text listItLabel;
 	private Button closeButton;
 	
@@ -1333,7 +1321,7 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 	}
 
 	private void setupSoftwareLabel() {
-		listItLabel = new Text("List It");
+		listItLabel = new Text(LIST_IT_LABLE);
 		listItLabel.setFont(Font.font("Tonto", FontPosture.ITALIC, 30));
 		listItLabel.setStyle("-fx-fill: linear-gradient(#0000FF 10%, #FFFFFF 30%, #0000FF 50%, #FFFFFF 70%, #0000FF 90%);"
 				+ "-fx-stroke: black;");
@@ -1343,7 +1331,7 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 		closeButton = new Button();
 		closeButton.setOnAction(this);
 		
-		Image closeIcon = new Image(getClass().getResourceAsStream("icon1.png"));
+		Image closeIcon = new Image(getClass().getResourceAsStream(BUTTON_IMAGE_NAME));
 		ImageView iconView = new ImageView(closeIcon);
 		iconView.setFitHeight(40);
 		iconView.setFitWidth(40);
@@ -1361,9 +1349,6 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 ```
 ###### src\listItUI\UIMain.java
 ``` java
-=======
-
->>>>>>> origin/master
 package listItUI;
 
 import java.util.ArrayList;
