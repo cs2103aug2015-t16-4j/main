@@ -4,11 +4,6 @@ package listItLogic;
 import java.util.ArrayList;
 import fileModifier.FileModifier;
 import taskGenerator.Task;
-import taskGenerator.TaskComparatorAlpha;
-import taskGenerator.TaskComparatorDefault;
-import taskGenerator.TaskComparatorImpt;
-
-import java.util.Collections;
 
 /**
  * This class contains methods which displays the output(created tasks) as a
