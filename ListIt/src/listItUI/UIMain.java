@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 // @@author Shi Hao A0129916W
-=======
 
->>>>>>> origin/master
 package listItUI;
 
 import java.util.ArrayList;
@@ -29,6 +26,8 @@ import javafx.stage.StageStyle;
 
 public class UIMain extends Application {
 	
+	private static final String CHEAT_SHEET_TITLE = "Cheat Sheet";
+	
 	InputTextPane inputBox = new InputTextPane();
 	OutputScreenPane screenBox = new OutputScreenPane();
 	FeedbackPane feedbackBox = new FeedbackPane();
@@ -44,7 +43,6 @@ public class UIMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("ListIt");
 		primaryStage.initStyle(StageStyle.UNDECORATED);
 		
 		GridPane layout = new GridPane();
@@ -107,7 +105,7 @@ public class UIMain extends Application {
 		assert commands != null;
 		assert methods != null;
 		
-		helpStage.setTitle("Cheat Sheet");
+		helpStage.setTitle(CHEAT_SHEET_TITLE);
 		
 		ScrollPane helpLayout = new ScrollPane();
 		
