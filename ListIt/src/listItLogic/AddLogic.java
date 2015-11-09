@@ -803,15 +803,12 @@ public class AddLogic {
 		}
 	}
 
-<<<<<<< HEAD
 	/**
 	 * @param startDate
 	 * @param endDate
 	 * @return -1 if the starting date is before end date
 	 */
 	// @@author Shi Hao A0129916W
-=======
->>>>>>> origin/master
 	private static boolean isStartDateBeforeEndDate(Date startDate, Date endDate) {
 		return startDate.compareTo(endDate) == -1;
 	}
