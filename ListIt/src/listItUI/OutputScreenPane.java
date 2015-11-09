@@ -21,6 +21,17 @@ import taskGenerator.Task;
 
 public class OutputScreenPane extends GridPane {
 
+	private static final String DISPLAY_COMPLETE = "Complete";
+	private static final String NO_CONTENT_TO_DISPLAY = "No content to display";
+	private static final String RANK_NOT_SO_IMPORTANT = "Not so Important";
+	private static final String RANK_IMPORTANT = "Important";
+	private static final String RANK_VERY_IMPORTANT = "Very Important";
+	private static final String REPEAT_CYCLE = "Repeat for each: ";
+	private static final String BLOCK_SETTER = "     (Block Set)";
+	private static final String EVENT_TITLE = "Title: ";
+	private static final String START_DATE = "Start Date: ";
+	private static final String END_DATE = "End Date: ";
+	private static final String TEXT_HEADER_STYLE = "Floating";
 	private Text displayLabel;
 	private static VBox taskList;
 	private static ScrollPane Screen;
@@ -113,7 +124,7 @@ public class OutputScreenPane extends GridPane {
 	private static boolean generateFloatingTaskHeader() {
 		boolean isFloatingState;
 		Text headerText;
-		headerText = new Text("Floating");
+		headerText = new Text(TEXT_HEADER_STYLE);
 		headerText.setFont(Font.font("Georgia", 20));
 		HBox header = generateHearder(headerText);
 		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
@@ -146,7 +157,7 @@ public class OutputScreenPane extends GridPane {
 	private static GridPane createFloatingTaskDetail(Task tempTask) {
 		GridPane taskDetail = new GridPane();
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
-		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text eventTitle = new Text(EVENT_TITLE + tempTask.getEventTitle());
 		Text rank = new Text(getRankingText(tempTask.getImportance()));
 		Text emptyLine = new Text("");
 		
@@ -174,7 +185,7 @@ public class OutputScreenPane extends GridPane {
 		boolean showRepeat = false;
 		boolean showBlock = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
-		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text eventTitle = new Text(EVENT_TITLE + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 		Text startDate = null;
 		Text endDate = null;
@@ -185,15 +196,15 @@ public class OutputScreenPane extends GridPane {
 		index.setFont(Font.font(18));
 
 		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Start Date: " + tempTask.getStartDate());
-			endDate = new Text("End Date: " + tempTask.getEndDate());
+			startDate = new Text(START_DATE + tempTask.getStartDate());
+			endDate = new Text(END_DATE + tempTask.getEndDate());
 			showDates = true;
 		} else {
-			endDate = new Text("End Date: " + tempTask.getEndDate());
+			endDate = new Text(END_DATE + tempTask.getEndDate());
 		}
 
 		if (tempTask.isBlocking()) {
-			blocker = new Text("     (Block Set)");
+			blocker = new Text(BLOCK_SETTER);
 			showBlock = true;
 		}
 
@@ -201,7 +212,7 @@ public class OutputScreenPane extends GridPane {
 
 		if (tempTask.getRepeat()) {
 			showRepeat = true;
-			repeatCycle = new Text("Repeat for each: " + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
+			repeatCycle = new Text(REPEAT_CYCLE + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
 		}
 
 		setConstraints(index, 0, 0);
@@ -282,11 +293,11 @@ public class OutputScreenPane extends GridPane {
 		String rankDetail;
 
 		if (importance == 1) {
-			rankDetail = "Very Important";
+			rankDetail = RANK_VERY_IMPORTANT;
 		} else if (importance == 2) {
-			rankDetail = "Important";
+			rankDetail = RANK_IMPORTANT;
 		} else {
-			rankDetail = "Not so Important";
+			rankDetail = RANK_NOT_SO_IMPORTANT;
 		}
 
 		return rankDetail;
@@ -295,7 +306,7 @@ public class OutputScreenPane extends GridPane {
 	public static void displayEmpty() {
 		Text emptyMessage;
 
-		emptyMessage = new Text("No content to display");
+		emptyMessage = new Text(NO_CONTENT_TO_DISPLAY);
 
 		taskList.getChildren().clear();
 		taskList.getChildren().add(emptyMessage);
@@ -367,7 +378,7 @@ public class OutputScreenPane extends GridPane {
 		boolean showRepeat = false;
 		boolean showBlock = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
-		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text eventTitle = new Text(EVENT_TITLE + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 		Text startDate = null;
 		Text endDate = null;
@@ -378,25 +389,25 @@ public class OutputScreenPane extends GridPane {
 		index.setFont(Font.font(18));
 
 		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Start Date: " + tempTask.getStartDate());
-			endDate = new Text("End Date: " + tempTask.getEndDate());
+			startDate = new Text(START_DATE + tempTask.getStartDate());
+			endDate = new Text(END_DATE + tempTask.getEndDate());
 			showDates = true;
 		}
 
 		if (tempTask.isBlocking()) {
-			blocker = new Text("     (Block Set)");
+			blocker = new Text(BLOCK_SETTER);
 			showBlock = true;
 		}
 
 		if (showDates == false) {
 			if (tempTask.getEndDate() != null) {
-				endDate = new Text("End Date: " + tempTask.getEndDate());
+				endDate = new Text(END_DATE + tempTask.getEndDate());
 			}
 		}
 
 		if (tempTask.getRepeat()) {
 			showRepeat = true;
-			repeatCycle = new Text("Repeat for each: " + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
+			repeatCycle = new Text(REPEAT_CYCLE + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
 		}
 
 		rank = new Text(getRankingText(tempTask.getImportance()));
@@ -488,7 +499,7 @@ public class OutputScreenPane extends GridPane {
 	private static GridPane createFloatingTaskDetailImpt(Task tempTask) {
 		GridPane taskDetail = new GridPane();
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
-		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text eventTitle = new Text(EVENT_TITLE + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 
 		index.setFont(Font.font(18));
@@ -514,7 +525,7 @@ public class OutputScreenPane extends GridPane {
 		boolean showRepeat = false;
 		boolean showBlock = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
-		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text eventTitle = new Text(EVENT_TITLE + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 		Text startDate = null;
 		Text endDate = null;
@@ -524,23 +535,23 @@ public class OutputScreenPane extends GridPane {
 		index.setFont(Font.font(18));
 
 		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Start Date: " + tempTask.getStartDate());
-			endDate = new Text("End Date: " + tempTask.getEndDate());
+			startDate = new Text(START_DATE + tempTask.getStartDate());
+			endDate = new Text(END_DATE + tempTask.getEndDate());
 			showDates = true;
 		}
 
 		if (showDates == false) {
-			endDate = new Text("End Date: " + tempTask.getEndDate());
+			endDate = new Text(END_DATE + tempTask.getEndDate());
 		}
 
 		if (tempTask.isBlocking()) {
-			blocker = new Text("     (Block Set)");
+			blocker = new Text(BLOCK_SETTER);
 			showBlock = true;
 		}
 
 		if (tempTask.getRepeat()) {
 			showRepeat = true;
-			repeatCycle = new Text("Repeat for each: " + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
+			repeatCycle = new Text(REPEAT_CYCLE + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
 		}
 
 		setConstraints(index, 0, 0);
@@ -618,7 +629,7 @@ public class OutputScreenPane extends GridPane {
 	 */
 	public static void displayListComplete(ArrayList<Task> list) {
 		Task tempTask = new Task();
-		String currentHeader = "Complete";
+		String currentHeader = DISPLAY_COMPLETE;
 		taskList.getChildren().clear();
 
 		if (list.isEmpty()) {
