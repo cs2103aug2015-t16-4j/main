@@ -252,6 +252,8 @@ public class FileModifier {
 	 * @param newtask the task to be added into the list
 	 */
 	public void addTask(Task newtask) {
+		assert newtask != null;
+		
 		if (TaskCheckLogic.blockedDateCheck(newtask)) {
 			ArrayList<Task> newList = modifier.getContentList();
 			newList.add(newtask);
@@ -294,6 +296,8 @@ public class FileModifier {
 	 * @param index the line number of the task to be removed
 	 */
 	public void removeTask(int index) {
+		assert index >= 0;
+		
 		ArrayList<Task> taskList;
 		if (isViewModeComplete()) {
 			taskList = modifier.getCompleteContentList();
@@ -388,6 +392,8 @@ public class FileModifier {
 	public ArrayList<Task> searchKeyword(String keyword) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
+		
+		assert keyword != null;
 
 		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);
@@ -406,6 +412,9 @@ public class FileModifier {
 	public ArrayList<Task> searchByImportance(int searchKey) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
+		
+		assert searchKey >= 1;
+		assert searchKey <= 3;
 
 		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);
@@ -424,6 +433,8 @@ public class FileModifier {
 	public ArrayList<Task> searchByDate(String date) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
+		
+		assert date != null;
 
 		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);

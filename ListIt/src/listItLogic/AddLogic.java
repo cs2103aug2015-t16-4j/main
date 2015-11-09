@@ -810,6 +810,10 @@ public class AddLogic {
 		SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(FORMAT_DATETIME);
 		Date startDate;
 		Date endDate;
+		
+		assert start != null;
+		assert end != null;
+		
 		try {
 			if (containsTime(start)) {
 				startDate = dateTimeFormatter.parse(start);

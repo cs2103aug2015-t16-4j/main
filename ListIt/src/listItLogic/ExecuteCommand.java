@@ -210,7 +210,7 @@ public class ExecuteCommand {
 			} else {
 				ArrayList<Task> lastTaskList = undoRedo.getListFromRedo();
 				ArrayList<Task> lastCompleteTaskList = undoRedo.getListFromRedoComplete();
-				saveCurrentFileToUndoList(modifier.getContentList(), lastCompleteTaskList);
+				saveCurrentFileToUndoList(modifier.getContentList(), modifier.getCompleteContentList());
 				updateAndSaveFile(lastTaskList, lastCompleteTaskList);
 				LoggingLogic.logging(VALID_REDO);
 				FeedbackPane.displayMessage(VALID_REDO);
