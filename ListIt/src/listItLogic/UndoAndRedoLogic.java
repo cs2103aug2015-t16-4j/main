@@ -42,6 +42,7 @@ public class UndoAndRedoLogic {
 	}
 
 	public void storeListToUndo(ArrayList<Task> list) {
+		assert list != null;
 		undo.push(list);
 	}
 
@@ -50,6 +51,7 @@ public class UndoAndRedoLogic {
 	}
 
 	public void storeListToRedo(ArrayList<Task> list) {
+		assert list != null;
 		redo.push(list);
 	}
 
@@ -74,6 +76,7 @@ public class UndoAndRedoLogic {
 	}
 	
 	public void storeListToUndoComplete(ArrayList<Task> completeList) {
+		assert completeList != null;
 		undoComplete.push(completeList);
 	}
 	
@@ -82,6 +85,7 @@ public class UndoAndRedoLogic {
 	}
 	
 	public void storeListToRedoComplete(ArrayList<Task> completeList) {
+		assert completeList != null;
 		redoComplete.push(completeList);
 	}
 	
