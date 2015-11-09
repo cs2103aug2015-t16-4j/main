@@ -1,5 +1,8 @@
 // @@author Shi Hao A0129916W
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 package listItUI;
 
 import java.util.ArrayList;

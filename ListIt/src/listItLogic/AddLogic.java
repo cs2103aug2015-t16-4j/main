@@ -58,11 +58,8 @@ public class AddLogic {
 	private static final String DAY_TOMORROW = "tomorrow";
 	private static final String DAY_WEEK = "week";
 	
-	/**
-	 * This method adds a task object that has only a title and 
-	 * the deadline variable.
-	 * @param command string command input by the user with an "add" at the start
-	 */
+	
+	
 	public static void addEventWithDeadline(String command) {
 		String eventTitle = null;
 		String deadline = null;
@@ -122,10 +119,7 @@ public class AddLogic {
 		}
 	}
 
-	/**
-	 * @param deadline deadline variable
-	 * @return true if deadline is a day of the week, else returns false.
-	 */
+	
 	public static boolean isDayOfWeek(String deadline) {
 		deadline = deadline.toLowerCase();
 		if (deadline.contains(DAY_MONDAY) || deadline.contains(DAY_TUESDAY) || deadline.contains(DAY_WEDNESDAY)
@@ -174,7 +168,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Gets the title task object for a single day event 
 	 * @param command string command input by the user with an "add" at the start
 	 * @return the title of the task object
 	 */
@@ -201,10 +194,6 @@ public class AddLogic {
 		return command.lastIndexOf(COMMAND_BY) > command.lastIndexOf(COMMAND_ON);
 	}
 
-	/**
-	 * @param command  string command input by the user with an "add" at the start
-	 * @return true if the above holds, else returns false.
-	 */
 	private static boolean hasBothOnAndBy(String command) {
 		return command.contains(COMMAND_BY) && command.contains(COMMAND_ON);
 	}
@@ -261,10 +250,6 @@ public class AddLogic {
 		}
 	}
 
-	/**
-	 * @param command string command input by the user with an "add" at the start
-	 * @return event title
-	 */
 	private static String getEventTitleDefault(String command) {
 		if (command.length() > 4) {
 			return command.substring(4);
@@ -372,10 +357,7 @@ public class AddLogic {
 		}
 	}
 
-	/**
-	 * @param command string command input by the user with an "add" at the start
-	 * @return true if event has a deadline, else returns false
-	 */
+	
 	private static boolean isEventWithDeadline(String command) {
 		return command.contains(COMMAND_BY) || command.contains(COMMAND_ON);
 	}
@@ -486,12 +468,6 @@ public class AddLogic {
 		return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
 	}
 
-	/**
-	 * @param command string command input by the user with an "add" at the start
-	 * @param eventTitle event title
-	 * @param startDate start date of the event
-	 * @param endDate end date of the event
-	 */
 	private static void addTaskWithTimelineAndNoRank(String command, String eventTitle, String startDate,
 			String endDate) {
 		Task newTask;
@@ -504,13 +480,7 @@ public class AddLogic {
 		FeedbackPane.displayValidAdd();
 	}
 	
-	/**
-	 * Adds a task with title, timeline and rank
-	 * @param command string command input by the user with an "add" at the start
-	 * @param eventTitle event title
-	 * @param startDate start date of the event
-	 * @param endDate end date of the event
-	 */
+	
 	private static void addTaskWithTimelineAndRank(String command, String eventTitle, String startDate,
 			String endDate) {
 		int rank = getRankValue(command);
@@ -592,10 +562,7 @@ public class AddLogic {
 		return command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3, command.lastIndexOf(COMMAND_RANK) - 1);
 	}
 
-	/**
-	 * @param command string command input by the user with an "add" at the start
-	 * @return true if the command contains "rank". Else, returns false
-	 */
+	
 	private static boolean isEventWithImportance(String command) {
 		return command.contains(COMMAND_RANK);
 	}
@@ -606,6 +573,7 @@ public class AddLogic {
 	 * the type and cycles are valid inputs as well.
 	 * @param command string command input by the user with an "add" at the start
 	 */
+	// @@author Shi Hao A0129916W 
 	public static void addRecursiveEventDeadline(String command) {
 		String deadline = null;
 		String repeatType = null;
@@ -659,10 +627,6 @@ public class AddLogic {
 		return new Task(eventTitle, repeatType, repeatCycle, deadline, true, true);
 	}
 
-	/**
-	 * @param deadline
-	 * @return true if it is empty, else returns false
-	 */
 	private static boolean isDeadlineEmpty(String deadline) {
 		return deadline.equals(EMPTY_STRING);
 	}
@@ -694,18 +658,10 @@ public class AddLogic {
 		}
 	}
 
-	/**
-	 * @param repeatCycle daily, monthly, yearly
-	 * @return repeat type
-	 */
 	private static String parseRepeatType(String repeatCycle) {
 		return repeatCycle.substring(repeatCycle.indexOf(WHITESPACE) + 1);
 	}
 
-	/**
-	 * @param repeatCycle daily, monthly, yearly
-	 * @return true if it contains the keyword, else returns false
-	 */
 	public static boolean isCorrectRepeatCycle(String repeatCycle) {
 		boolean isCorrect = false;
 
@@ -822,6 +778,7 @@ public class AddLogic {
 	 * @param end ending date
 	 * @return true if format is correct, else returns false.
 	 */
+	// @@author Shawn A0124181R
 	private static boolean isCorrectRange(String start, String end) {
 		SimpleDateFormat dateFormatter = new SimpleDateFormat(FORMAT_DATE);
 		SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(FORMAT_DATETIME);
@@ -846,11 +803,15 @@ public class AddLogic {
 		}
 	}
 
+<<<<<<< HEAD
 	/**
 	 * @param startDate
 	 * @param endDate
 	 * @return -1 if the starting date is before end date
 	 */
+	// @@author Shi Hao A0129916W
+=======
+>>>>>>> origin/master
 	private static boolean isStartDateBeforeEndDate(Date startDate, Date endDate) {
 		return startDate.compareTo(endDate) == -1;
 	}
@@ -867,11 +828,7 @@ public class AddLogic {
 		return command.substring(4, command.lastIndexOf(COMMAND_BLOCK) - 1);
 
 	}
-
-	/**
-	 * @param date date variable, with or without time.
-	 * @return true if it has a time variable, else returns false
-	 */
+	
 	public static boolean containsTime(String date) {
 		if (date.contains(WHITESPACE)) {
 			return true;
