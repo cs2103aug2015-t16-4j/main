@@ -81,6 +81,7 @@ public class DisplayLogic {
 	 */
 	private static void displayByAlpha() {
 		list = modifier.getContentList();
+		assert list != null;
 		modifier.setViewMode(COMMAND_ALPHA);
 		updateFile();
 		LoggingLogic.logging(MESSAGE_SUCCESS_ALPHA);
@@ -91,6 +92,7 @@ public class DisplayLogic {
 	 */
 	private static void displayByImportance() {
 		list = modifier.getContentList();
+		assert list != null;
 		modifier.setViewMode(COMMAND_IMPT);
 		updateFile();
 		LoggingLogic.logging(MESSAGE_SUCCESS_IMPT);
@@ -102,6 +104,7 @@ public class DisplayLogic {
 	 */
 	private static void displayByComplete() {
 		list = modifier.getCompleteContentList();
+		assert list != null;
 		modifier.setViewMode(COMMAND_COMPLETE);
 		updateFileComplete();
 	}
@@ -111,6 +114,7 @@ public class DisplayLogic {
 	 */
 	public static void defaultDisplay() {
 		list = modifier.getContentList();
+		assert list != null;
 		modifier.setViewMode(COMMAND_DEFAULT);
 		updateFile();
 		LoggingLogic.logging(MESSAGE_SUCCESS_DATE);
