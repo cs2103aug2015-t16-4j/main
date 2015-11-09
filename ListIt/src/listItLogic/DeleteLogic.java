@@ -49,10 +49,6 @@ public class DeleteLogic {
 	private static int getDeleteIndex(String command) {
 		return Integer.parseInt(command.substring(7));
 	}
-	
-	public static String getMessage() {
-		return message;
-	}
 
 	/**
 	 * This method clears the entire data file when "clear" is entered. It does not

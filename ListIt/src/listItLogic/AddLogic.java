@@ -606,6 +606,7 @@ public class AddLogic {
 	 * the type and cycles are valid inputs as well.
 	 * @param command string command input by the user with an "add" at the start
 	 */
+	// @@author Shi Hao A0129916W 
 	public static void addRecursiveEventDeadline(String command) {
 		String deadline = null;
 		String repeatType = null;
