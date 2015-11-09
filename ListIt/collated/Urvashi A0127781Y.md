@@ -665,6 +665,342 @@ public class FileModifier {
 	}
 }
 ```
+###### src\listItLogic\EditLogic.java
+``` java
+package listItLogic;
+
+import java.util.ArrayList;
+
+import fileModifier.FileModifier;
+import listItUI.FeedbackPane;
+import taskGenerator.Task;
+
+/**
+ * This class contains methods to edit the selected task. Edition can be done by
+ * either editing the title, importance level, date, time, repeat type (for recursive
+ * tasks), the entire block time of the task, or everything.
+ * @version 0.5
+ */
+public class EditLogic {
+
+	private static FileModifier modifier = FileModifier.getInstance();
+	private static final String WHITESPACE = " ";
+	private static final String COMMAND_TITLE = "by title";
+	private static final String COMMAND_IMPORTANCE = "by impt";
+	private static final String COMMAND_DEADLINE = "by date";
+	private static final String COMMAND_TIMELINE = "by time";
+	private static final String COMMAND_TO = "to";
+	private static final String COMMAND_FROM = "from";
+	private static final String COMMAND_REPEAT = "by repeat";
+	private static final String COMMAND_BLOCK = "cancel block";
+	private static final int IMPORTANCE_LEVEL_ONE = 1; 
+	private static final int IMPORTANCE_LEVEL_TWO = 2; 
+	private static final int IMPORTANCE_LEVEL_THREE = 3; 
+	private static final String  EDIT_IMPORTANCE_INVALID = "Invalid Importance "
+			                                                + "level,there are only"
+			                                                + " 3 types: 1 , 2 or 3.\n"; 
+    private static final String  EDIT_DATE_INVALID= "Invalid date is input\n"; 
+    private static final String  EDIT_INPUT = "Invalid input!\n"; 
+    private static final String  EDIT_IMPORTANCE_VALID = "Correct type of "
+    		                                              + "importance level, "
+    		                                              + "sucessfully editted!"; 
+   	
+	private static String  message = null; 
+	
+	/**
+	 * Edits the task event selected by the user, according to the line index the 
+	 * user inputs. also determines the variable type the user wants to input so as to
+	 * edit the correct variable. 
+	 * Repeat type = daily, monthly or yearly.
+	 * Repeat cycle = period of how long the type should occur for. After the cycle is
+	 *                complete, the cycle is reset and run again.
+	 * @param command String command input by the user with an "edit" keyword.
+	 */
+    public static void editEvent(String command) {
+		int indexToBeEdit = getEditIndex(command)-1;
+		
+		ArrayList<Task> taskList = modifier.getContentList();
+
+		assert indexToBeEdit >= 0;
+		
+		if (!isValidRange(indexToBeEdit, taskList)) {
+			FeedbackPane.displayInvalidInput();
+			message = EDIT_INPUT; 
+			LoggingLogic.logging(message);
+		} else {
+			if (isEditByDate(command)) {
+				String newDate = getNewDate(command);
+				if (AddLogic.isValidDate(newDate)) {
+					modifier.editEndDate(indexToBeEdit, newDate);
+					FeedbackPane.displayValidEdit();
+				} else {
+					FeedbackPane.displayInvalidDate();
+					message = EDIT_DATE_INVALID;
+					LoggingLogic.logging(message);
+				}
+			} else if (isEditByTitle(command)) {
+				String newTitle = getNewTitle(command);
+				modifier.editTitle(indexToBeEdit, newTitle);
+				FeedbackPane.displayValidEdit();
+			} else if (isEditByImportance(command)) {
+				int newImportance = getNewImportanceLevel(command);
+				
+				if (isVeryImportant(newImportance) || 
+					isImportant(newImportance) || 
+					isNotImportant(newImportance)){
+						modifier.editImportance(indexToBeEdit, newImportance);
+						message = EDIT_IMPORTANCE_VALID; 
+						LoggingLogic.logging(message);
+						FeedbackPane.displayValidEdit();
+					} else {
+						FeedbackPane.displayInvalidIndexImptLevel();
+						message = EDIT_IMPORTANCE_INVALID;
+						LoggingLogic.logging(message);
+					}
+				} else if (isEditByTimeline(command)) {
+					String newStartDate = getNewStartDate(command);
+					String newEndDate = getNewEndDate(command);
+					modifier.editTimeline(indexToBeEdit, newStartDate, newEndDate);
+					FeedbackPane.displayValidEdit();
+				} else if (isEditByRepeat(command)) {
+					String repeatCommand = getRepeatCommand(command);
+					if (AddLogic.isCorrectRepeatCycle(repeatCommand)) {
+						int newPeriod = 0;
+						String repeatType = null;
+						newPeriod = getNewPeriod(repeatCommand);
+						repeatType = getRepeatType(repeatCommand);
+						modifier.editRepeat(indexToBeEdit, newPeriod, repeatType);
+						FeedbackPane.displayValidEdit();
+					} else {
+						FeedbackPane.displayInvalidEdit();
+					}
+
+				} else if (isEditByBlock(command)) {
+					modifier.editBlock(indexToBeEdit);
+					FeedbackPane.displayValidEdit();
+				}
+			}
+		}
+
+    
+	private static String getRepeatType(String repeatCommand) {
+		return repeatCommand.substring(repeatCommand.indexOf(WHITESPACE) + 1);
+	}
+
+	private static int getNewPeriod(String repeatCommand) {
+		return Integer.parseInt(repeatCommand.substring(0, repeatCommand.indexOf(WHITESPACE)));
+	}
+
+	private static String getRepeatCommand(String command) {
+		return command.substring(command.indexOf(COMMAND_REPEAT)
+				                                 + 10);
+	}
+
+	private static boolean isNotImportant(int newImportance) {
+		return newImportance == IMPORTANCE_LEVEL_THREE;
+	}
+
+	private static boolean isImportant(int newImportance) {
+		return newImportance == IMPORTANCE_LEVEL_TWO;
+	}
+
+	private static boolean isVeryImportant(int newImportance) {
+		return newImportance == IMPORTANCE_LEVEL_ONE;
+	}
+
+	private static boolean isValidRange(int indexToBeEdit, 
+			                            ArrayList<Task> taskList) {
+		return indexToBeEdit < taskList.size();
+	}
+
+	private static String getNewEndDate(String command) {
+		return command.substring(command.indexOf(COMMAND_TO) + 3);
+	}
+
+	private static String getNewStartDate(String command) {
+		return command.substring(command.indexOf(COMMAND_FROM) + 5,
+				                 command.indexOf(COMMAND_TO) - 1);
+	}
+
+	private static int getNewImportanceLevel(String command) {
+		return Integer.parseInt(command.substring(command.indexOf(COMMAND_IMPORTANCE)
+				                                  + 8));
+
+	}
+
+	private static String getNewTitle(String command) {
+		return command.substring(command.indexOf(COMMAND_TITLE) + 9);
+	}
+
+	private static String getNewDate(String command) {
+		return command.substring(command.indexOf(COMMAND_DEADLINE) + 8);
+	}
+	
+	/**
+	 * Checks if the command contains a timeline input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
+	private static boolean isEditByTimeline(String command) {
+		return command.contains(COMMAND_TIMELINE);
+	}
+
+	/**
+	 * Checks if the command contains a importance input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
+	private static boolean isEditByImportance(String command) {
+		return command.contains(COMMAND_IMPORTANCE);
+	}
+
+	/**
+	 * Checks if the command contains a title input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
+	private static boolean isEditByTitle(String command) {
+		return command.contains(COMMAND_TITLE);
+	}
+	
+	/**
+	 * Checks if the command contains a date input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
+	private static boolean isEditByDate(String command) {
+		return command.contains(COMMAND_DEADLINE);
+	}
+
+	/**
+	 * Checks if the command contains a recursive input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
+	private static boolean isEditByRepeat(String command) {
+		return command.contains(COMMAND_REPEAT);
+	}
+
+	/**
+	 * Checks if the command contains a block input.
+	 * @param command String command input by the user with an "edit" keyword.
+	 * @return true if the command contains it, else returns false.
+	 */
+	private static boolean isEditByBlock(String command) {
+		return command.contains(COMMAND_BLOCK);
+	}
+
+	private static int getEditIndex(String command) {
+		return Integer.parseInt(command.substring(5, 6));
+	}
+
+	public static String getMessage() {
+		return message;
+	}
+}
+```
+###### src\listItLogic\TaskCheckLogic.java
+``` java
+package listItLogic;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import fileModifier.FileModifier;
+import taskGenerator.Task;
+
+/**
+ * This class contains all the methods that check if the command date input
+ * entered by the user is of a valid date input, and also compares the task date
+ * to the actual calendar date.
+ * @version 0.5
+ */
+public class TaskCheckLogic {
+	static FileModifier modifier = FileModifier.getInstance();
+
+	public TaskCheckLogic() {
+
+	}
+
+	/**
+	 * Checks if the date variable of the task is over the actual calendar date.
+	 * @param taskList selected task list
+	 */
+	public static void overDateCheck(ArrayList<Task> taskList) {
+		Task tempTask = new Task();
+		Date systemTime = new Date();
+		for (int i = 0; i < taskList.size(); i++) {
+			tempTask = taskList.get(i);
+			if (!isEndDateNull(tempTask)) {
+				if (isOverDate(tempTask, systemTime)) {
+					tempTask.setOverDate();
+					taskList.set(i, tempTask);
+				} else {
+					tempTask.setNotOverDate();
+					taskList.set(i, tempTask);
+				}
+			} else {
+				break;
+			}
+		}
+
+		modifier.saveFile(taskList);
+	}
+
+	private static boolean isOverDate(Task tempTask, Date systemTime) {
+		return systemTime.compareTo(tempTask.getEndDateInDateType()) > 0;
+	}
+
+	private static boolean isEndDateNull(Task tempTask) {
+		return tempTask.getEndDate() == null;
+	}
+
+	/**
+	 * Checks the block tasks in the list, to see if there is a time line overlap
+	 * between the newTask and blockingTask
+	 * 
+	 * @param taskForCheck
+	 *            task in a block input
+	 * @return true if above holds, else returns false.
+	 */
+	public static boolean blockedDateCheck(Task taskForCheck) {
+		boolean result = true;
+		if (!isEndDateNull(taskForCheck) && !isStartDateNull(taskForCheck)) {
+			ArrayList<Task> taskList = modifier.getContentList();
+			Task tempTask = new Task();
+			for (int i = 0; i < taskList.size(); i++) {
+				tempTask = taskList.get(i);
+				if (tempTask.isBlocking()) {
+					if (isBlockDatesValid(taskForCheck, tempTask)) {
+						result = false;
+						break;
+					}
+				}
+			}
+		}
+		return result;
+	}
+
+	private static boolean isBlockDatesValid(Task taskForCheck, Task tempTask) {
+		if (taskForCheck.getStartDateInDateType().compareTo(tempTask.getStartDateInDateType()) == -1
+				&& taskForCheck.getEndDateInDateType().compareTo(tempTask.getEndDateInDateType()) == 1) {
+			return true;
+		} else if (taskForCheck.getEndDateInDateType().compareTo(tempTask.getStartDateInDateType()) == 1
+				&& taskForCheck.getEndDateInDateType().compareTo(tempTask.getEndDateInDateType()) == -1) {
+			return true;
+		} else if (taskForCheck.getStartDateInDateType().compareTo(tempTask.getStartDateInDateType()) == 1 
+				&& taskForCheck.getStartDateInDateType().compareTo(tempTask.getEndDateInDateType()) == -1) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	private static boolean isStartDateNull(Task taskForCheck) {
+		return taskForCheck.getStartDate() == null;
+	}
+}
+```
 ###### src\Test\UnitTest.java
 ``` java
 	@Test
