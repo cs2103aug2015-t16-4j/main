@@ -80,8 +80,8 @@ public class FileModifier {
 
 		if (path != null) {
 			try {
-				dataFile = new File(path + taskFileName);
-				completeDataFile = new File(path + completeTaskFileName);
+				dataFile = new File(path + "\\" + taskFileName);
+				completeDataFile = new File(path + "\\" + completeTaskFileName);
 				dataFile.createNewFile();
 				completeDataFile.createNewFile();
 			} catch (IOException e) {
