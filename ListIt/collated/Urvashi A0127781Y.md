@@ -253,15 +253,19 @@ public class FileModifier {
 	 * This method adds the task to the current list of tasks
 	 * @param newtask the task to be added into the list
 	 */
-	public void addTask(Task newtask) {
+	public boolean addTask(Task newtask) {
+		assert newtask != null;
+		
 		if (TaskCheckLogic.blockedDateCheck(newtask)) {
 			ArrayList<Task> newList = modifier.getContentList();
 			newList.add(newtask);
 			updateFile(newList);
 			LoggingLogic.logging(ADDING_SUCCESSFUL);
+			return true;
 		} else {
 			FeedbackPane.displayInvalidAddBlocked();
 			LoggingLogic.logging(ADDING_UNSUCCESSFUL);
+			return false;
 		}
 	}
 
@@ -296,6 +300,8 @@ public class FileModifier {
 	 * @param index the line number of the task to be removed
 	 */
 	public void removeTask(int index) {
+		assert index >= 0;
+		
 		ArrayList<Task> taskList;
 		if (isViewModeComplete()) {
 			taskList = modifier.getCompleteContentList();
@@ -390,6 +396,8 @@ public class FileModifier {
 	public ArrayList<Task> searchKeyword(String keyword) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
+		
+		assert keyword != null;
 
 		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);
@@ -408,6 +416,9 @@ public class FileModifier {
 	public ArrayList<Task> searchByImportance(int searchKey) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
+		
+		assert searchKey >= 1;
+		assert searchKey <= 3;
 
 		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);
@@ -426,6 +437,8 @@ public class FileModifier {
 	public ArrayList<Task> searchByDate(String date) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		ArrayList<Task> searchList = new ArrayList<Task>();
+		
+		assert date != null;
 
 		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);
@@ -465,7 +478,7 @@ public class FileModifier {
 	 * @param startDate the start date object with or without time
 	 * @param endDate the end date object with or without time
 	 */
-	public void editTimeline(int lineToBeEdit, String startDate, String endDate) {
+	public boolean editTimeline(int lineToBeEdit, String startDate, String endDate) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task task = taskList.get(lineToBeEdit);
 		if (startDate.contains(" ")) {
@@ -477,8 +490,14 @@ public class FileModifier {
 			task.setEndDate(endDate);
 			task.setHasTime(false);
 		}
-		taskList.set(lineToBeEdit, task);
-		updateFile(taskList);
+		if(TaskCheckLogic.blockedDateCheck(task)) {
+			taskList.set(lineToBeEdit, task);
+			updateFile(taskList);
+			return true;
+		} else {
+			FeedbackPane.displayInvalidEditBlocked();
+			return false;
+		}
 	}
 
 	/**
@@ -760,8 +779,14 @@ public class EditLogic {
 				} else if (isEditByTimeline(command)) {
 					String newStartDate = getNewStartDate(command);
 					String newEndDate = getNewEndDate(command);
-					modifier.editTimeline(indexToBeEdit, newStartDate, newEndDate);
-					FeedbackPane.displayValidEdit();
+					if(AddLogic.isCorrectRange(newStartDate, newEndDate)) {
+						boolean isSuccess =	modifier.editTimeline(indexToBeEdit, newStartDate, newEndDate);
+						if(isSuccess) {
+							FeedbackPane.displayValidEdit();
+						}
+					} else {
+						FeedbackPane.displayInvalidDate();
+					}
 				} else if (isEditByRepeat(command)) {
 					String repeatCommand = getRepeatCommand(command);
 					if (AddLogic.isCorrectRepeatCycle(repeatCommand)) {
@@ -1086,7 +1111,7 @@ public class TaskCheckLogic {
 	@Test
 	public void testEdit1() {
 		clearExpectedActual();
-		AddLogic.addEventWithDeadline("add OP2 presentation by 08112015 rank 3");
+		AddLogic.addEventWithImportance("add OP2 presentation by 08112015 rank 3");
 		EditLogic.editEvent("edit 1 by date 08112015");
 		actual = modifier.getContentList();
 		expected = getExpectedforEditDate(expected);

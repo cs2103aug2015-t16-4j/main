@@ -60,7 +60,8 @@
 
 	/**
 	 * Checks if the repeat cycle value is 0 or not.
-	 * @param repeatCycle 
+	 * 
+	 * @param repeatCycle
 	 * @return true if repeat cycle = 0, else returns false
 	 */
 	private static boolean hasRepeatCycle(int repeatCycle) {
@@ -73,7 +74,9 @@
 
 	/**
 	 * Parses the repeat cycle from a string into an integer
-	 * @param repeatCycle how often will the event repeat per type
+	 * 
+	 * @param repeatCycle
+	 *            how often will the event repeat per type
 	 * @return the repeat cycle in integer form
 	 */
 	private static int parseRepeatAmount(String repeatCycle) {
@@ -102,11 +105,13 @@
 		return isCorrect;
 	}
 
-
 	/**
-	 * Checks if the string command has the correct keywords, and then adds a 
-	 * recursive task to the task list. Else, displays invalid input if keyword is wrong.
-	 * @param command string command input by the user with an "add" at the start
+	 * Checks if the string command has the correct keywords, and then adds a
+	 * recursive task to the task list. Else, displays invalid input if keyword
+	 * is wrong.
+	 * 
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 */
 	public static void addRecursiveEventTimeline(String command) {
 		String startDate = null;
@@ -167,9 +172,11 @@
 	}
 
 	/**
-	 * Adds a block event, which lasts over more than 1 day, to the task list. 
+	 * Adds a block event, which lasts over more than 1 day, to the task list.
 	 * Checks if the keywords entered are correct as well.
-	 * @param command string command input by the user with an "add" at the start
+	 * 
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 */
 	public static void addBlockEvent(String command) {
 		Task newTask = new Task();
@@ -199,10 +206,13 @@
 	}
 
 	/**
-	 * Checks if the range of the date entered (From and to) are in the correct form,
-	 * such as start date must be earlier than end date.
-	 * @param start starting date
-	 * @param end ending date
+	 * Checks if the range of the date entered (From and to) are in the correct
+	 * form, such as start date must be earlier than end date.
+	 * 
+	 * @param start
+	 *            starting date
+	 * @param end
+	 *            ending date
 	 * @return true if format is correct, else returns false.
 	 */
 ```
@@ -222,9 +232,8 @@
 
 	private static String getEventTitleBlock(String command) {
 		return command.substring(4, command.lastIndexOf(COMMAND_BLOCK) - 1);
-
 	}
-	
+
 	public static boolean containsTime(String date) {
 		if (date.contains(WHITESPACE)) {
 			return true;
@@ -342,6 +351,7 @@ public class UndoAndRedoLogic {
 	}
 
 	public void storeListToUndo(ArrayList<Task> list) {
+		assert list != null;
 		undo.push(list);
 	}
 
@@ -350,6 +360,7 @@ public class UndoAndRedoLogic {
 	}
 
 	public void storeListToRedo(ArrayList<Task> list) {
+		assert list != null;
 		redo.push(list);
 	}
 
@@ -374,6 +385,7 @@ public class UndoAndRedoLogic {
 	}
 	
 	public void storeListToUndoComplete(ArrayList<Task> completeList) {
+		assert completeList != null;
 		undoComplete.push(completeList);
 	}
 	
@@ -382,6 +394,7 @@ public class UndoAndRedoLogic {
 	}
 	
 	public void storeListToRedoComplete(ArrayList<Task> completeList) {
+		assert completeList != null;
 		redoComplete.push(completeList);
 	}
 	
@@ -416,6 +429,7 @@ import javafx.scene.text.Text;
 
 public class FeedbackPane extends GridPane{
 	
+	private static final String MESSAGE_EDIT_TIMELINE_BLOCKED = "Task timeline cannot be edited as specific timeline is blocked\n";
 	private static final String MESSAGE_SUCCESSFUL_ADD = "Sucessful add!\n";
 	private static final String MESSAGE_SUCESSFUL_EDIT = "Sucessful edit!\n";
 	private static final String MESSAGE_TIMELINE_BLOCKED = "The current event timeline is blocked, cannot be added\n";
@@ -529,6 +543,10 @@ public class FeedbackPane extends GridPane{
 
 	public static void displayValidAdd() {
 		feedbackScreen.appendText(MESSAGE_SUCCESSFUL_ADD);
+	}
+
+	public static void displayInvalidEditBlocked() {
+		feedbackScreen.appendText(MESSAGE_EDIT_TIMELINE_BLOCKED);
 	}
 }
 ```
