@@ -778,6 +778,7 @@ public class AddLogic {
 	 * @param end ending date
 	 * @return true if format is correct, else returns false.
 	 */
+	// @@author Shawn A0124181R
 	private static boolean isCorrectRange(String start, String end) {
 		SimpleDateFormat dateFormatter = new SimpleDateFormat(FORMAT_DATE);
 		SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(FORMAT_DATETIME);
@@ -802,6 +803,12 @@ public class AddLogic {
 		}
 	}
 
+	/**
+	 * @param startDate
+	 * @param endDate
+	 * @return -1 if the starting date is before end date
+	 */
+	// @@author Shi Hao A0129916W
 	private static boolean isStartDateBeforeEndDate(Date startDate, Date endDate) {
 		return startDate.compareTo(endDate) == -1;
 	}

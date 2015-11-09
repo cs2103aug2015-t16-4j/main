@@ -19,6 +19,23 @@ import javafx.scene.text.Text;
 
 public class FeedbackPane extends GridPane{
 	
+	private static final String MESSAGE_SUCCESSFUL_ADD = "Sucessful add!\n";
+	private static final String MESSAGE_SUCESSFUL_EDIT = "Sucessful edit!\n";
+	private static final String MESSAGE_TIMELINE_BLOCKED = "The current event timeline is blocked, cannot be added\n";
+	private static final String MESSAGE_INVALID_RANK_LEVEL = "Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n";
+	private static final String MESSAGE_FILE_MOVE_FAIL = "File move failed, please check if datafiles are safe.\n";
+	private static final String MESSAGE_FILE_MOVE_SUCCESS = "File move complete!\n";
+	private static final String MESSAGE_COMPLETE_NOT_ALLOW = "Cannot complete event when viewing complete List!\n";
+	private static final String MESSAGE_EDIT_NOT_ALLOW = "Cannot edit when viewing complete List!\n";
+	private static final String MESSAGE_ADD_NOT_ALLOW = "Cannot add when viewing complete List!\n";
+	private static final String MESSAGE_INVALID_INDEX = "Invalid input , index is out of bounds!\n";
+	private static final String MESSAGE_INVALID_TITLE = "Invalid title\n";
+	private static final String MESSAGE_NO_UNDO = "Undo not available\n";
+	private static final String MESSAGE_INVALID_DATE = "Invalid date is inputed\n";
+	private static final String MESSAGE_NO_REDO = "No action can be redo!\n";
+	private static final String MESSAGE_INDEX_OUT_OF_BOUNDS = "Index is out of bounds!\n";
+	private static final String MESSAGE_INVALID_INPUT = "Invalid input!\n";
+	
 	private static TextArea feedbackScreen;
 	private Text label;
 	
@@ -49,63 +66,59 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayInvalidInput() {
-		feedbackScreen.appendText("Invalid input!\n");
+		feedbackScreen.appendText(MESSAGE_INVALID_INPUT);
 	}
 	
 	public static void displayInvalidIndexToDelete() {
-		feedbackScreen.appendText("Index is out of bounds!\n");
+		feedbackScreen.appendText(MESSAGE_INDEX_OUT_OF_BOUNDS);
 	}
 
 	public static void displayInvalidRedo() {
-		feedbackScreen.appendText("No action can be redo!\n");
-	}
-
-	public static void displayNoTitle() {
-		feedbackScreen.appendText("No event title found!\n");
+		feedbackScreen.appendText(MESSAGE_NO_REDO);
 	}
 
 	public static void displayInvalidDate() {
-		feedbackScreen.appendText("Invalid date is inputed\n");
+		feedbackScreen.appendText(MESSAGE_INVALID_DATE);
 	}
 
 	public static void displayInvalidUndo() {
-		feedbackScreen.appendText("Undo not available\n");
+		feedbackScreen.appendText(MESSAGE_NO_UNDO);
 	}
 
 	public static void displayInvalidTitle() {
-		feedbackScreen.appendText("Invalid title\n");
+		feedbackScreen.appendText(MESSAGE_INVALID_TITLE);
 	}
 
 	public static void displayInvalidIndexComplete() {
-		feedbackScreen.appendText("Invalid input , index is out of bounds!\n"); 	
+		feedbackScreen.appendText(MESSAGE_INVALID_INDEX); 	
 	}
 
 	public static void displayInvalidAdd() {
-		feedbackScreen.appendText("Cannot add when viewing complete List!\n");
+		feedbackScreen.appendText(MESSAGE_ADD_NOT_ALLOW);
 	}
 
 	public static void displayInvalidEdit() {
-		feedbackScreen.appendText("Cannot edit when viewing complete List!\n");
+		feedbackScreen.appendText(MESSAGE_EDIT_NOT_ALLOW);
 	}
 
 	public static void displayInvalidComplete() {
-		feedbackScreen.appendText("Cannot complete event when viewing complete List!\n");
+		feedbackScreen.appendText(MESSAGE_COMPLETE_NOT_ALLOW);
 	}
 
 	public static void displayValidFileMove() {
-		feedbackScreen.appendText("File move complete!\n");
+		feedbackScreen.appendText(MESSAGE_FILE_MOVE_SUCCESS);
 	}
 
 	public static void displayInvalidFileMove() {
-		feedbackScreen.appendText("File move failed, please check if datafiles are safe.\n");
+		feedbackScreen.appendText(MESSAGE_FILE_MOVE_FAIL);
 	}
 
 	public static void displayInvalidIndexImptLevel() {
-		feedbackScreen.appendText("Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n");
+		feedbackScreen.appendText(MESSAGE_INVALID_RANK_LEVEL);
 	}
 
 	public static void displayInvalidAddBlocked() {
-		feedbackScreen.appendText("The current event timeline is blocked, cannot be added\n");
+		feedbackScreen.appendText(MESSAGE_TIMELINE_BLOCKED);
 	}
 
 	public static void displayMessage(String message) {
@@ -114,10 +127,10 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayValidEdit() {
-		feedbackScreen.appendText("Sucessful edit!\n");
+		feedbackScreen.appendText(MESSAGE_SUCESSFUL_EDIT);
 	}
 
 	public static void displayValidAdd() {
-		feedbackScreen.appendText("Sucessful add!\n");
+		feedbackScreen.appendText(MESSAGE_SUCCESSFUL_ADD);
 	}
 }

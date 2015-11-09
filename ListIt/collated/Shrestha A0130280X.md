@@ -60,11 +60,8 @@ public class AddLogic {
 	private static final String DAY_TOMORROW = "tomorrow";
 	private static final String DAY_WEEK = "week";
 	
-	/**
-	 * This method adds a task object that has only a title and 
-	 * the deadline variable.
-	 * @param command string command input by the user with an "add" at the start
-	 */
+	
+	
 	public static void addEventWithDeadline(String command) {
 		String eventTitle = null;
 		String deadline = null;
@@ -124,10 +121,7 @@ public class AddLogic {
 		}
 	}
 
-	/**
-	 * @param deadline deadline variable
-	 * @return true if deadline is a day of the week, else returns false.
-	 */
+	
 	public static boolean isDayOfWeek(String deadline) {
 		deadline = deadline.toLowerCase();
 		if (deadline.contains(DAY_MONDAY) || deadline.contains(DAY_TUESDAY) || deadline.contains(DAY_WEDNESDAY)
@@ -176,7 +170,6 @@ public class AddLogic {
 	}
 
 	/**
-	 * Gets the title task object for a single day event 
 	 * @param command string command input by the user with an "add" at the start
 	 * @return the title of the task object
 	 */
@@ -203,10 +196,6 @@ public class AddLogic {
 		return command.lastIndexOf(COMMAND_BY) > command.lastIndexOf(COMMAND_ON);
 	}
 
-	/**
-	 * @param command  string command input by the user with an "add" at the start
-	 * @return true if the above holds, else returns false.
-	 */
 	private static boolean hasBothOnAndBy(String command) {
 		return command.contains(COMMAND_BY) && command.contains(COMMAND_ON);
 	}
@@ -263,10 +252,6 @@ public class AddLogic {
 		}
 	}
 
-	/**
-	 * @param command string command input by the user with an "add" at the start
-	 * @return event title
-	 */
 	private static String getEventTitleDefault(String command) {
 		if (command.length() > 4) {
 			return command.substring(4);
@@ -374,10 +359,7 @@ public class AddLogic {
 		}
 	}
 
-	/**
-	 * @param command string command input by the user with an "add" at the start
-	 * @return true if event has a deadline, else returns false
-	 */
+	
 	private static boolean isEventWithDeadline(String command) {
 		return command.contains(COMMAND_BY) || command.contains(COMMAND_ON);
 	}
@@ -488,12 +470,6 @@ public class AddLogic {
 		return command.substring(4, command.lastIndexOf(COMMAND_ON) - 1);
 	}
 
-	/**
-	 * @param command string command input by the user with an "add" at the start
-	 * @param eventTitle event title
-	 * @param startDate start date of the event
-	 * @param endDate end date of the event
-	 */
 	private static void addTaskWithTimelineAndNoRank(String command, String eventTitle, String startDate,
 			String endDate) {
 		Task newTask;
@@ -506,13 +482,7 @@ public class AddLogic {
 		FeedbackPane.displayValidAdd();
 	}
 	
-	/**
-	 * Adds a task with title, timeline and rank
-	 * @param command string command input by the user with an "add" at the start
-	 * @param eventTitle event title
-	 * @param startDate start date of the event
-	 * @param endDate end date of the event
-	 */
+	
 	private static void addTaskWithTimelineAndRank(String command, String eventTitle, String startDate,
 			String endDate) {
 		int rank = getRankValue(command);
@@ -594,10 +564,7 @@ public class AddLogic {
 		return command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3, command.lastIndexOf(COMMAND_RANK) - 1);
 	}
 
-	/**
-	 * @param command string command input by the user with an "add" at the start
-	 * @return true if the command contains "rank". Else, returns false
-	 */
+	
 	private static boolean isEventWithImportance(String command) {
 		return command.contains(COMMAND_RANK);
 	}
@@ -608,280 +575,6 @@ public class AddLogic {
 	 * the type and cycles are valid inputs as well.
 	 * @param command string command input by the user with an "add" at the start
 	 */
-	public static void addRecursiveEventDeadline(String command) {
-		String deadline = null;
-		String repeatType = null;
-		int repeatCycle = 0;
-		String eventTitle = command.substring(4, command.lastIndexOf(COMMAND_REPEAT) - 1);
-		String repeatCommand = command.substring(command.lastIndexOf(COMMAND_REPEAT) + 7,
-				command.lastIndexOf(COMMAND_ON) - 1);
-		if (isCorrectRepeatCycle(repeatCommand)) {
-			repeatType = parseRepeatType(repeatCommand);
-			repeatCycle = parseRepeatAmount(repeatCommand);
-			try {
-				deadline = getEventDeadlineAfterOn(command);
-			} catch (Exception e) {
-				deadline = EMPTY_STRING;
-			}
-			if (isValidDate(deadline) && repeatCycle != 0) {
-				if (containsTime(deadline)) {
-					Task newTask = createRecurringTaskWithDeadlineAndTime(deadline, repeatType, repeatCycle,
-							eventTitle);
-					modifier.addTask(newTask);
-					FeedbackPane.displayValidAdd();
-				} else {
-					Task newTask = createRecurringTaskWithDeadline(deadline, repeatType, repeatCycle, eventTitle);
-					modifier.addTask(newTask);
-					FeedbackPane.displayValidAdd();
-				}
-			} else if (!hasRepeatCycle(repeatCycle)) {
-				addRecurMessage = MESSAGE_RECUR_CYCLE;
-				FeedbackPane.displayInvalidInput();
-				LoggingLogic.logging(addRecurMessage);
-
-			} else if (isDeadlineEmpty(deadline)) {
-				addRecurMessage = MESSAGE_RECUR_START;
-				FeedbackPane.displayInvalidInput();
-			} else {
-				addEventDefault(command);
-			}
-		} else {
-			addEventWithDeadline(command);
-			return;
-		}
-	}
-
-	private static Task createRecurringTaskWithDeadline(String deadline, String repeatType, int repeatCycle,
-			String eventTitle) {
-		return new Task(eventTitle, repeatType, repeatCycle, deadline, true);
-	}
-
-	private static Task createRecurringTaskWithDeadlineAndTime(String deadline, String repeatType, int repeatCycle,
-			String eventTitle) {
-		return new Task(eventTitle, repeatType, repeatCycle, deadline, true, true);
-	}
-
-	/**
-	 * @param deadline
-	 * @return true if it is empty, else returns false
-	 */
-	private static boolean isDeadlineEmpty(String deadline) {
-		return deadline.equals(EMPTY_STRING);
-	}
-
-	/**
-	 * Checks if the repeat cycle value is 0 or not.
-	 * @param repeatCycle 
-	 * @return true if repeat cycle = 0, else returns false
-	 */
-	private static boolean hasRepeatCycle(int repeatCycle) {
-		return repeatCycle != VALUE_NO_REPEAT_CYCLE;
-	}
-
-	public static String getRecurMessage() {
-		return addRecurMessage;
-	}
-
-	/**
-	 * Parses the repeat cycle from a string into an integer
-	 * @param repeatCycle how often will the event repeat per type
-	 * @return the repeat cycle in integer form
-	 */
-	private static int parseRepeatAmount(String repeatCycle) {
-		try {
-			int cycle = Integer.parseInt(repeatCycle.substring(0, repeatCycle.indexOf(WHITESPACE)));
-			return cycle;
-		} catch (StringIndexOutOfBoundsException e) {
-			return 0;
-		}
-	}
-
-	/**
-	 * @param repeatCycle daily, monthly, yearly
-	 * @return repeat type
-	 */
-	private static String parseRepeatType(String repeatCycle) {
-		return repeatCycle.substring(repeatCycle.indexOf(WHITESPACE) + 1);
-	}
-
-	/**
-	 * @param repeatCycle daily, monthly, yearly
-	 * @return true if it contains the keyword, else returns false
-	 */
-	public static boolean isCorrectRepeatCycle(String repeatCycle) {
-		boolean isCorrect = false;
-
-		assert repeatCycle != null;
-
-		if (repeatCycle.contains(REPEAT_DAILY) || repeatCycle.contains(REPEAT_MONTHLY)
-				|| repeatCycle.contains(REPEAT_YEARLY) || repeatCycle.contains(REPEAT_WEEKLY)) {
-			isCorrect = true;
-
-		}
-		return isCorrect;
-	}
-
-
-	/**
-	 * Checks if the string command has the correct keywords, and then adds a 
-	 * recursive task to the task list. Else, displays invalid input if keyword is wrong.
-	 * @param command string command input by the user with an "add" at the start
-	 */
-	public static void addRecursiveEventTimeline(String command) {
-		String startDate = null;
-		String endDate = null;
-		String repeatType = null;
-		int repeatCycle = 0;
-		String eventTitle = command.substring(4, command.lastIndexOf(COMMAND_REPEAT) - 1);
-		String repeatCommand = command.substring(command.lastIndexOf(COMMAND_REPEAT) + 7,
-				command.lastIndexOf(COMMAND_START_TIME) - 1);
-		if (isCorrectRepeatCycle(repeatCommand)) {
-			repeatType = parseRepeatType(repeatCommand);
-			repeatCycle = parseRepeatAmount(repeatCommand);
-			try {
-				startDate = command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
-						command.lastIndexOf(COMMAND_END_TIME) - 1);
-				endDate = command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
-			} catch (Exception e) {
-				startDate = EMPTY_STRING;
-				endDate = EMPTY_STRING;
-			}
-			if (isValidDate(startDate) && hasRepeatCycle(repeatCycle)) {
-				if (containsTime(startDate)) {
-					Task newTask = createRecurringTaskWithTimeline(startDate, endDate, repeatType, repeatCycle,
-							eventTitle);
-					modifier.addTask(newTask);
-					FeedbackPane.displayValidAdd();
-				} else {
-					Task newTask = createRecurringTaskWithTimelineAndNoTime(startDate, endDate, repeatType, repeatCycle,
-							eventTitle);
-					modifier.addTask(newTask);
-					FeedbackPane.displayValidAdd();
-				}
-			} else if (isDeadlineEmpty(startDate)) {
-				addRecurMessage = MESSAGE_RECUR_START;
-				FeedbackPane.displayInvalidInput();
-			} else if (isDeadlineEmpty(endDate)) {
-				addRecurMessage = MESSAGE_RECUR_END;
-				FeedbackPane.displayInvalidInput();
-			} else if (!hasRepeatCycle(repeatCycle)) {
-				addRecurMessage = MESSAGE_RECUR_CYCLE;
-				FeedbackPane.displayInvalidInput();
-			} else {
-				addEventDefault(command);
-			}
-		} else {
-			addEventWithTimeline(command);
-		}
-	}
-
-	private static Task createRecurringTaskWithTimelineAndNoTime(String startDate, String endDate, String repeatType,
-			int repeatCycle, String eventTitle) {
-		return new Task(eventTitle, repeatType, repeatCycle, startDate, endDate, true);
-	}
-
-	private static Task createRecurringTaskWithTimeline(String startDate, String endDate, String repeatType,
-			int repeatCycle, String eventTitle) {
-		return new Task(eventTitle, repeatType, repeatCycle, startDate, endDate, true, true);
-	}
-
-	/**
-	 * Adds a block event, which lasts over more than 1 day, to the task list. 
-	 * Checks if the keywords entered are correct as well.
-	 * @param command string command input by the user with an "add" at the start
-	 */
-	public static void addBlockEvent(String command) {
-		Task newTask = new Task();
-		String eventTitle = getEventTitleBlock(command);
-		String start = getBlockEventStartDate(command);
-		String end = getEndTime(command);
-		if (isValidDate(end) && isValidDate(start)) {
-			if (isCorrectRange(start, end)) {
-				if (containsTime(end)) {
-					newTask = new Task(eventTitle, start, end, true);
-				} else {
-					newTask = new Task(eventTitle, start, end);
-				}
-				newTask.setBlocking(true);
-				modifier.addTask(newTask);
-				FeedbackPane.displayValidAdd();
-			} else {
-				addBlockMessage = MESSAGE_INVALID_RANGE;
-				LoggingLogic.logging(addBlockMessage);
-				FeedbackPane.displayInvalidInput();
-			}
-		} else {
-			addBlockMessage = MESSAGE_INVALID_INPUT;
-			LoggingLogic.logging(addBlockMessage);
-			FeedbackPane.displayInvalidAdd();
-		}
-	}
-
-	/**
-	 * Checks if the range of the date entered (From and to) are in the correct form,
-	 * such as start date must be earlier than end date.
-	 * @param start starting date
-	 * @param end ending date
-	 * @return true if format is correct, else returns false.
-	 */
-	private static boolean isCorrectRange(String start, String end) {
-		SimpleDateFormat dateFormatter = new SimpleDateFormat(FORMAT_DATE);
-		SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(FORMAT_DATETIME);
-		Date startDate;
-		Date endDate;
-		try {
-			if (containsTime(start)) {
-				startDate = dateTimeFormatter.parse(start);
-				endDate = dateTimeFormatter.parse(end);
-			} else {
-				startDate = dateFormatter.parse(start);
-				endDate = dateFormatter.parse(end);
-			}
-		} catch (ParseException e) {
-			return false;
-		}
-
-		if (isStartDateBeforeEndDate(startDate, endDate)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	/**
-	 * @param startDate
-	 * @param endDate
-	 * @return -1 if the starting date is before end date
-	 */
-	private static boolean isStartDateBeforeEndDate(Date startDate, Date endDate) {
-		return startDate.compareTo(endDate) == -1;
-	}
-
-	public static String getBlockMessage() {
-		return addBlockMessage;
-	}
-
-	private static String getBlockEventStartDate(String command) {
-		return command.substring(command.lastIndexOf(COMMAND_BLOCK) + 6, command.lastIndexOf(COMMAND_END_TIME) - 1);
-	}
-
-	private static String getEventTitleBlock(String command) {
-		return command.substring(4, command.lastIndexOf(COMMAND_BLOCK) - 1);
-
-	}
-
-	/**
-	 * @param date date variable, with or without time.
-	 * @return true if it has a time variable, else returns false
-	 */
-	public static boolean containsTime(String date) {
-		if (date.contains(WHITESPACE)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-}
 ```
 ###### src\listItLogic\CommandParser.java
 ``` java
@@ -983,10 +676,6 @@ public class DeleteLogic {
 	private static int getDeleteIndex(String command) {
 		return Integer.parseInt(command.substring(7));
 	}
-	
-	public static String getMessage() {
-		return message;
-	}
 
 	/**
 	 * This method clears the entire data file when "clear" is entered. It does not
@@ -996,240 +685,6 @@ public class DeleteLogic {
 		modifier.clearAll(); 
 	}
 
-}
-```
-###### src\listItLogic\EditLogic.java
-``` java
-package listItLogic;
-
-import java.util.ArrayList;
-
-import fileModifier.FileModifier;
-import listItUI.FeedbackPane;
-import taskGenerator.Task;
-
-/**
- * This class contains methods to edit the selected task. Edition can be done by
- * either editing the title, importance level, date, time, repeat type (for recursive
- * tasks), the entire block time of the task, or everything.
- * @version 0.5
- */
-public class EditLogic {
-
-	private static FileModifier modifier = FileModifier.getInstance();
-	private static final String WHITESPACE = " ";
-	private static final String COMMAND_TITLE = "by title";
-	private static final String COMMAND_IMPORTANCE = "by impt";
-	private static final String COMMAND_DEADLINE = "by date";
-	private static final String COMMAND_TIMELINE = "by time";
-	private static final String COMMAND_TO = "to";
-	private static final String COMMAND_FROM = "from";
-	private static final String COMMAND_REPEAT = "by repeat";
-	private static final String COMMAND_BLOCK = "cancel block";
-	private static final int IMPORTANCE_LEVEL_ONE = 1; 
-	private static final int IMPORTANCE_LEVEL_TWO = 2; 
-	private static final int IMPORTANCE_LEVEL_THREE = 3; 
-	private static final String  EDIT_IMPORTANCE_INVALID = "Invalid Importance "
-			                                                + "level,there are only"
-			                                                + " 3 types: 1 , 2 or 3.\n"; 
-    private static final String  EDIT_DATE_INVALID= "Invalid date is input\n"; 
-    private static final String  EDIT_INPUT = "Invalid input!\n"; 
-    private static final String  EDIT_IMPORTANCE_VALID = "Correct type of "
-    		                                              + "importance level, "
-    		                                              + "sucessfully editted!"; 
-   	
-	private static String  message = null; 
-	
-	/**
-	 * Edits the task event selected by the user, according to the line index the 
-	 * user inputs. also determines the variable type the user wants to input so as to
-	 * edit the correct variable. 
-	 * Repeat type = daily, monthly or yearly.
-	 * Repeat cycle = period of how long the type should occur for. After the cycle is
-	 *                complete, the cycle is reset and run again.
-	 * @param command String command input by the user with an "edit" keyword.
-	 */
-    public static void editEvent(String command) {
-		int indexToBeEdit = getEditIndex(command)-1;
-		
-		ArrayList<Task> taskList = modifier.getContentList();
-
-		assert indexToBeEdit >= 0;
-		
-		if (!isValidRange(indexToBeEdit, taskList)) {
-			FeedbackPane.displayInvalidInput();
-			message = EDIT_INPUT; 
-			LoggingLogic.logging(message);
-		} else {
-			if (isEditByDate(command)) {
-				String newDate = getNewDate(command);
-				if (AddLogic.isValidDate(newDate)) {
-					modifier.editEndDate(indexToBeEdit, newDate);
-					FeedbackPane.displayValidEdit();
-				} else {
-					FeedbackPane.displayInvalidDate();
-					message = EDIT_DATE_INVALID;
-					LoggingLogic.logging(message);
-				}
-			} else if (isEditByTitle(command)) {
-				String newTitle = getNewTitle(command);
-				modifier.editTitle(indexToBeEdit, newTitle);
-				FeedbackPane.displayValidEdit();
-			} else if (isEditByImportance(command)) {
-				int newImportance = getNewImportanceLevel(command);
-				
-				if (isVeryImportant(newImportance) || 
-					isImportant(newImportance) || 
-					isNotImportant(newImportance)){
-						modifier.editImportance(indexToBeEdit, newImportance);
-						message = EDIT_IMPORTANCE_VALID; 
-						LoggingLogic.logging(message);
-						FeedbackPane.displayValidEdit();
-					} else {
-						FeedbackPane.displayInvalidIndexImptLevel();
-						message = EDIT_IMPORTANCE_INVALID;
-						LoggingLogic.logging(message);
-					}
-				} else if (isEditByTimeline(command)) {
-					String newStartDate = getNewStartDate(command);
-					String newEndDate = getNewEndDate(command);
-					modifier.editTimeline(indexToBeEdit, newStartDate, newEndDate);
-					FeedbackPane.displayValidEdit();
-				} else if (isEditByRepeat(command)) {
-					String repeatCommand = getRepeatCommand(command);
-					if (AddLogic.isCorrectRepeatCycle(repeatCommand)) {
-						int newPeriod = 0;
-						String repeatType = null;
-						newPeriod = getNewPeriod(repeatCommand);
-						repeatType = getRepeatType(repeatCommand);
-						modifier.editRepeat(indexToBeEdit, newPeriod, repeatType);
-						FeedbackPane.displayValidEdit();
-					} else {
-						FeedbackPane.displayInvalidEdit();
-					}
-
-				} else if (isEditByBlock(command)) {
-					modifier.editBlock(indexToBeEdit);
-					FeedbackPane.displayValidEdit();
-				}
-			}
-		}
-
-    
-	private static String getRepeatType(String repeatCommand) {
-		return repeatCommand.substring(repeatCommand.indexOf(WHITESPACE) + 1);
-	}
-
-	private static int getNewPeriod(String repeatCommand) {
-		return Integer.parseInt(repeatCommand.substring(0, repeatCommand.indexOf(WHITESPACE)));
-	}
-
-	private static String getRepeatCommand(String command) {
-		return command.substring(command.indexOf(COMMAND_REPEAT)
-				                                 + 10);
-	}
-
-	private static boolean isNotImportant(int newImportance) {
-		return newImportance == IMPORTANCE_LEVEL_THREE;
-	}
-
-	private static boolean isImportant(int newImportance) {
-		return newImportance == IMPORTANCE_LEVEL_TWO;
-	}
-
-	private static boolean isVeryImportant(int newImportance) {
-		return newImportance == IMPORTANCE_LEVEL_ONE;
-	}
-
-	private static boolean isValidRange(int indexToBeEdit, 
-			                            ArrayList<Task> taskList) {
-		return indexToBeEdit < taskList.size();
-	}
-
-	private static String getNewEndDate(String command) {
-		return command.substring(command.indexOf(COMMAND_TO) + 3);
-	}
-
-	private static String getNewStartDate(String command) {
-		return command.substring(command.indexOf(COMMAND_FROM) + 5,
-				                 command.indexOf(COMMAND_TO) - 1);
-	}
-
-	private static int getNewImportanceLevel(String command) {
-		return Integer.parseInt(command.substring(command.indexOf(COMMAND_IMPORTANCE)
-				                                  + 8));
-
-	}
-
-	private static String getNewTitle(String command) {
-		return command.substring(command.indexOf(COMMAND_TITLE) + 9);
-	}
-
-	private static String getNewDate(String command) {
-		return command.substring(command.indexOf(COMMAND_DEADLINE) + 8);
-	}
-	
-	/**
-	 * Checks if the command contains a timeline input.
-	 * @param command String command input by the user with an "edit" keyword.
-	 * @return true if the command contains it, else returns false.
-	 */
-	private static boolean isEditByTimeline(String command) {
-		return command.contains(COMMAND_TIMELINE);
-	}
-
-	/**
-	 * Checks if the command contains a importance input.
-	 * @param command String command input by the user with an "edit" keyword.
-	 * @return true if the command contains it, else returns false.
-	 */
-	private static boolean isEditByImportance(String command) {
-		return command.contains(COMMAND_IMPORTANCE);
-	}
-
-	/**
-	 * Checks if the command contains a title input.
-	 * @param command String command input by the user with an "edit" keyword.
-	 * @return true if the command contains it, else returns false.
-	 */
-	private static boolean isEditByTitle(String command) {
-		return command.contains(COMMAND_TITLE);
-	}
-	
-	/**
-	 * Checks if the command contains a date input.
-	 * @param command String command input by the user with an "edit" keyword.
-	 * @return true if the command contains it, else returns false.
-	 */
-	private static boolean isEditByDate(String command) {
-		return command.contains(COMMAND_DEADLINE);
-	}
-
-	/**
-	 * Checks if the command contains a recursive input.
-	 * @param command String command input by the user with an "edit" keyword.
-	 * @return true if the command contains it, else returns false.
-	 */
-	private static boolean isEditByRepeat(String command) {
-		return command.contains(COMMAND_REPEAT);
-	}
-
-	/**
-	 * Checks if the command contains a block input.
-	 * @param command String command input by the user with an "edit" keyword.
-	 * @return true if the command contains it, else returns false.
-	 */
-	private static boolean isEditByBlock(String command) {
-		return command.contains(COMMAND_BLOCK);
-	}
-
-	private static int getEditIndex(String command) {
-		return Integer.parseInt(command.substring(5, 6));
-	}
-
-	public static String getMessage() {
-		return message;
-	}
 }
 ```
 ###### src\listItLogic\ExecuteCommand.java

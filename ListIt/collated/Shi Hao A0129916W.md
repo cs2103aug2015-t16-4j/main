@@ -1,4 +1,241 @@
 # Shi Hao A0129916W
+###### src\listItLogic\AddLogic.java
+``` java
+	public static void addRecursiveEventDeadline(String command) {
+		String deadline = null;
+		String repeatType = null;
+		int repeatCycle = 0;
+		String eventTitle = command.substring(4, command.lastIndexOf(COMMAND_REPEAT) - 1);
+		String repeatCommand = command.substring(command.lastIndexOf(COMMAND_REPEAT) + 7,
+				command.lastIndexOf(COMMAND_ON) - 1);
+		if (isCorrectRepeatCycle(repeatCommand)) {
+			repeatType = parseRepeatType(repeatCommand);
+			repeatCycle = parseRepeatAmount(repeatCommand);
+			try {
+				deadline = getEventDeadlineAfterOn(command);
+			} catch (Exception e) {
+				deadline = EMPTY_STRING;
+			}
+			if (isValidDate(deadline) && repeatCycle != 0) {
+				if (containsTime(deadline)) {
+					Task newTask = createRecurringTaskWithDeadlineAndTime(deadline, repeatType, repeatCycle,
+							eventTitle);
+					modifier.addTask(newTask);
+					FeedbackPane.displayValidAdd();
+				} else {
+					Task newTask = createRecurringTaskWithDeadline(deadline, repeatType, repeatCycle, eventTitle);
+					modifier.addTask(newTask);
+					FeedbackPane.displayValidAdd();
+				}
+			} else if (!hasRepeatCycle(repeatCycle)) {
+				addRecurMessage = MESSAGE_RECUR_CYCLE;
+				FeedbackPane.displayInvalidInput();
+				LoggingLogic.logging(addRecurMessage);
+
+			} else if (isDeadlineEmpty(deadline)) {
+				addRecurMessage = MESSAGE_RECUR_START;
+				FeedbackPane.displayInvalidInput();
+			} else {
+				addEventDefault(command);
+			}
+		} else {
+			addEventWithDeadline(command);
+			return;
+		}
+	}
+
+	private static Task createRecurringTaskWithDeadline(String deadline, String repeatType, int repeatCycle,
+			String eventTitle) {
+		return new Task(eventTitle, repeatType, repeatCycle, deadline, true);
+	}
+
+	private static Task createRecurringTaskWithDeadlineAndTime(String deadline, String repeatType, int repeatCycle,
+			String eventTitle) {
+		return new Task(eventTitle, repeatType, repeatCycle, deadline, true, true);
+	}
+
+	private static boolean isDeadlineEmpty(String deadline) {
+		return deadline.equals(EMPTY_STRING);
+	}
+
+	/**
+	 * Checks if the repeat cycle value is 0 or not.
+	 * @param repeatCycle 
+	 * @return true if repeat cycle = 0, else returns false
+	 */
+	private static boolean hasRepeatCycle(int repeatCycle) {
+		return repeatCycle != VALUE_NO_REPEAT_CYCLE;
+	}
+
+	public static String getRecurMessage() {
+		return addRecurMessage;
+	}
+
+	/**
+	 * Parses the repeat cycle from a string into an integer
+	 * @param repeatCycle how often will the event repeat per type
+	 * @return the repeat cycle in integer form
+	 */
+	private static int parseRepeatAmount(String repeatCycle) {
+		try {
+			int cycle = Integer.parseInt(repeatCycle.substring(0, repeatCycle.indexOf(WHITESPACE)));
+			return cycle;
+		} catch (StringIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+
+	private static String parseRepeatType(String repeatCycle) {
+		return repeatCycle.substring(repeatCycle.indexOf(WHITESPACE) + 1);
+	}
+
+	public static boolean isCorrectRepeatCycle(String repeatCycle) {
+		boolean isCorrect = false;
+
+		assert repeatCycle != null;
+
+		if (repeatCycle.contains(REPEAT_DAILY) || repeatCycle.contains(REPEAT_MONTHLY)
+				|| repeatCycle.contains(REPEAT_YEARLY) || repeatCycle.contains(REPEAT_WEEKLY)) {
+			isCorrect = true;
+
+		}
+		return isCorrect;
+	}
+
+
+	/**
+	 * Checks if the string command has the correct keywords, and then adds a 
+	 * recursive task to the task list. Else, displays invalid input if keyword is wrong.
+	 * @param command string command input by the user with an "add" at the start
+	 */
+	public static void addRecursiveEventTimeline(String command) {
+		String startDate = null;
+		String endDate = null;
+		String repeatType = null;
+		int repeatCycle = 0;
+		String eventTitle = command.substring(4, command.lastIndexOf(COMMAND_REPEAT) - 1);
+		String repeatCommand = command.substring(command.lastIndexOf(COMMAND_REPEAT) + 7,
+				command.lastIndexOf(COMMAND_START_TIME) - 1);
+		if (isCorrectRepeatCycle(repeatCommand)) {
+			repeatType = parseRepeatType(repeatCommand);
+			repeatCycle = parseRepeatAmount(repeatCommand);
+			try {
+				startDate = command.substring(command.lastIndexOf(COMMAND_START_TIME) + 5,
+						command.lastIndexOf(COMMAND_END_TIME) - 1);
+				endDate = command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3);
+			} catch (Exception e) {
+				startDate = EMPTY_STRING;
+				endDate = EMPTY_STRING;
+			}
+			if (isValidDate(startDate) && hasRepeatCycle(repeatCycle)) {
+				if (containsTime(startDate)) {
+					Task newTask = createRecurringTaskWithTimeline(startDate, endDate, repeatType, repeatCycle,
+							eventTitle);
+					modifier.addTask(newTask);
+					FeedbackPane.displayValidAdd();
+				} else {
+					Task newTask = createRecurringTaskWithTimelineAndNoTime(startDate, endDate, repeatType, repeatCycle,
+							eventTitle);
+					modifier.addTask(newTask);
+					FeedbackPane.displayValidAdd();
+				}
+			} else if (isDeadlineEmpty(startDate)) {
+				addRecurMessage = MESSAGE_RECUR_START;
+				FeedbackPane.displayInvalidInput();
+			} else if (isDeadlineEmpty(endDate)) {
+				addRecurMessage = MESSAGE_RECUR_END;
+				FeedbackPane.displayInvalidInput();
+			} else if (!hasRepeatCycle(repeatCycle)) {
+				addRecurMessage = MESSAGE_RECUR_CYCLE;
+				FeedbackPane.displayInvalidInput();
+			} else {
+				addEventDefault(command);
+			}
+		} else {
+			addEventWithTimeline(command);
+		}
+	}
+
+	private static Task createRecurringTaskWithTimelineAndNoTime(String startDate, String endDate, String repeatType,
+			int repeatCycle, String eventTitle) {
+		return new Task(eventTitle, repeatType, repeatCycle, startDate, endDate, true);
+	}
+
+	private static Task createRecurringTaskWithTimeline(String startDate, String endDate, String repeatType,
+			int repeatCycle, String eventTitle) {
+		return new Task(eventTitle, repeatType, repeatCycle, startDate, endDate, true, true);
+	}
+
+	/**
+	 * Adds a block event, which lasts over more than 1 day, to the task list. 
+	 * Checks if the keywords entered are correct as well.
+	 * @param command string command input by the user with an "add" at the start
+	 */
+	public static void addBlockEvent(String command) {
+		Task newTask = new Task();
+		String eventTitle = getEventTitleBlock(command);
+		String start = getBlockEventStartDate(command);
+		String end = getEndTime(command);
+		if (isValidDate(end) && isValidDate(start)) {
+			if (isCorrectRange(start, end)) {
+				if (containsTime(end)) {
+					newTask = new Task(eventTitle, start, end, true);
+				} else {
+					newTask = new Task(eventTitle, start, end);
+				}
+				newTask.setBlocking(true);
+				modifier.addTask(newTask);
+				FeedbackPane.displayValidAdd();
+			} else {
+				addBlockMessage = MESSAGE_INVALID_RANGE;
+				LoggingLogic.logging(addBlockMessage);
+				FeedbackPane.displayInvalidInput();
+			}
+		} else {
+			addBlockMessage = MESSAGE_INVALID_INPUT;
+			LoggingLogic.logging(addBlockMessage);
+			FeedbackPane.displayInvalidAdd();
+		}
+	}
+
+	/**
+	 * Checks if the range of the date entered (From and to) are in the correct form,
+	 * such as start date must be earlier than end date.
+	 * @param start starting date
+	 * @param end ending date
+	 * @return true if format is correct, else returns false.
+	 */
+```
+###### src\listItLogic\AddLogic.java
+``` java
+=======
+>>>>>>> origin/master
+	private static boolean isStartDateBeforeEndDate(Date startDate, Date endDate) {
+		return startDate.compareTo(endDate) == -1;
+	}
+
+	public static String getBlockMessage() {
+		return addBlockMessage;
+	}
+
+	private static String getBlockEventStartDate(String command) {
+		return command.substring(command.lastIndexOf(COMMAND_BLOCK) + 6, command.lastIndexOf(COMMAND_END_TIME) - 1);
+	}
+
+	private static String getEventTitleBlock(String command) {
+		return command.substring(4, command.lastIndexOf(COMMAND_BLOCK) - 1);
+
+	}
+	
+	public static boolean containsTime(String date) {
+		if (date.contains(WHITESPACE)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+```
 ###### src\listItLogic\CompleteLogic.java
 ``` java
 package listItLogic;
@@ -59,108 +296,6 @@ public class CompleteLogic {
 	
 	public static String getMessage() {
 		return message;
-	}
-}
-```
-###### src\listItLogic\TaskCheckLogic.java
-``` java
-package listItLogic;
-
-import java.util.ArrayList;
-import java.util.Date;
-
-import fileModifier.FileModifier;
-import taskGenerator.Task;
-
-/**
- * This class contains all the methods that check if the command date input
- * entered by the user is of a valid date input, and also compares the task date
- * to the actual calendar date.
- * @version 0.5
- */
-public class TaskCheckLogic {
-	static FileModifier modifier = FileModifier.getInstance();
-
-	public TaskCheckLogic() {
-
-	}
-
-	/**
-	 * Checks if the date variable of the task is over the actual calendar date.
-	 * @param taskList selected task list
-	 */
-	public static void overDateCheck(ArrayList<Task> taskList) {
-		Task tempTask = new Task();
-		Date systemTime = new Date();
-		for (int i = 0; i < taskList.size(); i++) {
-			tempTask = taskList.get(i);
-			if (!isEndDateNull(tempTask)) {
-				if (isOverDate(tempTask, systemTime)) {
-					tempTask.setOverDate();
-					taskList.set(i, tempTask);
-				} else {
-					tempTask.setNotOverDate();
-					taskList.set(i, tempTask);
-				}
-			} else {
-				break;
-			}
-		}
-
-		modifier.saveFile(taskList);
-	}
-
-	private static boolean isOverDate(Task tempTask, Date systemTime) {
-		return systemTime.compareTo(tempTask.getEndDateInDateType()) > 0;
-	}
-
-	private static boolean isEndDateNull(Task tempTask) {
-		return tempTask.getEndDate() == null;
-	}
-
-	/**
-	 * Checks the block tasks in the list, to see if there is a time line overlap
-	 * between the newTask and blockingTask
-	 * 
-	 * @param taskForCheck
-	 *            task in a block input
-	 * @return true if above holds, else returns false.
-	 */
-	public static boolean blockedDateCheck(Task taskForCheck) {
-		boolean result = true;
-		if (!isEndDateNull(taskForCheck) && !isStartDateNull(taskForCheck)) {
-			ArrayList<Task> taskList = modifier.getContentList();
-			Task tempTask = new Task();
-			for (int i = 0; i < taskList.size(); i++) {
-				tempTask = taskList.get(i);
-				if (tempTask.isBlocking()) {
-					if (isBlockDatesValid(taskForCheck, tempTask)) {
-						result = false;
-						break;
-					}
-				}
-			}
-		}
-		return result;
-	}
-
-	private static boolean isBlockDatesValid(Task taskForCheck, Task tempTask) {
-		if (taskForCheck.getStartDateInDateType().compareTo(tempTask.getStartDateInDateType()) == -1
-				&& taskForCheck.getEndDateInDateType().compareTo(tempTask.getEndDateInDateType()) == 1) {
-			return true;
-		} else if (taskForCheck.getEndDateInDateType().compareTo(tempTask.getStartDateInDateType()) == 1
-				&& taskForCheck.getEndDateInDateType().compareTo(tempTask.getEndDateInDateType()) == -1) {
-			return true;
-		} else if (taskForCheck.getStartDateInDateType().compareTo(tempTask.getStartDateInDateType()) == 1 
-				&& taskForCheck.getStartDateInDateType().compareTo(tempTask.getEndDateInDateType()) == -1) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	private static boolean isStartDateNull(Task taskForCheck) {
-		return taskForCheck.getStartDate() == null;
 	}
 }
 ```
@@ -1160,6 +1295,8 @@ import javafx.scene.text.Text;
 
 public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 	
+	private static final String BUTTON_IMAGE_NAME = "icon1.png";
+	private static final String LIST_IT_LABLE = "List It";
 	private Text listItLabel;
 	private Button closeButton;
 	
@@ -1184,7 +1321,7 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 	}
 
 	private void setupSoftwareLabel() {
-		listItLabel = new Text("List It");
+		listItLabel = new Text(LIST_IT_LABLE);
 		listItLabel.setFont(Font.font("Tonto", FontPosture.ITALIC, 30));
 		listItLabel.setStyle("-fx-fill: linear-gradient(#0000FF 10%, #FFFFFF 30%, #0000FF 50%, #FFFFFF 70%, #0000FF 90%);"
 				+ "-fx-stroke: black;");
@@ -1194,7 +1331,7 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 		closeButton = new Button();
 		closeButton.setOnAction(this);
 		
-		Image closeIcon = new Image(getClass().getResourceAsStream("icon1.png"));
+		Image closeIcon = new Image(getClass().getResourceAsStream(BUTTON_IMAGE_NAME));
 		ImageView iconView = new ImageView(closeIcon);
 		iconView.setFitHeight(40);
 		iconView.setFitWidth(40);
@@ -1212,9 +1349,6 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 ```
 ###### src\listItUI\UIMain.java
 ``` java
-=======
-
->>>>>>> origin/master
 package listItUI;
 
 import java.util.ArrayList;
@@ -1349,6 +1483,114 @@ public class UIMain extends Application {
 		helpStage.setScene(helpScene);
 		helpStage.show();
 	}
+}
+```
+###### src\Test\JavaFXThreadingRule.java
+``` java
+//reused
+package Test;
+
+import java.util.concurrent.CountDownLatch;
+
+import javax.swing.SwingUtilities;
+
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+
+import org.junit.Rule;
+import org.junit.rules.TestRule;
+import org.junit.runner.Description;
+import org.junit.runners.model.Statement;
+
+/**
+ * A JUnit {@link Rule} for running tests on the JavaFX thread and performing
+ * JavaFX initialization.  To include in your test case, add the following code:
+ * 
+ * <pre>
+ * {@literal @}Rule
+ * public JavaFXThreadingRule jfxRule = new JavaFXThreadingRule();
+ * </pre>
+ * 
+ * @author Andy Till
+ * 
+ * @source https://gist.github.com/andytill/3835914
+ * 
+ */
+public class JavaFXThreadingRule implements TestRule {
+    
+    /**
+     * Flag for setting up the JavaFX, we only need to do this once for all tests.
+     */
+    private static boolean jfxIsSetup;
+
+    @Override
+    public Statement apply(Statement statement, Description description) {
+        
+        return new OnJFXThreadStatement(statement);
+    }
+
+    private static class OnJFXThreadStatement extends Statement {
+        
+        private final Statement statement;
+
+        public OnJFXThreadStatement(Statement aStatement) {
+            statement = aStatement;
+        }
+
+        private Throwable rethrownException = null;
+        
+        @Override
+        public void evaluate() throws Throwable {
+            
+            if(!jfxIsSetup) {
+                setupJavaFX();
+                
+                jfxIsSetup = true;
+            }
+            
+            final CountDownLatch countDownLatch = new CountDownLatch(1);
+            
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        statement.evaluate();
+                    } catch (Throwable e) {
+                        rethrownException = e;
+                    }
+                    countDownLatch.countDown();
+                }});
+            
+            countDownLatch.await();
+            
+            // if an exception was thrown by the statement during evaluation,
+            // then re-throw it to fail the test
+            if(rethrownException != null) {
+                throw rethrownException;
+            }
+        }
+
+        protected void setupJavaFX() throws InterruptedException {
+            
+            long timeMillis = System.currentTimeMillis();
+            
+            final CountDownLatch latch = new CountDownLatch(1);
+            
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    // initializes JavaFX environment
+                    new JFXPanel(); 
+                    
+                    latch.countDown();
+                }
+            });
+            
+            System.out.println("javafx initialising...");
+            latch.await();
+            System.out.println("javafx is initialised in " + (System.currentTimeMillis() - timeMillis) + "ms");
+        }
+        
+    }
 }
 ```
 ###### src\Test\UnitTest.java
