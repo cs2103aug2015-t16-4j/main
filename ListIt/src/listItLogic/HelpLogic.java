@@ -44,7 +44,8 @@ public class HelpLogic {
 		commandList.add("add event with timeline, single day");
 		commandList.add("add event with no deadline");
 		commandList.add("add event with rank");
-		commandList.add("add recurring tasks");
+		commandList.add("add recurring tasks with deadline");
+		commandList.add("add recurring tasks with timeline");
 		commandList.add("add timeline events with blocking ability");
 		commandList.add("edit date only");
 		commandList.add("edit title only");
@@ -73,8 +74,9 @@ public class HelpLogic {
 				          + "to <end time>");
 		inputCommand.add("add <description>");
 		inputCommand.add("add <description> by <deadline> rank <number>");
-		inputCommand.add("add <description> repeat <reoeat period>"
-				         + " <monthly/yearly/daily> ");
+		inputCommand.add("add <description> repeat <repeat period>"
+				         + " <monthly/yearly/daily> " + "on <date>");
+		inputCommand.add("add <description> repeat <repeat period>" + " <monthly/yearly/daily> " + "from <startDate> to <endDate>");
 		inputCommand.add("add <description> block <start date> to <end date>");
 		inputCommand.add("edit <task index> by date <new date>");
 		inputCommand.add("edit <task index> by title <updated title>");
