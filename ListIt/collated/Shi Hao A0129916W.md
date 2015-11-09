@@ -208,8 +208,6 @@
 ```
 ###### src\listItLogic\AddLogic.java
 ``` java
-=======
->>>>>>> origin/master
 	private static boolean isStartDateBeforeEndDate(Date startDate, Date endDate) {
 		return startDate.compareTo(endDate) == -1;
 	}
@@ -418,6 +416,23 @@ import javafx.scene.text.Text;
 
 public class FeedbackPane extends GridPane{
 	
+	private static final String MESSAGE_SUCCESSFUL_ADD = "Sucessful add!\n";
+	private static final String MESSAGE_SUCESSFUL_EDIT = "Sucessful edit!\n";
+	private static final String MESSAGE_TIMELINE_BLOCKED = "The current event timeline is blocked, cannot be added\n";
+	private static final String MESSAGE_INVALID_RANK_LEVEL = "Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n";
+	private static final String MESSAGE_FILE_MOVE_FAIL = "File move failed, please check if datafiles are safe.\n";
+	private static final String MESSAGE_FILE_MOVE_SUCCESS = "File move complete!\n";
+	private static final String MESSAGE_COMPLETE_NOT_ALLOW = "Cannot complete event when viewing complete List!\n";
+	private static final String MESSAGE_EDIT_NOT_ALLOW = "Cannot edit when viewing complete List!\n";
+	private static final String MESSAGE_ADD_NOT_ALLOW = "Cannot add when viewing complete List!\n";
+	private static final String MESSAGE_INVALID_INDEX = "Invalid input , index is out of bounds!\n";
+	private static final String MESSAGE_INVALID_TITLE = "Invalid title\n";
+	private static final String MESSAGE_NO_UNDO = "Undo not available\n";
+	private static final String MESSAGE_INVALID_DATE = "Invalid date is inputed\n";
+	private static final String MESSAGE_NO_REDO = "No action can be redo!\n";
+	private static final String MESSAGE_INDEX_OUT_OF_BOUNDS = "Index is out of bounds!\n";
+	private static final String MESSAGE_INVALID_INPUT = "Invalid input!\n";
+	
 	private static TextArea feedbackScreen;
 	private Text label;
 	
@@ -448,63 +463,59 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayInvalidInput() {
-		feedbackScreen.appendText("Invalid input!\n");
+		feedbackScreen.appendText(MESSAGE_INVALID_INPUT);
 	}
 	
 	public static void displayInvalidIndexToDelete() {
-		feedbackScreen.appendText("Index is out of bounds!\n");
+		feedbackScreen.appendText(MESSAGE_INDEX_OUT_OF_BOUNDS);
 	}
 
 	public static void displayInvalidRedo() {
-		feedbackScreen.appendText("No action can be redo!\n");
-	}
-
-	public static void displayNoTitle() {
-		feedbackScreen.appendText("No event title found!\n");
+		feedbackScreen.appendText(MESSAGE_NO_REDO);
 	}
 
 	public static void displayInvalidDate() {
-		feedbackScreen.appendText("Invalid date is inputed\n");
+		feedbackScreen.appendText(MESSAGE_INVALID_DATE);
 	}
 
 	public static void displayInvalidUndo() {
-		feedbackScreen.appendText("Undo not available\n");
+		feedbackScreen.appendText(MESSAGE_NO_UNDO);
 	}
 
 	public static void displayInvalidTitle() {
-		feedbackScreen.appendText("Invalid title\n");
+		feedbackScreen.appendText(MESSAGE_INVALID_TITLE);
 	}
 
 	public static void displayInvalidIndexComplete() {
-		feedbackScreen.appendText("Invalid input , index is out of bounds!\n"); 	
+		feedbackScreen.appendText(MESSAGE_INVALID_INDEX); 	
 	}
 
 	public static void displayInvalidAdd() {
-		feedbackScreen.appendText("Cannot add when viewing complete List!\n");
+		feedbackScreen.appendText(MESSAGE_ADD_NOT_ALLOW);
 	}
 
 	public static void displayInvalidEdit() {
-		feedbackScreen.appendText("Cannot edit when viewing complete List!\n");
+		feedbackScreen.appendText(MESSAGE_EDIT_NOT_ALLOW);
 	}
 
 	public static void displayInvalidComplete() {
-		feedbackScreen.appendText("Cannot complete event when viewing complete List!\n");
+		feedbackScreen.appendText(MESSAGE_COMPLETE_NOT_ALLOW);
 	}
 
 	public static void displayValidFileMove() {
-		feedbackScreen.appendText("File move complete!\n");
+		feedbackScreen.appendText(MESSAGE_FILE_MOVE_SUCCESS);
 	}
 
 	public static void displayInvalidFileMove() {
-		feedbackScreen.appendText("File move failed, please check if datafiles are safe.\n");
+		feedbackScreen.appendText(MESSAGE_FILE_MOVE_FAIL);
 	}
 
 	public static void displayInvalidIndexImptLevel() {
-		feedbackScreen.appendText("Invalid Importance level,there are only 3 types: 1 , 2 or 3.\n");
+		feedbackScreen.appendText(MESSAGE_INVALID_RANK_LEVEL);
 	}
 
 	public static void displayInvalidAddBlocked() {
-		feedbackScreen.appendText("The current event timeline is blocked, cannot be added\n");
+		feedbackScreen.appendText(MESSAGE_TIMELINE_BLOCKED);
 	}
 
 	public static void displayMessage(String message) {
@@ -513,11 +524,11 @@ public class FeedbackPane extends GridPane{
 	}
 
 	public static void displayValidEdit() {
-		feedbackScreen.appendText("Sucessful edit!\n");
+		feedbackScreen.appendText(MESSAGE_SUCESSFUL_EDIT);
 	}
 
 	public static void displayValidAdd() {
-		feedbackScreen.appendText("Sucessful add!\n");
+		feedbackScreen.appendText(MESSAGE_SUCCESSFUL_ADD);
 	}
 }
 ```
@@ -627,6 +638,17 @@ import taskGenerator.Task;
 
 public class OutputScreenPane extends GridPane {
 
+	private static final String DISPLAY_COMPLETE = "Complete";
+	private static final String NO_CONTENT_TO_DISPLAY = "No content to display";
+	private static final String RANK_NOT_SO_IMPORTANT = "Not so Important";
+	private static final String RANK_IMPORTANT = "Important";
+	private static final String RANK_VERY_IMPORTANT = "Very Important";
+	private static final String REPEAT_CYCLE = "Repeat for each: ";
+	private static final String BLOCK_SETTER = "     (Block Set)";
+	private static final String EVENT_TITLE = "Title: ";
+	private static final String START_DATE = "Start Date: ";
+	private static final String END_DATE = "End Date: ";
+	private static final String TEXT_HEADER_STYLE = "Floating";
 	private Text displayLabel;
 	private static VBox taskList;
 	private static ScrollPane Screen;
@@ -719,7 +741,7 @@ public class OutputScreenPane extends GridPane {
 	private static boolean generateFloatingTaskHeader() {
 		boolean isFloatingState;
 		Text headerText;
-		headerText = new Text("Floating");
+		headerText = new Text(TEXT_HEADER_STYLE);
 		headerText.setFont(Font.font("Georgia", 20));
 		HBox header = generateHearder(headerText);
 		header.setStyle("-fx-background-color: linear-gradient(to right, #FFFF66 0%, #FFFFFF 80%);");
@@ -752,7 +774,7 @@ public class OutputScreenPane extends GridPane {
 	private static GridPane createFloatingTaskDetail(Task tempTask) {
 		GridPane taskDetail = new GridPane();
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
-		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text eventTitle = new Text(EVENT_TITLE + tempTask.getEventTitle());
 		Text rank = new Text(getRankingText(tempTask.getImportance()));
 		Text emptyLine = new Text("");
 		
@@ -780,7 +802,7 @@ public class OutputScreenPane extends GridPane {
 		boolean showRepeat = false;
 		boolean showBlock = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
-		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text eventTitle = new Text(EVENT_TITLE + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 		Text startDate = null;
 		Text endDate = null;
@@ -791,15 +813,15 @@ public class OutputScreenPane extends GridPane {
 		index.setFont(Font.font(18));
 
 		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Start Date: " + tempTask.getStartDate());
-			endDate = new Text("End Date: " + tempTask.getEndDate());
+			startDate = new Text(START_DATE + tempTask.getStartDate());
+			endDate = new Text(END_DATE + tempTask.getEndDate());
 			showDates = true;
 		} else {
-			endDate = new Text("End Date: " + tempTask.getEndDate());
+			endDate = new Text(END_DATE + tempTask.getEndDate());
 		}
 
 		if (tempTask.isBlocking()) {
-			blocker = new Text("     (Block Set)");
+			blocker = new Text(BLOCK_SETTER);
 			showBlock = true;
 		}
 
@@ -807,7 +829,7 @@ public class OutputScreenPane extends GridPane {
 
 		if (tempTask.getRepeat()) {
 			showRepeat = true;
-			repeatCycle = new Text("Repeat for each: " + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
+			repeatCycle = new Text(REPEAT_CYCLE + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
 		}
 
 		setConstraints(index, 0, 0);
@@ -888,11 +910,11 @@ public class OutputScreenPane extends GridPane {
 		String rankDetail;
 
 		if (importance == 1) {
-			rankDetail = "Very Important";
+			rankDetail = RANK_VERY_IMPORTANT;
 		} else if (importance == 2) {
-			rankDetail = "Important";
+			rankDetail = RANK_IMPORTANT;
 		} else {
-			rankDetail = "Not so Important";
+			rankDetail = RANK_NOT_SO_IMPORTANT;
 		}
 
 		return rankDetail;
@@ -901,7 +923,7 @@ public class OutputScreenPane extends GridPane {
 	public static void displayEmpty() {
 		Text emptyMessage;
 
-		emptyMessage = new Text("No content to display");
+		emptyMessage = new Text(NO_CONTENT_TO_DISPLAY);
 
 		taskList.getChildren().clear();
 		taskList.getChildren().add(emptyMessage);
@@ -973,7 +995,7 @@ public class OutputScreenPane extends GridPane {
 		boolean showRepeat = false;
 		boolean showBlock = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
-		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text eventTitle = new Text(EVENT_TITLE + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 		Text startDate = null;
 		Text endDate = null;
@@ -984,25 +1006,25 @@ public class OutputScreenPane extends GridPane {
 		index.setFont(Font.font(18));
 
 		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Start Date: " + tempTask.getStartDate());
-			endDate = new Text("End Date: " + tempTask.getEndDate());
+			startDate = new Text(START_DATE + tempTask.getStartDate());
+			endDate = new Text(END_DATE + tempTask.getEndDate());
 			showDates = true;
 		}
 
 		if (tempTask.isBlocking()) {
-			blocker = new Text("     (Block Set)");
+			blocker = new Text(BLOCK_SETTER);
 			showBlock = true;
 		}
 
 		if (showDates == false) {
 			if (tempTask.getEndDate() != null) {
-				endDate = new Text("End Date: " + tempTask.getEndDate());
+				endDate = new Text(END_DATE + tempTask.getEndDate());
 			}
 		}
 
 		if (tempTask.getRepeat()) {
 			showRepeat = true;
-			repeatCycle = new Text("Repeat for each: " + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
+			repeatCycle = new Text(REPEAT_CYCLE + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
 		}
 
 		rank = new Text(getRankingText(tempTask.getImportance()));
@@ -1094,7 +1116,7 @@ public class OutputScreenPane extends GridPane {
 	private static GridPane createFloatingTaskDetailImpt(Task tempTask) {
 		GridPane taskDetail = new GridPane();
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
-		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text eventTitle = new Text(EVENT_TITLE + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 
 		index.setFont(Font.font(18));
@@ -1120,7 +1142,7 @@ public class OutputScreenPane extends GridPane {
 		boolean showRepeat = false;
 		boolean showBlock = false;
 		Text index = new Text(tempTask.getIndex().toString() + ". ");
-		Text eventTitle = new Text("Title: " + tempTask.getEventTitle());
+		Text eventTitle = new Text(EVENT_TITLE + tempTask.getEventTitle());
 		Text emptyLine = new Text("");
 		Text startDate = null;
 		Text endDate = null;
@@ -1130,23 +1152,23 @@ public class OutputScreenPane extends GridPane {
 		index.setFont(Font.font(18));
 
 		if (tempTask.getStartDate() != null) {
-			startDate = new Text("Start Date: " + tempTask.getStartDate());
-			endDate = new Text("End Date: " + tempTask.getEndDate());
+			startDate = new Text(START_DATE + tempTask.getStartDate());
+			endDate = new Text(END_DATE + tempTask.getEndDate());
 			showDates = true;
 		}
 
 		if (showDates == false) {
-			endDate = new Text("End Date: " + tempTask.getEndDate());
+			endDate = new Text(END_DATE + tempTask.getEndDate());
 		}
 
 		if (tempTask.isBlocking()) {
-			blocker = new Text("     (Block Set)");
+			blocker = new Text(BLOCK_SETTER);
 			showBlock = true;
 		}
 
 		if (tempTask.getRepeat()) {
 			showRepeat = true;
-			repeatCycle = new Text("Repeat for each: " + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
+			repeatCycle = new Text(REPEAT_CYCLE + tempTask.getRepeatCycle() + " " + tempTask.getRepeatType());
 		}
 
 		setConstraints(index, 0, 0);
@@ -1224,7 +1246,7 @@ public class OutputScreenPane extends GridPane {
 	 */
 	public static void displayListComplete(ArrayList<Task> list) {
 		Task tempTask = new Task();
-		String currentHeader = "Complete";
+		String currentHeader = DISPLAY_COMPLETE;
 		taskList.getChildren().clear();
 
 		if (list.isEmpty()) {
@@ -1349,6 +1371,7 @@ public class TopBar extends GridPane implements EventHandler<ActionEvent>{
 ```
 ###### src\listItUI\UIMain.java
 ``` java
+
 package listItUI;
 
 import java.util.ArrayList;
@@ -1375,6 +1398,8 @@ import javafx.stage.StageStyle;
 
 public class UIMain extends Application {
 	
+	private static final String CHEAT_SHEET_TITLE = "Cheat Sheet";
+	
 	InputTextPane inputBox = new InputTextPane();
 	OutputScreenPane screenBox = new OutputScreenPane();
 	FeedbackPane feedbackBox = new FeedbackPane();
@@ -1390,7 +1415,6 @@ public class UIMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("ListIt");
 		primaryStage.initStyle(StageStyle.UNDECORATED);
 		
 		GridPane layout = new GridPane();
@@ -1453,7 +1477,7 @@ public class UIMain extends Application {
 		assert commands != null;
 		assert methods != null;
 		
-		helpStage.setTitle("Cheat Sheet");
+		helpStage.setTitle(CHEAT_SHEET_TITLE);
 		
 		ScrollPane helpLayout = new ScrollPane();
 		
@@ -1483,114 +1507,6 @@ public class UIMain extends Application {
 		helpStage.setScene(helpScene);
 		helpStage.show();
 	}
-}
-```
-###### src\Test\JavaFXThreadingRule.java
-``` java
-//reused
-package Test;
-
-import java.util.concurrent.CountDownLatch;
-
-import javax.swing.SwingUtilities;
-
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-
-import org.junit.Rule;
-import org.junit.rules.TestRule;
-import org.junit.runner.Description;
-import org.junit.runners.model.Statement;
-
-/**
- * A JUnit {@link Rule} for running tests on the JavaFX thread and performing
- * JavaFX initialization.  To include in your test case, add the following code:
- * 
- * <pre>
- * {@literal @}Rule
- * public JavaFXThreadingRule jfxRule = new JavaFXThreadingRule();
- * </pre>
- * 
- * @author Andy Till
- * 
- * @source https://gist.github.com/andytill/3835914
- * 
- */
-public class JavaFXThreadingRule implements TestRule {
-    
-    /**
-     * Flag for setting up the JavaFX, we only need to do this once for all tests.
-     */
-    private static boolean jfxIsSetup;
-
-    @Override
-    public Statement apply(Statement statement, Description description) {
-        
-        return new OnJFXThreadStatement(statement);
-    }
-
-    private static class OnJFXThreadStatement extends Statement {
-        
-        private final Statement statement;
-
-        public OnJFXThreadStatement(Statement aStatement) {
-            statement = aStatement;
-        }
-
-        private Throwable rethrownException = null;
-        
-        @Override
-        public void evaluate() throws Throwable {
-            
-            if(!jfxIsSetup) {
-                setupJavaFX();
-                
-                jfxIsSetup = true;
-            }
-            
-            final CountDownLatch countDownLatch = new CountDownLatch(1);
-            
-            Platform.runLater(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        statement.evaluate();
-                    } catch (Throwable e) {
-                        rethrownException = e;
-                    }
-                    countDownLatch.countDown();
-                }});
-            
-            countDownLatch.await();
-            
-            // if an exception was thrown by the statement during evaluation,
-            // then re-throw it to fail the test
-            if(rethrownException != null) {
-                throw rethrownException;
-            }
-        }
-
-        protected void setupJavaFX() throws InterruptedException {
-            
-            long timeMillis = System.currentTimeMillis();
-            
-            final CountDownLatch latch = new CountDownLatch(1);
-            
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    // initializes JavaFX environment
-                    new JFXPanel(); 
-                    
-                    latch.countDown();
-                }
-            });
-            
-            System.out.println("javafx initialising...");
-            latch.await();
-            System.out.println("javafx is initialised in " + (System.currentTimeMillis() - timeMillis) + "ms");
-        }
-        
-    }
 }
 ```
 ###### src\Test\UnitTest.java
