@@ -286,7 +286,7 @@ public class UnitTest {
 	@Test
 	public void testEdit1() {
 		clearExpectedActual();
-		AddLogic.addEventWithDeadline("add OP2 presentation by 08112015 rank 3");
+		AddLogic.addEventWithImportance("add OP2 presentation by 08112015 rank 3");
 		EditLogic.editEvent("edit 1 by date 08112015");
 		actual = modifier.getContentList();
 		expected = getExpectedforEditDate(expected);

@@ -11,8 +11,9 @@ import taskGenerator.Task;
 
 /**
  * This class adds a task to the data file, by breaking down the string command
- * and separates the different variables, in order to create the task object to 
- * be added. 
+ * and separates the different variables, in order to create the task object to
+ * be added.
+ * 
  * @version 0.5
  */
 public class AddLogic {
@@ -57,9 +58,7 @@ public class AddLogic {
 	private static final String DAY_SUNDAY = "sunday";
 	private static final String DAY_TOMORROW = "tomorrow";
 	private static final String DAY_WEEK = "week";
-	
-	
-	
+
 	public static void addEventWithDeadline(String command) {
 		String eventTitle = null;
 		String deadline = null;
@@ -69,6 +68,7 @@ public class AddLogic {
 			deadline = getEventDeadline(command);
 		} catch (Exception e) {
 			addEventDefault(command);
+			return;
 		}
 
 		if (isValidDate(deadline)) {
@@ -89,8 +89,7 @@ public class AddLogic {
 			LoggingLogic.logging(addDeadlineMessage);
 		}
 	}
-	
-	
+
 	private static Task createTaskWithDeadline(String eventTitle, String deadline) {
 		return new Task(eventTitle, deadline);
 	}
@@ -104,10 +103,12 @@ public class AddLogic {
 		FeedbackPane.displayInvalidInput();
 	}
 
-	/** 
-	 * Checks if the string variable is a word or not, in order to check for
-	 * the date input by the user, and therefore parse it into the date object.
-	 * @param word string word in the command
+	/**
+	 * Checks if the string variable is a word or not, in order to check for the
+	 * date input by the user, and therefore parse it into the date object.
+	 * 
+	 * @param word
+	 *            string word in the command
 	 * @return true if it is a word, false if it is not a word
 	 */
 	public static boolean isWord(String word) {
@@ -119,13 +120,17 @@ public class AddLogic {
 		}
 	}
 
-	
 	public static boolean isDayOfWeek(String deadline) {
-		deadline = deadline.toLowerCase();
-		if (deadline.contains(DAY_MONDAY) || deadline.contains(DAY_TUESDAY) || deadline.contains(DAY_WEDNESDAY)
-				|| deadline.contains(DAY_THURSDAY) || deadline.contains(DAY_FRIDAY) || deadline.contains(DAY_SATURDAY)
-				|| deadline.contains(DAY_SUNDAY) || deadline.contains(DAY_TOMORROW) || deadline.contains(DAY_WEEK)) {
-			return true;
+		if (deadline != null) {
+			deadline = deadline.toLowerCase();
+			if (deadline.contains(DAY_MONDAY) || deadline.contains(DAY_TUESDAY) || deadline.contains(DAY_WEDNESDAY)
+					|| deadline.contains(DAY_THURSDAY) || deadline.contains(DAY_FRIDAY)
+					|| deadline.contains(DAY_SATURDAY) || deadline.contains(DAY_SUNDAY)
+					|| deadline.contains(DAY_TOMORROW) || deadline.contains(DAY_WEEK)) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
 			return false;
 		}
@@ -138,7 +143,9 @@ public class AddLogic {
 	/**
 	 * Gets the event deadline from the command input by finding the keyword,
 	 * "on" or "by" and then ensures that the deadline entered is valid.
-	 * @param command string command input by the user with an "add" at the start
+	 * 
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 * @return the deadline variable
 	 */
 	private static String getEventDeadline(String command) {
@@ -158,7 +165,6 @@ public class AddLogic {
 		return deadline;
 	}
 
-	
 	private static String getEventDeadlineAfterOn(String command) {
 		return command.substring(command.lastIndexOf(COMMAND_ON) + 3);
 	}
@@ -168,7 +174,8 @@ public class AddLogic {
 	}
 
 	/**
-	 * @param command string command input by the user with an "add" at the start
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 * @return the title of the task object
 	 */
 	private static String getEventTitleDeadline(String command) {
@@ -185,7 +192,6 @@ public class AddLogic {
 		}
 	}
 
-	
 	private static String getEventTitleBeforeBy(String command) {
 		return command.substring(4, command.lastIndexOf(COMMAND_BY) - 1);
 	}
@@ -199,15 +205,16 @@ public class AddLogic {
 	}
 
 	/**
-	 * Checks if the date entered is a valid date or not. This date variable 
-	 * must be input in the set format, ddMMyyyy, or ddMMyyyy HHmm.
-	 * After which, it will parse the date into the date object if valid.
-	 * @param newDate date as a string input
+	 * Checks if the date entered is a valid date or not. This date variable
+	 * must be input in the set format, ddMMyyyy, or ddMMyyyy HHmm. After which,
+	 * it will parse the date into the date object if valid.
+	 * 
+	 * @param newDate
+	 *            date as a string input
 	 * @return true if date input is valid, else returns false.
 	 */
 	static boolean isValidDate(String newDate) {
 		boolean isValid = false;
-		assert newDate != null;
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
 		SimpleDateFormat dateTimeFormat = new SimpleDateFormat(FORMAT_DATETIME);
@@ -217,7 +224,7 @@ public class AddLogic {
 		try {
 			Date date = dateFormat.parse(newDate);
 			isValid = true;
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			isValid = false;
 		}
 
@@ -225,7 +232,7 @@ public class AddLogic {
 			try {
 				Date date = dateTimeFormat.parse(newDate);
 				isValid = true;
-			} catch (ParseException e) {
+			} catch (Exception e) {
 				isValid = false;
 			}
 		}
@@ -234,9 +241,11 @@ public class AddLogic {
 	}
 
 	/**
-	 * Adds an task consisting of just the event title. 
-	 * If no title is found, returns an error message.
-	 * @param command string command input by the user with an "add" at the start
+	 * Adds an task consisting of just the event title. If no title is found,
+	 * returns an error message.
+	 * 
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 */
 	public static void addEventDefault(String command) {
 		String eventTitle = null;
@@ -266,9 +275,11 @@ public class AddLogic {
 	}
 
 	/**
-	 * Adds a task that has the title and importance variable.
-	 * Task may or may not have a date input.
-	 * @param command string command input by the user with an "add" at the start
+	 * Adds a task that has the title and importance variable. Task may or may
+	 * not have a date input.
+	 * 
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 */
 	public static void addEventWithImportance(String command) {
 		String eventTitle = null;
@@ -336,7 +347,6 @@ public class AddLogic {
 		return new Task(eventTitle, deadline, rank, true);
 	}
 
-	
 	public static String getRankMessage() {
 		return addRankMessage;
 	}
@@ -350,22 +360,24 @@ public class AddLogic {
 	}
 
 	private static String getEventDeadlineImportance(String command) {
-		if(command.contains(COMMAND_BY)) {
+		if (command.contains(COMMAND_BY)) {
 			return command.substring(command.lastIndexOf(COMMAND_BY) + 3, command.lastIndexOf(COMMAND_RANK) - 1);
 		} else {
 			return command.substring(command.lastIndexOf(COMMAND_ON) + 3, command.lastIndexOf(COMMAND_RANK) - 1);
 		}
 	}
 
-	
 	private static boolean isEventWithDeadline(String command) {
 		return command.contains(COMMAND_BY) || command.contains(COMMAND_ON);
 	}
 
 	/**
-	 * Adds an event with a timeline. Event can either have a timeline consisting of
-	 * a single day timeline or a timeline that spans through multiple days
-	 * @param command string command input by the user with an "add" at the start
+	 * Adds an event with a timeline. Event can either have a timeline
+	 * consisting of a single day timeline or a timeline that spans through
+	 * multiple days
+	 * 
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 */
 	public static void addEventWithTimeline(String command) {
 		String eventTitle = new String();
@@ -377,7 +389,7 @@ public class AddLogic {
 			try {
 				eventTitle = getEventTitleBeforeOn(command);
 				startDate = getSingleDateStartTime(command);
-				if(isValidDate(startDate)) {
+				if (isValidDate(startDate)) {
 					isValidOnCommand = true;
 				}
 			} catch (Exception e) {
@@ -479,8 +491,7 @@ public class AddLogic {
 		modifier.addTask(newTask);
 		FeedbackPane.displayValidAdd();
 	}
-	
-	
+
 	private static void addTaskWithTimelineAndRank(String command, String eventTitle, String startDate,
 			String endDate) {
 		int rank = getRankValue(command);
@@ -506,9 +517,11 @@ public class AddLogic {
 	}
 
 	/**
-	 * Checks if the word rank is a word for the event title, or the importance 
-	 * variable key word. 
-	 * @param command string command input by the user with an "add" at the start
+	 * Checks if the word rank is a word for the event title, or the importance
+	 * variable key word.
+	 * 
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 * @return false if the word is a keyword, else returns true.
 	 */
 	private static boolean isRankNonCommand(String command) {
@@ -521,9 +534,11 @@ public class AddLogic {
 	}
 
 	/**
-	 * Converts the rank variable from string to integer, then checks if
-	 * the rank is a valid integer number (1,2 or 3)
-	 * @param command string command input by the user with an "add" at the start
+	 * Converts the rank variable from string to integer, then checks if the
+	 * rank is a valid integer number (1,2 or 3)
+	 * 
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 * @return true if rank is valid integer, else returns false
 	 */
 	private static boolean isValidRank(String command) {
@@ -562,18 +577,19 @@ public class AddLogic {
 		return command.substring(command.lastIndexOf(COMMAND_END_TIME) + 3, command.lastIndexOf(COMMAND_RANK) - 1);
 	}
 
-	
 	private static boolean isEventWithImportance(String command) {
 		return command.contains(COMMAND_RANK);
 	}
 
 	/**
-	 * Creates a recursive task event, by checking if the event has a title, 
-	 * recursive keyword "repeat", repeat type and the repeat cycle. Checks if all 
-	 * the type and cycles are valid inputs as well.
-	 * @param command string command input by the user with an "add" at the start
+	 * Creates a recursive task event, by checking if the event has a title,
+	 * recursive keyword "repeat", repeat type and the repeat cycle. Checks if
+	 * all the type and cycles are valid inputs as well.
+	 * 
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 */
-	// @@author Shi Hao A0129916W 
+	// @@author Shi Hao A0129916W
 	public static void addRecursiveEventDeadline(String command) {
 		String deadline = null;
 		String repeatType = null;
@@ -633,7 +649,8 @@ public class AddLogic {
 
 	/**
 	 * Checks if the repeat cycle value is 0 or not.
-	 * @param repeatCycle 
+	 * 
+	 * @param repeatCycle
 	 * @return true if repeat cycle = 0, else returns false
 	 */
 	private static boolean hasRepeatCycle(int repeatCycle) {
@@ -646,7 +663,9 @@ public class AddLogic {
 
 	/**
 	 * Parses the repeat cycle from a string into an integer
-	 * @param repeatCycle how often will the event repeat per type
+	 * 
+	 * @param repeatCycle
+	 *            how often will the event repeat per type
 	 * @return the repeat cycle in integer form
 	 */
 	private static int parseRepeatAmount(String repeatCycle) {
@@ -675,11 +694,13 @@ public class AddLogic {
 		return isCorrect;
 	}
 
-
 	/**
-	 * Checks if the string command has the correct keywords, and then adds a 
-	 * recursive task to the task list. Else, displays invalid input if keyword is wrong.
-	 * @param command string command input by the user with an "add" at the start
+	 * Checks if the string command has the correct keywords, and then adds a
+	 * recursive task to the task list. Else, displays invalid input if keyword
+	 * is wrong.
+	 * 
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 */
 	public static void addRecursiveEventTimeline(String command) {
 		String startDate = null;
@@ -740,9 +761,11 @@ public class AddLogic {
 	}
 
 	/**
-	 * Adds a block event, which lasts over more than 1 day, to the task list. 
+	 * Adds a block event, which lasts over more than 1 day, to the task list.
 	 * Checks if the keywords entered are correct as well.
-	 * @param command string command input by the user with an "add" at the start
+	 * 
+	 * @param command
+	 *            string command input by the user with an "add" at the start
 	 */
 	public static void addBlockEvent(String command) {
 		Task newTask = new Task();
@@ -772,10 +795,13 @@ public class AddLogic {
 	}
 
 	/**
-	 * Checks if the range of the date entered (From and to) are in the correct form,
-	 * such as start date must be earlier than end date.
-	 * @param start starting date
-	 * @param end ending date
+	 * Checks if the range of the date entered (From and to) are in the correct
+	 * form, such as start date must be earlier than end date.
+	 * 
+	 * @param start
+	 *            starting date
+	 * @param end
+	 *            ending date
 	 * @return true if format is correct, else returns false.
 	 */
 	// @@author Shawn A0124181R
@@ -824,7 +850,7 @@ public class AddLogic {
 	private static String getEventTitleBlock(String command) {
 		return command.substring(4, command.lastIndexOf(COMMAND_BLOCK) - 1);
 	}
-	
+
 	public static boolean containsTime(String date) {
 		if (date.contains(WHITESPACE)) {
 			return true;
