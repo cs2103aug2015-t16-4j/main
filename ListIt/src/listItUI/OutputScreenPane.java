@@ -55,6 +55,8 @@ public class OutputScreenPane extends GridPane {
 		Task tempTask = new Task();
 		boolean isFloatingState = false;
 		String currentHeader = null;
+		
+		assert list != null;
 
 		taskList.getChildren().clear();
 
@@ -290,6 +292,8 @@ public class OutputScreenPane extends GridPane {
 		GridPane taskDetail;
 		String currentHeader = list.get(0).getTitle().substring(0, 1);
 		Text headerText = new Text(currentHeader);
+		
+		assert list != null;
 
 		taskList.getChildren().clear();
 
@@ -408,6 +412,8 @@ public class OutputScreenPane extends GridPane {
 		GridPane taskDetail;
 		String currentHeader = getRankingText(list.get(0).getImportance());
 		Text headerText = new Text(currentHeader);
+		
+		assert list != null;
 
 		taskList.getChildren().clear();
 		

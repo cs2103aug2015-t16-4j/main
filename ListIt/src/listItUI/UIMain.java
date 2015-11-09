@@ -77,9 +77,15 @@ public class UIMain extends Application {
 		layout.getChildren().addAll(topBar, screenBox, feedbackBox, inputBox);
 	}
 	
+	/*
+	 * Construct help window and pop it out.
+	 */
 	public static void popUpHelp(ArrayList<String> commands, ArrayList<String> methods) {
 		Stage helpStage = new Stage();
 		int i=0, j=0;
+		
+		assert commands != null;
+		assert methods != null;
 		
 		helpStage.setTitle("Cheat Sheet");
 		
