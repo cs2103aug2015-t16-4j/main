@@ -19,6 +19,7 @@ import javafx.scene.text.Text;
 
 public class FeedbackPane extends GridPane{
 	
+	private static final String MESSAGE_EDIT_TIMELINE_BLOCKED = "Task timeline cannot be edited as specific timeline is blocked\n";
 	private static final String MESSAGE_SUCCESSFUL_ADD = "Sucessful add!\n";
 	private static final String MESSAGE_SUCESSFUL_EDIT = "Sucessful edit!\n";
 	private static final String MESSAGE_TIMELINE_BLOCKED = "The current event timeline is blocked, cannot be added\n";
@@ -132,5 +133,9 @@ public class FeedbackPane extends GridPane{
 
 	public static void displayValidAdd() {
 		feedbackScreen.appendText(MESSAGE_SUCCESSFUL_ADD);
+	}
+
+	public static void displayInvalidEditBlocked() {
+		feedbackScreen.appendText(MESSAGE_EDIT_TIMELINE_BLOCKED);
 	}
 }

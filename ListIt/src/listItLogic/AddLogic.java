@@ -488,8 +488,10 @@ public class AddLogic {
 		} else {
 			newTask = new Task(eventTitle, startDate, endDate);
 		}
-		modifier.addTask(newTask);
-		FeedbackPane.displayValidAdd();
+		boolean isSucess = modifier.addTask(newTask);
+		if(isSucess) {
+			FeedbackPane.displayValidAdd();
+		}
 	}
 
 	private static void addTaskWithTimelineAndRank(String command, String eventTitle, String startDate,
@@ -501,8 +503,10 @@ public class AddLogic {
 		} else {
 			newTask = new Task(eventTitle, startDate, endDate, rank);
 		}
-		modifier.addTask(newTask);
-		FeedbackPane.displayValidAdd();
+		boolean isSucess = modifier.addTask(newTask);
+		if(isSucess) {
+			FeedbackPane.displayValidAdd();
+		}
 	}
 
 	private static String getSingleDateEndTime(String command) {
@@ -805,7 +809,7 @@ public class AddLogic {
 	 * @return true if format is correct, else returns false.
 	 */
 	// @@author Shawn A0124181R
-	private static boolean isCorrectRange(String start, String end) {
+	public static boolean isCorrectRange(String start, String end) {
 		SimpleDateFormat dateFormatter = new SimpleDateFormat(FORMAT_DATE);
 		SimpleDateFormat dateTimeFormatter = new SimpleDateFormat(FORMAT_DATETIME);
 		Date startDate;

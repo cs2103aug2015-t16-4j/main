@@ -92,8 +92,14 @@ public class EditLogic {
 				} else if (isEditByTimeline(command)) {
 					String newStartDate = getNewStartDate(command);
 					String newEndDate = getNewEndDate(command);
-					modifier.editTimeline(indexToBeEdit, newStartDate, newEndDate);
-					FeedbackPane.displayValidEdit();
+					if(AddLogic.isCorrectRange(newStartDate, newEndDate)) {
+						boolean isSuccess =	modifier.editTimeline(indexToBeEdit, newStartDate, newEndDate);
+						if(isSuccess) {
+							FeedbackPane.displayValidEdit();
+						}
+					} else {
+						FeedbackPane.displayInvalidDate();
+					}
 				} else if (isEditByRepeat(command)) {
 					String repeatCommand = getRepeatCommand(command);
 					if (AddLogic.isCorrectRepeatCycle(repeatCommand)) {

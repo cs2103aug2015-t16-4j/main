@@ -251,7 +251,7 @@ public class FileModifier {
 	 * This method adds the task to the current list of tasks
 	 * @param newtask the task to be added into the list
 	 */
-	public void addTask(Task newtask) {
+	public boolean addTask(Task newtask) {
 		assert newtask != null;
 		
 		if (TaskCheckLogic.blockedDateCheck(newtask)) {
@@ -259,9 +259,11 @@ public class FileModifier {
 			newList.add(newtask);
 			updateFile(newList);
 			LoggingLogic.logging(ADDING_SUCCESSFUL);
+			return true;
 		} else {
 			FeedbackPane.displayInvalidAddBlocked();
 			LoggingLogic.logging(ADDING_UNSUCCESSFUL);
+			return false;
 		}
 	}
 
@@ -474,7 +476,7 @@ public class FileModifier {
 	 * @param startDate the start date object with or without time
 	 * @param endDate the end date object with or without time
 	 */
-	public void editTimeline(int lineToBeEdit, String startDate, String endDate) {
+	public boolean editTimeline(int lineToBeEdit, String startDate, String endDate) {
 		ArrayList<Task> taskList = modifier.getContentList();
 		Task task = taskList.get(lineToBeEdit);
 		if (startDate.contains(" ")) {
@@ -486,8 +488,14 @@ public class FileModifier {
 			task.setEndDate(endDate);
 			task.setHasTime(false);
 		}
-		taskList.set(lineToBeEdit, task);
-		updateFile(taskList);
+		if(TaskCheckLogic.blockedDateCheck(task)) {
+			taskList.set(lineToBeEdit, task);
+			updateFile(taskList);
+			return true;
+		} else {
+			FeedbackPane.displayInvalidEditBlocked();
+			return false;
+		}
 	}
 
 	/**
